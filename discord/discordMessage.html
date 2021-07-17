@@ -1,0 +1,58 @@
+<script type="text/javascript">
+  RED.nodes.registerType('discordMessage', {
+    category: 'discord',
+    color: '#7289da',
+    defaults: {
+      name: {
+        value: "",
+        required: false
+      },
+      token: {
+        value: "",
+        required: true,
+        type: "discord-token"
+      }
+    },
+    inputs: 0,
+    outputs: 1,
+    icon: "discord.png",
+    label: function () {
+      return this.name || "discordMessage";
+    }
+  });
+</script>
+<script type="text/x-red" data-template-name="discordMessage">
+  <div class="form-row">
+        <label for="node-input-token"><i class="icon-tag"></i> token</label>
+        <input type="text" id="node-input-token" placeholder="token">
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+</script>
+<script type="text/x-red" data-help-name="discordMessage">
+  <p>Node to recieve discord messages</p>
+
+  <h3>Outputs</h3>
+  <dl class="message-properties">
+      <dt>payload <span class="property-type">string</span></dt>
+      <dd>the textual content of the message</dd>
+      <dt>channel <span class="property-type">Object</span></dt>
+      <dd>an Object containing info on the channel the message was sent in</dd>
+      <dt>author <span class="property-type">Object</span></dt>
+      <dd>an Object containing info on the author of the message</dd>
+      <dt>memberRoleNames <span class="property-type">Array</span></dt>
+      <dd>an array of all the roles the author has</dd>
+      <dt>data <span class="property-type">Object</span></dt>
+      <dd>the full message Object sent by discord</dd>
+  </dl>
+  
+  <h3>Details</h3>
+  <p>Triggers whenever a message was received on Discord.</p>
+  <p><code>msg.payload</code> will be set to the textual content of the message.</p>
+  <p><code>msg.channel</code> will be set to an Object containing info on the <a href="https://discord.js.org/#/docs/main/stable/class/TextChannel" target="_blank">channel</a> the message was received from (does not contain any discord.js functions)</p>
+  <p><code>msg.author</code> will be set to an Object containing info on the <a href="https://discord.js.org/#/docs/main/stable/class/User" target="_blank">user</a> that sent the message (does not contain any discord.js functions)</p>
+  <p><code>msg.memberRoleNames</code> will be set to an Array of all the names of the roles the author has</p>
+  <p><code>msg.data</code> <em>may</em> be set to an Object containing info on the <a href="https://discord.js.org/#/docs/main/stable/class/Message" target="_blank">message</a> that was received, but again without any of the discord.js functions.</p>
+</script>

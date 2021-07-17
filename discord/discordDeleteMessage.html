@@ -1,0 +1,55 @@
+<script type="text/javascript">
+  RED.nodes.registerType('discordDeleteMessage', {
+    category: 'discord',
+    color: '#7289da',
+    defaults: {
+      name: {
+        value: "",
+        required: false
+      },
+      token: {
+        value: "",
+        required: true,
+        type: "discord-token"
+      }
+    },
+    inputs: 1,
+    outputs: 0,
+    icon: "discord.png",
+    label: function () {
+      return this.name || "discordDeleteMessage";
+    }
+  });
+</script>
+<script type="text/x-red" data-template-name="discordDeleteMessage">
+  <div class="form-row">
+    <label for="node-input-token"><i class="icon-tag"></i> token</label>
+    <input type="text" id="node-input-token" placeholder="token">
+  </div>
+  <div class="form-row">
+    <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+    <input type="text" id="node-input-name" placeholder="Name">
+  </div>
+</script>
+<script type="text/x-red" data-help-name="discordDeleteMessage">
+  <p>Allows deleting of discord messages by supplying the message and channel id's.</p>
+
+  <h3>Inputs</h3>
+  <dl class="message-properties">
+    <dt>id
+        <span class="property-type">Object or string</span>
+    </dt>
+    <dd>the message Object or message id</dd>
+    <dt>channel
+      <span class="property-type">Object or string</span>
+    </dt>
+    <dd>the channel Object or channel id that the message is in</dd>
+    <dt class="optional">timedelay <span class="property-type">number</span></dt>
+    <dd>the time in milliseconds to wait before deleting the message, default is 0</dd>
+  </dl>
+
+  <h3>Details</h3>
+  <p>Deletes a message with id <code>msg.id</code> in channel with channel id <code>msg.channel</code> with optional <code>msg.timedelay</code> in milliseconds.</p>
+  <p>Both <code>msg.id</code> and <code>msg.channel</code> are required</p>
+  <p><code>msg.timedelay</code> is optional and will be 0 if not supplied<p>
+</script>

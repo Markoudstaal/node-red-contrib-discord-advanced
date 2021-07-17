@@ -1,0 +1,27 @@
+<script type="text/javascript">
+    RED.nodes.registerType('discord-token', {
+        category: 'config',
+        defaults: {
+            name: {value:"", required: true},
+        },
+        credentials: {
+            token: {type: "text"},
+        },
+        exportable: false,
+        label: function() {
+            return this.name;
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="discord-token">
+    <div class="form-row">
+        <label for="node-config-input-token"><i class="icon-bookmark"></i> Token</label>
+        <input type="text" id="node-config-input-token">
+        <p>You can find the Discord API token for one of your bots on <a href="https://discordapp.com/developers/applications" target="_blank">your developer page</a>.</p>
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-config-input-name">
+    </div>
+</script>

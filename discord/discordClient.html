@@ -1,0 +1,30 @@
+<script type="text/javascript">
+    RED.nodes.registerType('discordClient',{
+        category: 'discord',
+        color: '#7289da',
+        defaults: {
+            name: {value: "", required: false},
+            token: {value: "", required: true, type: "discord-token"}
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: "discord.png",
+        label: function() {
+            return this.name||"discordClient";
+        }
+    });
+</script>
+<script type="text/x-red" data-template-name="discordClient">
+    <div class="form-row">
+        <label for="node-input-token"><i class="icon-tag"></i> token</label>
+        <input type="text" id="node-input-token" placeholder="token">
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+</script>
+<script type="text/x-red" data-help-name="discordClient">
+    <div class="alert alert-danger"><strong>DEPRECATED!</strong> THIS NODE IS DANGEROUS AND CAN CAUSE NODE-RED TO CRASH. USE AT YOUR OWN RISK!</div>
+    <p>Sets <code>msg.discord</code> to the Discord.js <a href="https://discord.js.org/#/docs/main/stable/class/Client" target="_blank">Client</a> associated with the configured token. Use this node to inject a Discord client into a message, which you can then perform actions on manually in nodes that follow.</p>
+</script>

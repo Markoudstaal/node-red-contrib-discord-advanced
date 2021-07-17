@@ -1,0 +1,67 @@
+<script type="text/javascript">
+  RED.nodes.registerType('discordSendMessage', {
+    category: 'discord',
+    color: '#7289da',
+    defaults: {
+      name: {
+        value: "",
+        required: false
+      },
+      channel: {
+        value: null,
+        required: false
+      },
+      token: {
+        value: "",
+        required: true,
+        type: "discord-token"
+      }
+    },
+    inputs: 1,
+    outputs: 0,
+    icon: "discord.png",
+    label: function () {
+      return this.name || "discordSendMessage";
+    }
+  });
+</script>
+<script type="text/x-red" data-template-name="discordSendMessage">
+  <div class="form-row">
+        <label for="node-input-token"><i class="icon-tag"></i> token</label>
+        <input type="text" id="node-input-token" placeholder="token">
+    </div>
+    <div class="form-row">
+        <label for="node-input-channel"><i class="icon-tag"></i> channel ID</label>
+        <input type="text" id="node-input-channel" placeholder="channel">
+        <p>(leave 'channel ID' blank to use <code>msg.channel</code> as channel ID to send to)
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+</script>
+<script type="text/x-red" data-help-name="discordSendMessage">
+  <p>Node to send messages to discord or edit them</p>
+
+  <h3>Inputs</h3>
+  <dl class="message-properties">
+    <dt>payload
+      <span class="property-type">string</span>
+    </dt>
+    <dd>the text for the message to be sent</dd>
+    <dt>channel
+      <span class="property-type">Object or string</span>
+    </dt>
+    <dd>the channel Object or channel id that the message should be sent to</dd>
+    <dt class="optional">id <span class="property-type">Object or string</span></dt>
+    <dd>the message Object or id of the message that should be edited, if this is desired</dd>
+    <dt class="optional">attachment <span class="property-type">string</span></dt>
+    <dd>the url or local path to an attachment, if any</dd>
+  </dl>
+
+  <h3>Details</h3>
+  <p>This node provides a way to send messages to a discord channel. It also allows messages to be edited.<p>
+  <p>Both <code>msg.payload</code> and <code>msg.channel</code> are required to send a message.<p>
+  <p>If <code>msg.id</code> is set, this node will update that message with the new <code>msg.payload</code> instead.<p>
+  <p>It's possible to add an attachment by url but this node does not check if that url is valid. Discord might bounce invalid urls.</p>
+</script>
