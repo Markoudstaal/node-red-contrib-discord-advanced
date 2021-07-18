@@ -1,7 +1,7 @@
 {
   "name": "node-red-contrib-discord-advanced",
   "version": "1.0.1",
-  "description": "Advanced Node-RED node for interacting with Discord",
+  "description": "Recieve, send, edit and delete Discord messages in Node-RED.",
   "main": "discord/discord.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
