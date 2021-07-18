@@ -1,6 +1,6 @@
 {
   "name": "node-red-contrib-discord-advanced",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Advanced Node-RED node for interacting with Discord",
   "main": "discord/discord.js",
   "scripts": {
