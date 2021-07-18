@@ -4,13 +4,20 @@ Node-red nodes that allow you to interact with Discord, via [Discord.js](https:/
 
 This repository builds on [`node-red-contrib-discord`](https://github.com/jorisvddonk/node-red-contrib-discord) by Joris vd Donk . The main intention is to add more features and keep the repository updated.
 
-# Installation
+## Installation
+### Node-RED Library
+
+You can find this node in the Node-RED Library inside the web interface.
+Open the hamburger menu top right of your node-red interface, then click on manage palete.
+Click on the install tab where you can search for this node by typing `node-red-contrib-discord-advanced`.
+
+### NPM
 
 Run the following command in `~/.node-red`:
 
     npm install node-red-contrib-discord-advanced
 
-# Nodes
+## Nodes
 
 node-red-contrib-discord-advanced gives you access to three nodes:
 
@@ -19,15 +26,15 @@ node-red-contrib-discord-advanced gives you access to three nodes:
 * discordDeleteMessage is a node with one input and no outputs allowing the deletion of existing messages.
 * discordClient is an advanced deprecated node with one input and one output allowing you to inject a references to a [Discord.js Client](https://discord.js.org/#/docs/main/stable/class/Client) into a message. This node can cause node-red to crash if you use it improperly, so take caution. Messages containing a Discord.js Client reference can *not* be forked (e.g. sent to two nodes), so you'll have to manually remove the reference to the Client via a function node using `delete msg.discord`.
 
-# Changelog
+## Changelog
 
 See `CHANGELOG.md` for more info, including information regarding breaking changes per version.
 
-# Discord.js client sharing
+## Discord.js client sharing
 
 All nodes share Discord.js clients based on the `discord-token` that they were configured with. That means that, when you add many `discordMessage` nodes configured with the exact same token, only a single connection with Discord will be made.
 
-# Example bot
+## Example bot
 
 A simple Discord bot that replies with the reverse of any received message that contains the string 'hello':
 
