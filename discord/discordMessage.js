@@ -34,6 +34,9 @@ module.exports = function (RED) {
           msg.memberRoleNames = message.member ? message.member.roles.cache.array().map(function (item) {
             return item.name
           }) : null;
+          msg.memberRoleIDs = message.member ? message.member.roles.cache.array().map(function (item) {
+            return item.id
+          }) : null;
           try {
             msg.data = Flatted.parse(Flatted.stringify(message));
           } catch (e) {
