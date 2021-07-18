@@ -5,6 +5,13 @@ Node-red nodes that allow you to interact with Discord, via [Discord.js](https:/
 This repository builds on [`node-red-contrib-discord`](https://github.com/jorisvddonk/node-red-contrib-discord) by Joris vd Donk . The main intention is to add more features and keep the repository updated.
 
 # Installation
+## Node-RED Library
+
+You can find this node in the Node-RED Library inside the web interface.
+Open the hamburger menu top right of your node-red interface, then click on manage palete.
+Click on the install tab where you can search for this node by typing `node-red-contrib-discord-advanced`.
+
+## NPM
 
 Run the following command in `~/.node-red`:
 
