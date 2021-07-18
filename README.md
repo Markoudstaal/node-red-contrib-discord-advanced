@@ -2,7 +2,7 @@
 
 Node-red nodes that allow you to interact with Discord, via [Discord.js](https://discord.js.org).
 
-This repository builds on [`node-red-contrib-discord`](https://github.com/jorisvddonk/node-red-contrib-discord) by Joris vd Donk . The main intention is to add more features and keep the repository updated.
+This repository builds on [node-red-contrib-discord](https://github.com/jorisvddonk/node-red-contrib-discord) by Joris vd Donk . The main intention is to add more features and keep the repository updated.
 
 ## Installation
 ### Node-RED Library
