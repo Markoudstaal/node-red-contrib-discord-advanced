@@ -19,7 +19,7 @@ Run the following command in `~/.node-red`:
 
 ## Nodes
 
-node-red-contrib-discord-advanced gives you access to three nodes:
+node-red-contrib-discord-advanced gives you access to four nodes:
 
 * discordMessage is a node with no inputs and one output allowing you to receive notifications of incoming messages.
 * discordSendMessage is a node with one input and no outputs allowing you to send and edit messages in a Discord channel or to a user.
@@ -29,6 +29,11 @@ node-red-contrib-discord-advanced gives you access to three nodes:
 ## Changelog
 
 See `CHANGELOG.md` for more info, including information regarding breaking changes per version.
+
+## Support, issues and feature requests
+
+For support in setting up and feature requests you can contact me on [this](https://discord.gg/HPva4sjezt) discord.
+Issues can also be reported there but prefferably via GitHub.
 
 ## Discord.js client sharing
 

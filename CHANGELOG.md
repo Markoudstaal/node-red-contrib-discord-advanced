@@ -1,5 +1,8 @@
 # Changelog
+## 1.1.1
 
+* Added Discord to the Readme.
+* Updated description.
 ## 1.1
 
 * Added ability to send private messages with discordSendMessage.

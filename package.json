@@ -1,7 +1,7 @@
 {
   "name": "node-red-contrib-discord-advanced",
-  "version": "1.1.0",
-  "description": "Recieve, send, edit and delete Discord messages in Node-RED.",
+  "version": "1.1.1",
+  "description": "Recieve, send (to channel or private), edit and delete Discord messages in Node-RED.",
   "main": "discord/discord.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
