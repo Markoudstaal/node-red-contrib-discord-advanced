@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1
+
+* Added ability to send private messages with discordSendMessage.
+
 ## 1.0.1
 
 * Add the msg.memberRoleIDs output to the discordMessage node.

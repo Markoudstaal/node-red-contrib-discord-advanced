@@ -22,7 +22,7 @@ Run the following command in `~/.node-red`:
 node-red-contrib-discord-advanced gives you access to three nodes:
 
 * discordMessage is a node with no inputs and one output allowing you to receive notifications of incoming messages.
-* discordSendMessage is a node with one input and no outputs allowing you to send and edit messages in a Discord channel.
+* discordSendMessage is a node with one input and no outputs allowing you to send and edit messages in a Discord channel or to a user.
 * discordDeleteMessage is a node with one input and no outputs allowing the deletion of existing messages.
 * discordClient is an advanced deprecated node with one input and one output allowing you to inject a references to a [Discord.js Client](https://discord.js.org/#/docs/main/stable/class/Client) into a message. This node can cause node-red to crash if you use it improperly, so take caution. Messages containing a Discord.js Client reference can *not* be forked (e.g. sent to two nodes), so you'll have to manually remove the reference to the Client via a function node using `delete msg.discord`.
 
