@@ -2,6 +2,15 @@
 
 Node-red nodes that allow you to interact with Discord, via [Discord.js](https://discord.js.org).
 
+Currently the following actions are supported:
+* Receive messages from any Discord servers your BOT is in.
+* Send messages in a specific channel.
+* Send private messages to users.
+* Add attachments to messages.
+* Edit messages in a channel.
+* Delete messages in a channel.
+* Allow full control over the BOT by access to the DiscordJS client.
+
 This repository builds on [node-red-contrib-discord](https://github.com/jorisvddonk/node-red-contrib-discord) by Joris vd Donk . The main intention is to add more features and keep the repository updated.
 
 ## Installation and documentation
