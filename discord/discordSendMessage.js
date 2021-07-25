@@ -8,178 +8,120 @@ module.exports = function (RED) {
     RED.nodes.createNode(this, config);
     var node = this;
     var configNode = RED.nodes.getNode(config.token);
-    discordBotManager.getBot(configNode).then(function (bot) {
-      node.on('input', function (msg) {
-        if (msg.user) {
-          if (typeof msg.user !== 'string') {
-            if (msg.user.hasOwnProperty('id')) {
-              bot.users.fetch(msg.user.id).then(user => {
-                user.send(msg.payload)
-                  .then(message => {
-                    node.status({
-                      fill: "green",
-                      shape: "dot",
-                      text: `message sent to ${message.channel.recipient.username}`
-                    });
-                    return;
-                  })
-                  .catch(err => {
-                    node.error(err);
-                    node.status({
-                      fill: "red",
-                      shape: "dot",
-                      text: `Couldn't send private message`
-                    })
-                    return;
-                  });
-              }).catch(err => {
-                node.error(err);
-                node.status({
-                  fill: "red",
-                  shape: "dot",
-                  text: `Couldn't find user with id: ${msg.user.id}`
-                })
-                return;
-              });
-            } else {
-              node.error(`msg.user needs to be either a string for the id or an user Object`);
-              node.status({
-                fill: "red",
-                shape: "dot",
-                text: `msg.user is not a string or Object`
-              })
-              return;
-            }
-          } else {
-            bot.users.fetch(msg.user).then(user => {
-              user.send(msg.payload)
-                .then(message => {
-                  node.status({
-                    fill: "green",
-                    shape: "dot",
-                    text: `message sent to ${message.channel.recipient.username}`
-                  });
-                  return;
-                })
-                .catch(err => {
-                  node.error(err);
-                  node.status({
-                    fill: "red",
-                    shape: "dot",
-                    text: `Couldn't send private message`
-                  })
-                  return;
-                });
+    node.on('input', function (msg, send, done) {
+      discordBotManager.getBot(configNode).then(function (bot) {
+        const action = msg.action || 'create';
+        const payload = msg.payload;
+
+        let attachment = null;
+        if (msg.attachment) {
+          attachment = new MessageAttachment(msg.attachment);
+        }
+
+        const setError = (errorMessage) => {
+          node.status({
+            fill: "red",
+            shape: "dot",
+            text: errorMessage
+          })
+        }
+
+        const setSucces = (succesMessage) => {
+          node.status({
+            fill: "green",
+            shape: "dot",
+            text: succesMessage
+          });
+        }
+
+        const getChannel = (id) => {
+          var promise = new Promise((resolve, reject) => {
+            bot.channels.fetch(id).then((channelInstance) => {
+              resolve(channelInstance);
             }).catch(err => {
-              node.error(err);
-              node.status({
-                fill: "red",
-                shape: "dot",
-                text: `Couldn't find user with id: ${msg.user}`
-              })
-              return;
-            })
+              reject(err);
+            });
+          });
+          return promise;
+        }
+
+        const createPrivateMessage = () => {
+          var user = msg.user;
+          if (user && typeof user !== 'string') {
+            if (user.hasOwnProperty('id')) {
+              user = user.id;
+            } else {
+              setError(`msg.user needs to be either a string for the id or channel Object`)
+              done(`msg.user needs to be either a string for the id or channel Object`);
+            }
           }
-        } else if (msg.channel) {
+          bot.users.fetch(user).then(user => {
+            return user.send(payload, attachment);
+          }).then(message => {
+            setSucces(`message sent to ${message.channel.recipient.username}`)
+            done();
+          }).catch(err => {
+            setError(err);
+            done(err);
+          })
+        }
+
+        const createChannelMessage = () => {
           var channel = config.channel || msg.channel;
           if (channel && typeof channel !== 'string') {
             if (channel.hasOwnProperty('id')) {
               channel = channel.id;
             } else {
-              node.error(`msg.channel needs to be either a string for the id or channel Object`);
-              node.status({
-                fill: "red",
-                shape: "dot",
-                text: `msg.channel is not a string or Object`
-              })
-              return;
+              setError(`msg.channel needs to be either a string for the id or channel Object`)
+              done(`msg.channel needs to be either a string for the id or channel Object`);
             }
           }
-
-          var msgId = undefined || msg.id;
-          if (msgId && typeof msgId !== 'string') {
-            if (msgId.hasOwnProperty('id')) {
-              msgId = msgID.id;
-            } else {
-              msgId = undefined;
-              node.error(`msg.id needs to be either a string for the id or message Object`);
-              node.status({
-                fill: "red",
-                shape: "dot",
-                text: `msg.id is not a string or Object`
-              })
-              return;
-            }
-          }
-
-          let attachment = null;
-          if (msg.attachment) {
-            attachment = new MessageAttachment(msg.attachment);
-          }
-
-          if (channel) {
-            bot.channels.fetch(channel).then((channelInstance) => {
-              if (msgId) {
-                channelInstance.messages.fetch(msgId).then(message => {
-                  message.edit(msg.payload).then(function () {
-                    node.status({
-                      fill: "green",
-                      shape: "dot",
-                      text: "message edited"
-                    });
-                  }).catch(function (err) {
-                    node.error("Couldn't edit message:" + err);
-                    node.status({
-                      fill: "red",
-                      shape: "dot",
-                      text: "Error while editing message"
-                    });
-                  });
-                }).catch(error => {
-                  node.error(`Couldn't find the message: ${error}`);
-                  node.status({
-                    fill: "red",
-                    shape: "dot",
-                    text: "Couldn't find supplied message with supplied message ID"
-                  });
-                });
-              } else {
-                channelInstance.send(msg.payload, attachment).then(function () {
-                  node.status({
-                    fill: "green",
-                    shape: "dot",
-                    text: "message sent"
-                  });
-                }).catch(function (err) {
-                  node.error("Couldn't send to channel:" + err);
-                  node.status({
-                    fill: "red",
-                    shape: "dot",
-                    text: "Couldn't send message to the channel."
-                  });
-                });
-              };
-            }).catch(error => {
-              node.error(`Couldn't find the supplied channel ID: ${error}`);
-              node.status({
-                fill: "red",
-                shape: "dot",
-                text: `Couldn't find channel with the supplied channel ID...`
-              });
-            });
-          }
-        } else {
-          node.error(`Either msg.channel or msg.user needs to be set`);
-          node.status({
-            fill: "red",
-            shape: "dot",
-            text: `Either msg.channel or msg.user is required`
-          })
+          getChannel(channel).then(channelInstance => {
+            return channelInstance.send(payload, attachment);
+          }).then((message) => {
+            setSucces(`message send, id = ${message.id}`);
+            done();
+          }).catch(err => {
+            setError(err);
+            done(err);
+          });
         }
 
-        node.on('close', function () {
-          discordBotManager.closeBot(bot);
-        });
+        const createMessage = () => {
+          if (msg.user) {
+            createPrivateMessage();
+          } else if (msg.channel) {
+            createChannelMessage();
+          } else {
+            setError('to send messages either msg.channel or msg.user needs to be set');
+            done('to send messages either msg.channel or msg.user needs to be set');
+          }
+        }
+
+        const editMessage = () => {
+
+        }
+
+        const deleteMessage = () => {
+
+        }
+
+        switch (action.toLowerCase()) {
+          case 'create':
+            createMessage();
+            break;
+          case 'edit':
+            editMessage();
+            break;
+          case 'delete':
+            deleteMessage();
+            break;
+          default:
+            setError(`msg.action has an incorrect value`)
+        }
+
+      }).catch(err => {
+        done(err);
       });
     });
   }
