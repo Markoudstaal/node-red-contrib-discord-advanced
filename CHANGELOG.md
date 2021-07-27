@@ -1,4 +1,18 @@
 # Changelog
+
+## 2.0.0
+**Breaking changes!!**
+The discordSendMessage and discordDeleteMessage nodes have been removed and its functionality moved into the discordMessageManager.
+To edit or delete messages you now need to send msg.action with either 'edit' or 'delete' to the discordMessageManager.
+Also to edit or delete messages the variable for the message object or ID is now called msg.message for more clarity.
+
+I know these changes make a lot of difference for flow's but this change will mean new functionality's won't require breaking changes. 
+These should be the last breaking changes from my code, they could still happen if DiscordJS changes.
+
+Other changes:
+* Lots of code refactoring for a more robust code base.
+* Better error messages when wrong data is supplied or there's problems in DiscordJS.
+
 ## 1.1.1
 
 * Added Discord to the Readme.

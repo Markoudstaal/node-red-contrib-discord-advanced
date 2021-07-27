@@ -1,0 +1,97 @@
+a<script type="text/javascript">
+  RED.nodes.registerType('discordMessageManager', {
+    category: 'discord',
+    color: '#7289da',
+    defaults: {
+      name: {
+        value: "",
+        required: false
+      },
+      channel: {
+        value: null,
+        required: false
+      },
+      token: {
+        value: "",
+        required: true,
+        type: "discord-token"
+      }
+    },
+    inputs: 1,
+    outputs: 0,
+    icon: "discord.png",
+    label: function () {
+      return this.name || "discordMessageManager";
+    }
+  });
+</script>
+<script type="text/x-red" data-template-name="discordMessageManager">
+  <div class="form-row">
+        <label for="node-input-token"><i class="icon-tag"></i> token</label>
+        <input type="text" id="node-input-token" placeholder="token">
+    </div>
+    <div class="form-row">
+        <label for="node-input-channel"><i class="icon-tag"></i> channel ID</label>
+        <input type="text" id="node-input-channel" placeholder="channel">
+        <p>(leave 'channel ID' blank to use <code>msg.channel</code> as channel ID to send to)</p>
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+</script>
+<script type="text/x-red" data-help-name="discordMessageManager">
+  <p>Node to send, edit or delete messages in Discord</p>
+  <b>When you've used this node before and updated there are some breaking changes. You can find them <a href="https://github.com/Markoudstaal/node-red-contrib-discord-advanced/blob/main/CHANGELOG.md">here</a>.</b>
+  <p>More support can be found <a href="https://github.com/Markoudstaal/node-red-contrib-discord-advanced/wiki#support">here</a>.</p>
+
+  <h3>Inputs</h3>
+  <dl class="message-properties">
+    <dt>payload
+      <span class="property-type">string</span>
+    </dt>
+    <dd>The text for the message to be sent.</dd>
+    <dt>action
+      <span class="property-type">string</span>
+    </dt>
+    <dd>The action to do, can be: create, edit or delete. If not set, node will default to create.</dd>
+    <dt>channel
+      <span class="property-type">Object or string</span>
+    </dt>
+    <dd>The channel Object or channel id for creating, editing and deleting messages.</dd>
+    <dt>user 
+      <span class="property-type">Object or string</span>
+    </dt>
+    <dd>The user Object or id if you want to send a private message.</dd>
+    <dt>message 
+      <span class="property-type">Object or string</span>
+    </dt>
+    <dd>The message Object or id of the message that should be edited or deleted, if this is desired</dd>
+    <dt class="optional">timedelay 
+      <span class="property-type">number</span>
+    </dt>
+    <dd>The time in milliseconds to wait before deleting a message.</dd>
+    <dt class="optional">attachment 
+      <span class="property-type">string</span>
+    </dt>
+    <dd>The url or local path to an attachment, if any.</dd>
+  </dl>
+
+  <h3>Details</h3>
+  <p>This node provides a way to send messages to a discord channel or a user. It also allows messages to be edited and deleted.<p>
+
+  <h4>Sending messages to a Discord channel</h4>
+  <p>When sending a message to a channel, both <code>msg.payload</code> and <code>msg.channel</code> are required.<p>
+
+  <h4>Sending private messages<h4>
+  <p>When sending a private message <code>msg.user</code> and <code>msg.payload</code> are required.</p>
+
+  <h4>Editing messages</h4>
+  <p>Editing messages is only possible in channels. Set <code>msg.action</code> to 'edit'. Also <code>msg.channel</code>, <code>msg.message</code> and <code>msg.payload</code> are required.<p>
+
+  <h4>Deleting messages</h4>
+  <p>To delete messages set <code>msg.action</code> to 'delete'. Also <code>msg.channel</code> and <code>msg.message</code> are required. <code>msg.timedelay</code> is optional to add a delay in milliseconds before deleting the message.</p>
+    
+  <h4>Attachments</h4>
+  <p>It's possible to add an attachment by url but this node does not check if that url is valid. Discord might bounce invalid urls. This doesn't work for editing messages.</p>
+</script>
