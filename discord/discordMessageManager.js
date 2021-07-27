@@ -4,7 +4,7 @@ module.exports = function (RED) {
     MessageAttachment
   } = require('discord.js');
 
-  function discordSendMessage(config) {
+  function discordMessageManager(config) {
     RED.nodes.createNode(this, config);
     var node = this;
     var configNode = RED.nodes.getNode(config.token);
@@ -16,8 +16,6 @@ module.exports = function (RED) {
         const user = msg.user || null;
         const message = msg.message || null;
         const timeDelay = msg.timedelay || 0;
-
-        console.log(timeDelay);
 
         let attachment = null;
         if (msg.attachment) {
@@ -88,43 +86,39 @@ module.exports = function (RED) {
         }
 
         const createPrivateMessage = () => {
-          if (user && typeof user !== 'string') {
-            if (user.hasOwnProperty('id')) {
-              user = user.id;
-            } else {
-              setError(`msg.user needs to be either a string for the id or channel Object`)
-            }
+          const userID = checkIdOrObject(user);
+          if (!userID) {
+            setError(`msg.user wasn't set correctly`);
+          } else {
+            bot.users.fetch(user).then(user => {
+              return user.send(payload, attachment);
+            }).then(message => {
+              setSucces(`message sent to ${message.channel.recipient.username}`)
+            }).catch(err => {
+              setError(err);
+            })
           }
-          bot.users.fetch(user).then(user => {
-            return user.send(payload, attachment);
-          }).then(message => {
-            setSucces(`message sent to ${message.channel.recipient.username}`)
-          }).catch(err => {
-            setError(err);
-          })
         }
 
         const createChannelMessage = () => {
-          if (channel && typeof channel !== 'string') {
-            if (channel.hasOwnProperty('id')) {
-              channel = channel.id;
-            } else {
-              setError(`msg.channel needs to be either a string for the id or channel Object`)
-            }
+          const channelID = checkIdOrObject(channel);
+          if (!channelID) {
+            setError(`msg.channel wasn't set correctly`);
+          } else {
+            getChannel(channel).then(channelInstance => {
+              return channelInstance.send(payload, attachment);
+            }).then((message) => {
+              setSucces(`message sent, id = ${message.id}`);
+            }).catch(err => {
+              setError(err);
+            });
           }
-          getChannel(channel).then(channelInstance => {
-            return channelInstance.send(payload, attachment);
-          }).then((message) => {
-            setSucces(`message sent, id = ${message.id}`);
-          }).catch(err => {
-            setError(err);
-          });
         }
 
         const createMessage = () => {
-          if (msg.user) {
+          if (user) {
             createPrivateMessage();
-          } else if (msg.channel) {
+          } else if (channel) {
             createChannelMessage();
           } else {
             setError('to send messages either msg.channel or msg.user needs to be set');
@@ -178,5 +172,5 @@ module.exports = function (RED) {
       console.log(err);
     });
   }
-  RED.nodes.registerType("discordSendMessage", discordSendMessage);
+  RED.nodes.registerType("discordMessageManager", discordMessageManager);
 };
