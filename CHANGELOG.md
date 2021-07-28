@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.0.1
+
+* Hotfix for message sending not working when supplying an object for msg.channel or msg.user
 ## 2.0.0
 **Breaking changes!!**
 The discordSendMessage and discordDeleteMessage nodes have been removed and its functionality moved into the discordMessageManager.

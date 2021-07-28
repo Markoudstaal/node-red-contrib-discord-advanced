@@ -43,8 +43,7 @@ module.exports = function (RED) {
         const checkIdOrObject = (check) => {
           if (typeof check !== 'string') {
             if (check.hasOwnProperty('id')) {
-              check = check.id;
-              return check;
+              return check.id;
             } else {
               return false;
             }
@@ -90,7 +89,7 @@ module.exports = function (RED) {
           if (!userID) {
             setError(`msg.user wasn't set correctly`);
           } else {
-            bot.users.fetch(user).then(user => {
+            bot.users.fetch(userID).then(user => {
               return user.send(payload, attachment);
             }).then(message => {
               setSucces(`message sent to ${message.channel.recipient.username}`)
@@ -105,7 +104,7 @@ module.exports = function (RED) {
           if (!channelID) {
             setError(`msg.channel wasn't set correctly`);
           } else {
-            getChannel(channel).then(channelInstance => {
+            getChannel(channelID).then(channelInstance => {
               return channelInstance.send(payload, attachment);
             }).then((message) => {
               setSucces(`message sent, id = ${message.id}`);
