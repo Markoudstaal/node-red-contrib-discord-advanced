@@ -41,14 +41,18 @@ module.exports = function (RED) {
         }
 
         const checkIdOrObject = (check) => {
-          if (typeof check !== 'string') {
-            if (check.hasOwnProperty('id')) {
-              return check.id;
+          try {
+            if (typeof check !== 'string') {
+              if (check.hasOwnProperty('id')) {
+                return check.id;
+              } else {
+                return false;
+              }
             } else {
-              return false;
+              return check;
             }
-          } else {
-            return check;
+          } catch (error) {
+            return false;
           }
         }
 

@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.0.2
+
+* Hotfix for error handling when msg.message isn't supplied.
 ## 2.0.1
 
 * Hotfix for message sending not working when supplying an object for msg.channel or msg.user
