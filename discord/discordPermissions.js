@@ -10,7 +10,6 @@ module.exports = function (RED) {
         const action = msg.action || 'get';
         const user = msg.user || null;
         const guild = msg.guild || null;
-        const role = msg.role || null;
 
         const setError = (error) => {
           node.status({
@@ -62,7 +61,12 @@ module.exports = function (RED) {
               var msg = {
                 _msgid: msgid
               }
-              msg.roles = user.roles.cache.array();
+              try {
+                msg.payload = user.roles.cache.array();
+              } catch (error) {
+                setError(error);
+              }
+              msg.user = user;
               send(msg);
               setSucces(`roles sent`);
             }).catch(error => {

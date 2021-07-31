@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.1.0
+
+* Add the discordPermissions node which allows checking of roles a specific user has in a guild.
 ## 2.0.2
 
 * Hotfix for error handling when msg.message isn't supplied.

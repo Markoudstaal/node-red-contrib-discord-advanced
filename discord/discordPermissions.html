@@ -32,7 +32,7 @@ a<script type="text/javascript">
     </div>
 </script>
 <script type="text/x-red" data-help-name="discordPermissions">
-  <p>Node check user permissions in Discord.</p>
+  <p>Node to check user permissions in Discord.</p>
   <p>More support can be found <a href="https://github.com/Markoudstaal/node-red-contrib-discord-advanced/wiki#support">here</a>.</p>
 
   <h3>Inputs</h3>
@@ -50,5 +50,19 @@ a<script type="text/javascript">
     <dd>The Guild Object or ID the user is in and where you want to check the roles.</dd>
   </dl>
 
+  <h3>Outputs</h3>
+  <dl class="message-properties">
+    <dt>payload
+      <span class="property-type">Array</span>
+    </dt>
+    <dd>The payload contains an array with all roles the user has in the specified guild.</dd>
+    <dt>user
+      <span class="property-type">Object</span>
+    </dt>
+    <dd>The full user Object of the user that was specified.</dd>
+  </dl>
+
   <h3>Details</h3>
+  <p>Right now this node is only able to output all roles a user has in a specific guild.<p>
+  <p>To get the roles a user has in a guild send <code>msg.user</code> and <code>msg.guild</code> and it will return the roles the user has.</p>
 </script>
