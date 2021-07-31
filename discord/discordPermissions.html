@@ -1,0 +1,54 @@
+a<script type="text/javascript">
+  RED.nodes.registerType('discordPermissions', {
+    category: 'discord',
+    color: '#7289da',
+    defaults: {
+      name: {
+        value: "",
+        required: false
+      },
+      token: {
+        value: "",
+        required: true,
+        type: "discord-token"
+      }
+    },
+    inputs: 1,
+    outputs: 1,
+    icon: "discord.png",
+    label: function () {
+      return this.name || "discordPermissions";
+    }
+  });
+</script>
+<script type="text/x-red" data-template-name="discordPermissions">
+  <div class="form-row">
+        <label for="node-input-token"><i class="icon-tag"></i> token</label>
+        <input type="text" id="node-input-token" placeholder="token">
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+</script>
+<script type="text/x-red" data-help-name="discordPermissions">
+  <p>Node check user permissions in Discord.</p>
+  <p>More support can be found <a href="https://github.com/Markoudstaal/node-red-contrib-discord-advanced/wiki#support">here</a>.</p>
+
+  <h3>Inputs</h3>
+  <dl class="message-properties">
+    <dt>action
+      <span class="property-type">string</span>
+    </dt>
+    <dd>The action to do, can be: get. If not set, node will default to get.</dd>
+    <dt>user 
+      <span class="property-type">Object or string</span>
+    </dt>
+    <dd>The user Object or id whose roles you want to check.</dd>
+    <dt>guild
+      <span class="property-type">Object or string</span>
+    <dd>The Guild Object or ID the user is in and where you want to check the roles.</dd>
+  </dl>
+
+  <h3>Details</h3>
+</script>

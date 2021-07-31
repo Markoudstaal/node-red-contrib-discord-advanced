@@ -24,6 +24,7 @@
       "discord-token": "discord/discord-token.js",
       "discordMessage": "discord/discordMessage.js",
       "discordMessageManager": "discord/discordMessageManager.js",
+      "discordPermissions": "discord/discordPermissions.js",
       "discordClient": "discord/discordClient.js"
     }
   }
