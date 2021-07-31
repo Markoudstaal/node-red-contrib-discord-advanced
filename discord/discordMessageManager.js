@@ -170,6 +170,9 @@ module.exports = function (RED) {
             setError(`msg.action has an incorrect value`)
         }
 
+        node.on('close', function () {
+          discordBotManager.closeBot(bot);
+        });
       });
     }).catch(err => {
       console.log(err);
