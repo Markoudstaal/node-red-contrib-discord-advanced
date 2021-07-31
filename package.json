@@ -1,6 +1,6 @@
 {
   "name": "node-red-contrib-discord-advanced",
-  "version": "2.0.2",
+  "version": "2.1.0",
   "description": "Recieve, send (to channel or private), edit and delete Discord messages in Node-RED.",
   "main": "discord/discord.js",
   "scripts": {
@@ -24,6 +24,7 @@
       "discord-token": "discord/discord-token.js",
       "discordMessage": "discord/discordMessage.js",
       "discordMessageManager": "discord/discordMessageManager.js",
+      "discordPermissions": "discord/discordPermissions.js",
       "discordClient": "discord/discordClient.js"
     }
   }
