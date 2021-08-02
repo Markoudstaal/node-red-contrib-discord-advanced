@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.2.0
+
+Added the ability to send and edit embed messages with discordMessageManager.
 ## 2.1.0
 
 * Add the discordPermissions node which allows checking of roles a specific user has in a guild.

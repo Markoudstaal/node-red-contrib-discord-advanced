@@ -1,7 +1,8 @@
 module.exports = function (RED) {
   var discordBotManager = require('./lib/discordBotManager.js');
   const {
-    MessageAttachment
+    MessageAttachment,
+    MessageEmbed
   } = require('discord.js');
 
   function discordMessageManager(config) {
@@ -15,6 +16,7 @@ module.exports = function (RED) {
         const channel = config.channel || msg.channel || null;
         const user = msg.user || null;
         const message = msg.message || null;
+        const embed = msg.embed || false;
         const timeDelay = msg.timedelay || 0;
 
         let attachment = null;
@@ -94,7 +96,11 @@ module.exports = function (RED) {
             setError(`msg.user wasn't set correctly`);
           } else {
             bot.users.fetch(userID).then(user => {
-              return user.send(payload, attachment);
+              if (embed) {
+                return user.send(new MessageEmbed(payload));
+              } else {
+                return user.send(payload, attachment);
+              }
             }).then(message => {
               setSucces(`message sent to ${message.channel.recipient.username}`)
             }).catch(err => {
@@ -109,7 +115,7 @@ module.exports = function (RED) {
             setError(`msg.channel wasn't set correctly`);
           } else {
             getChannel(channelID).then(channelInstance => {
-              return channelInstance.send(payload, attachment);
+              return embed ? channelInstance.send(new MessageEmbed(payload)) : channelInstance.send(payload);
             }).then((message) => {
               setSucces(`message sent, id = ${message.id}`);
             }).catch(err => {
@@ -119,6 +125,10 @@ module.exports = function (RED) {
         }
 
         const createMessage = () => {
+          if (embed && (typeof payload !== 'object' || payload === null)) {
+            setError(`no (correct) embed object was supplied`)
+            return null;
+          }
           if (user) {
             createPrivateMessage();
           } else if (channel) {
@@ -129,9 +139,13 @@ module.exports = function (RED) {
         }
 
         const editMessage = () => {
+          if (embed && (typeof payload !== 'object' || payload === null)) {
+            setError(`no (correct) embed object was supplied`)
+            return null;
+          }
           getMessage(channel, message)
             .then(message => {
-              return message.edit(payload);
+              return embed ? message.edit(new MessageEmbed(payload)) : message.edit(payload);
             })
             .then(message => {
               setSucces(`message ${message.id} edited`);

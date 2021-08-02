@@ -41,16 +41,15 @@ a<script type="text/javascript">
     </div>
 </script>
 <script type="text/x-red" data-help-name="discordMessageManager">
-  <p>Node to send, edit or delete messages in Discord</p>
-  <b>When you've used this node before and updated there are some breaking changes. You can find them <a href="https://github.com/Markoudstaal/node-red-contrib-discord-advanced/blob/main/CHANGELOG.md">here</a>.</b>
-  <p>More support can be found <a href="https://github.com/Markoudstaal/node-red-contrib-discord-advanced/wiki#support">here</a>.</p>
+  <p>Node to send, edit or delete (embed) messages in Discord</p>
+  <p>More support can be found <a href="https://github.com/Markoudstaal/node-red-contrib-discord-advanced/wiki/discordMessageManager">here</a>.</p>
 
   <h3>Inputs</h3>
   <dl class="message-properties">
     <dt>payload
-      <span class="property-type">string</span>
+      <span class="property-type">string or Object</span>
     </dt>
-    <dd>The text for the message to be sent.</dd>
+    <dd>The text for the message to be sent. Or an embed Object</dd>
     <dt>action
       <span class="property-type">string</span>
     </dt>
@@ -67,6 +66,10 @@ a<script type="text/javascript">
       <span class="property-type">Object or string</span>
     </dt>
     <dd>The message Object or id of the message that should be edited or deleted, if this is desired</dd>
+    <dt>embed
+      <span class="property-type">Boolean</span>
+    </dt>
+    <dd>Wheter you want to send or edit an embed message.</dd>
     <dt class="optional">timedelay 
       <span class="property-type">number</span>
     </dt>
@@ -86,8 +89,16 @@ a<script type="text/javascript">
   <h4>Sending private messages<h4>
   <p>When sending a private message <code>msg.user</code> and <code>msg.payload</code> are required.</p>
 
+  <h4>Sending embeds<h4>
+  <p>To send an embed message you'll have to set <code>msg.embed</code> to true. You'll have to supply an embed object as the <code>msg.payload</code>. 
+    How the embed object can be created and what options it has can be found <a href="https://v12.discordjs.guide/popular-topics/embeds.html#using-an-embed-object">here</a>.</p>
+
   <h4>Editing messages</h4>
   <p>Editing messages is only possible in channels. Set <code>msg.action</code> to 'edit'. Also <code>msg.channel</code>, <code>msg.message</code> and <code>msg.payload</code> are required.<p>
+
+  <h4>Editing embeds</h4>
+  <p>To edit an embed message or turn a regular message into an embed message you'll have to do the same actions as with editing normal messages. 
+    However, <code>msg.embed</code> needs to be set to true and the <code>msg.payload</code> needs to be an <a href="https://v12.discordjs.guide/popular-topics/embeds.html#using-an-embed-object">embed object</a>.</p>
 
   <h4>Deleting messages</h4>
   <p>To delete messages set <code>msg.action</code> to 'delete'. Also <code>msg.channel</code> and <code>msg.message</code> are required. <code>msg.timedelay</code> is optional to add a delay in milliseconds before deleting the message.</p>
