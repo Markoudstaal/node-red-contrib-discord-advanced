@@ -1,5 +1,6 @@
 module.exports = function (RED) {
   var discordBotManager = require('./lib/discordBotManager.js');
+  const Flatted = require('flatted');
   const {
     MessageAttachment,
     MessageEmbed
@@ -33,12 +34,16 @@ module.exports = function (RED) {
           done(error);
         }
 
-        const setSucces = (succesMessage) => {
+        const setSucces = (succesMessage, data) => {
           node.status({
             fill: "green",
             shape: "dot",
             text: succesMessage
           });
+          const newMsg = {
+            payload: Flatted.parse(Flatted.stringify(data)),
+          };
+          send(newMsg);
           done();
         }
 
@@ -102,7 +107,7 @@ module.exports = function (RED) {
                 return user.send(payload, attachment);
               }
             }).then(message => {
-              setSucces(`message sent to ${message.channel.recipient.username}`)
+              setSucces(`message sent to ${message.channel.recipient.username}`, message)
             }).catch(err => {
               setError(err);
             })
@@ -117,7 +122,7 @@ module.exports = function (RED) {
             getChannel(channelID).then(channelInstance => {
               return embed ? channelInstance.send(new MessageEmbed(payload)) : channelInstance.send(payload);
             }).then((message) => {
-              setSucces(`message sent, id = ${message.id}`);
+              setSucces(`message sent, id = ${message.id}`, message);
             }).catch(err => {
               setError(err);
             });
@@ -148,7 +153,7 @@ module.exports = function (RED) {
               return embed ? message.edit(new MessageEmbed(payload)) : message.edit(payload);
             })
             .then(message => {
-              setSucces(`message ${message.id} edited`);
+              setSucces(`message ${message.id} edited`, message);
             })
             .catch(err => {
               setError(err);
@@ -163,7 +168,7 @@ module.exports = function (RED) {
               });
             })
             .then(message => {
-              setSucces(`message ${message.id} deleted`);
+              setSucces(`message ${message.id} deleted`, message);
             })
             .catch(err => {
               setError(err);

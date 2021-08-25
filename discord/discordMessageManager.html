@@ -18,7 +18,7 @@ a<script type="text/javascript">
       }
     },
     inputs: 1,
-    outputs: 0,
+    outputs: 1,
     icon: "discord.png",
     label: function () {
       return this.name || "discordMessageManager";
@@ -80,8 +80,16 @@ a<script type="text/javascript">
     <dd>The url or local path to an attachment, if any.</dd>
   </dl>
 
+  <h3>Outputs</h3>
+  <dl class="message-properties">
+    <dt>payload
+      <span class="property-type">Object</span>
+    <dt>
+    <dd>The message that was created, edited or deleted.</dd>
+  </dl>
+
   <h3>Details</h3>
-  <p>This node provides a way to send messages to a discord channel or a user. It also allows messages to be edited and deleted.<p>
+  <p>This node provides a way to send messages to a discord channel or a user. It also allows messages to be edited and deleted. It also returns the Object of the message that was created, edited or deleted.<p>
 
   <h4>Sending messages to a Discord channel</h4>
   <p>When sending a message to a channel, both <code>msg.payload</code> and <code>msg.channel</code> are required.<p>
