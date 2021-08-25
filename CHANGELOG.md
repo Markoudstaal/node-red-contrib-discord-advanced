@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.3.0
+
+discordMessageManager now has an ouput that passes the Object of the message that was created, edited or deleted.
+
 ## 2.2.0
 
 Added the ability to send and edit embed messages with discordMessageManager.
