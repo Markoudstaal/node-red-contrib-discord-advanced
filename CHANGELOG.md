@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.3.1
+
+Bugfix: code would ignore msg.attachment when the message to be sent was an embed.
 ## 2.3.0
 
 discordMessageManager now has an ouput that passes the Object of the message that was created, edited or deleted.

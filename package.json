@@ -1,6 +1,6 @@
 {
   "name": "node-red-contrib-discord-advanced",
-  "version": "2.3.0",
+  "version": "2.3.1",
   "description": "Recieve, send (to channel or private), edit and delete Discord (embed) messages in Node-RED.",
   "main": "discord/discord.js",
   "scripts": {
