@@ -62,7 +62,11 @@ module.exports = function (RED) {
                 _msgid: msgid
               }
               try {
-                msg.payload = user.roles.cache.array();
+                let roles = [];
+                user.roles.cache.each(role => {
+                  roles.push(role);
+                });
+                msg.payload = roles;
               } catch (error) {
                 setError(error);
               }

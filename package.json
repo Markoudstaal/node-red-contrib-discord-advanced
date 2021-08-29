@@ -8,8 +8,11 @@
   },
   "author": "Mark Koudstaal <mark_koudstaal@hotmail.com>",
   "license": "MIT",
+  "engines": {
+    "node": ">=16.6.0"
+  },
   "dependencies": {
-    "discord.js": "^12.5.3",
+    "discord.js": "^13.1.0",
     "flatted": "^3.1.1"
   },
   "bugs": {

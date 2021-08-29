@@ -103,7 +103,7 @@ module.exports = function (RED) {
             bot.users.fetch(userID).then(user => {
               let messageObject = {};
               if (embed) {
-                messageObject.embed = payload;
+                messageObject.embeds = [payload];
               } else {
                 messageObject.content = payload;
               }
@@ -127,7 +127,7 @@ module.exports = function (RED) {
             getChannel(channelID).then(channelInstance => {
               let messageObject = {};
               if (embed) {
-                messageObject.embed = payload;
+                messageObject.embeds = [payload];
               } else {
                 messageObject.content = payload;
               }
