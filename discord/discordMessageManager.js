@@ -101,11 +101,16 @@ module.exports = function (RED) {
             setError(`msg.user wasn't set correctly`);
           } else {
             bot.users.fetch(userID).then(user => {
+              let messageObject = {};
               if (embed) {
-                return user.send(new MessageEmbed(payload));
+                messageObject.embed = payload;
               } else {
-                return user.send(payload, attachment);
+                messageObject.content = payload;
               }
+              if (attachment) {
+                messageObject.files = [attachment];
+              }
+              return user.send(messageObject);
             }).then(message => {
               setSucces(`message sent to ${message.channel.recipient.username}`, message)
             }).catch(err => {
@@ -120,7 +125,16 @@ module.exports = function (RED) {
             setError(`msg.channel wasn't set correctly`);
           } else {
             getChannel(channelID).then(channelInstance => {
-              return embed ? channelInstance.send(new MessageEmbed(payload)) : channelInstance.send(payload);
+              let messageObject = {};
+              if (embed) {
+                messageObject.embed = payload;
+              } else {
+                messageObject.content = payload;
+              }
+              if (attachment) {
+                messageObject.files = [attachment];
+              }
+              return channelInstance.send(messageObject);
             }).then((message) => {
               setSucces(`message sent, id = ${message.id}`, message);
             }).catch(err => {
