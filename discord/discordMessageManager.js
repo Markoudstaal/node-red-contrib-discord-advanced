@@ -42,6 +42,7 @@ module.exports = function (RED) {
           });
           const newMsg = {
             payload: Flatted.parse(Flatted.stringify(data)),
+            request: msg,
           };
           send(newMsg);
           done();

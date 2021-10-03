@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.3.2
+
+Added msg.request as an output to discordMessageManager. This will output the original input msg.
 ## 2.3.1
 
 Bugfix: code would ignore msg.attachment when the message to be sent was an embed.
