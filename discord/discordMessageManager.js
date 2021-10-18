@@ -13,17 +13,13 @@ module.exports = function (RED) {
     discordBotManager.getBot(configNode).then(function (bot) {
       node.on('input', function (msg, send, done) {
         const action = msg.action || 'create';
-        const payload = msg.payload || '';
+        const payload = msg.payload || ' ';
         const channel = config.channel || msg.channel || null;
         const user = msg.user || null;
         const message = msg.message || null;
-        const embed = msg.embed || false;
+        const inputEmbeds = msg.embeds || msg.embed;
         const timeDelay = msg.timedelay || 0;
-
-        let attachment = null;
-        if (msg.attachment) {
-          attachment = new MessageAttachment(msg.attachment);
-        }
+        const inputAttachments = msg.attachments || msg.attachment;
 
         const setError = (error) => {
           node.status({
@@ -103,14 +99,9 @@ module.exports = function (RED) {
           } else {
             bot.users.fetch(userID).then(user => {
               let messageObject = {};
-              if (embed) {
-                messageObject.embeds = [payload];
-              } else {
-                messageObject.content = payload;
-              }
-              if (attachment) {
-                messageObject.files = [attachment];
-              }
+              messageObject.embeds = embeds;
+              messageObject.content = payload;
+              messageObject.files = attachments;
               return user.send(messageObject);
             }).then(message => {
               setSucces(`message sent to ${message.channel.recipient.username}`, message)
@@ -127,14 +118,9 @@ module.exports = function (RED) {
           } else {
             getChannel(channelID).then(channelInstance => {
               let messageObject = {};
-              if (embed) {
-                messageObject.embeds = [payload];
-              } else {
-                messageObject.content = payload;
-              }
-              if (attachment) {
-                messageObject.files = [attachment];
-              }
+              messageObject.embeds = embeds;
+              messageObject.content = payload;
+              messageObject.files = attachments;
               return channelInstance.send(messageObject);
             }).then((message) => {
               setSucces(`message sent, id = ${message.id}`, message);
@@ -145,10 +131,6 @@ module.exports = function (RED) {
         }
 
         const createMessage = () => {
-          if (embed && (typeof payload !== 'object' || payload === null)) {
-            setError(`no (correct) embed object was supplied`)
-            return null;
-          }
           if (user) {
             createPrivateMessage();
           } else if (channel) {
@@ -159,13 +141,13 @@ module.exports = function (RED) {
         }
 
         const editMessage = () => {
-          if (embed && (typeof payload !== 'object' || payload === null)) {
-            setError(`no (correct) embed object was supplied`)
-            return null;
-          }
           getMessage(channel, message)
             .then(message => {
-              return embed ? message.edit(new MessageEmbed(payload)) : message.edit(payload);
+              let messageObject = {};
+              messageObject.embeds = embeds;
+              messageObject.content = payload;
+              messageObject.files = attachments;
+              return message.edit(messageObject);
             })
             .then(message => {
               setSucces(`message ${message.id} edited`, message);
@@ -188,6 +170,32 @@ module.exports = function (RED) {
             .catch(err => {
               setError(err);
             })
+        }
+
+        var attachments = [];
+        if (inputAttachments) {
+          if (typeof inputAttachments === 'string') {
+            attachments.push(new MessageAttachment(inputAttachments));
+          } else if (Array.isArray(inputAttachments)) {
+            inputAttachments.forEach(attachment => {
+              attachments.push(new MessageAttachment(attachment));
+            });
+          } else {
+            setError("msg.attachments isn't a string or array")
+          }
+        }
+
+        var embeds = [];
+        if (inputEmbeds) {
+          if (typeof inputEmbeds === 'object') {
+            embeds.push(new MessageEmbed(inputEmbeds));
+          } else if (Array.isArray(inputEmbeds)) {
+            inputEmbeds.forEach(embed => {
+              embeds.push(new MessageEmbed(embed));
+            });
+          } else {
+            setError("msg.embeds isn't a string or array")
+          }
         }
 
         switch (action.toLowerCase()) {
