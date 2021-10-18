@@ -1,5 +1,15 @@
 # Changelog
 
+## 3.0.0
+**Breaking changes!!**
+This update brings Discord v13 to to this node. This also means node version 16.6 or higher is now required.
+
+Other breaking changes:
+* When sending embeds the msg.payload will stay the content of the messages. You supply the Embed Object through msg.embeds (or msg.embed) as a MessageEmbed object or an array of MessageEmbeds. This allows multiple embeds to be added to a message and also the abilty to set the content of the message which will be displayed seperately.
+
+New features:
+* msg.attachment or msg.attachments can now be an array of String which allows multiple attachments to be added.
+
 ## 2.3.2
 
 Added msg.request as an output to discordMessageManager. This will output the original input msg.

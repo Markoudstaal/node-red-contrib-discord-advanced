@@ -21,7 +21,7 @@ module.exports = function (RED) {
         });
         bot.on(eventName, listener);
       }
-      registerCallback('message', message => {
+      registerCallback('messageCreate', message => {
         if (message.author !== bot.user) {
           var msgid = RED.util.generateId();
           var msg = {
@@ -31,10 +31,10 @@ module.exports = function (RED) {
           msg.channel = Flatted.parse(Flatted.stringify(message.channel));
           msg.author = Flatted.parse(Flatted.stringify(message.author));
           msg.member = Flatted.parse(Flatted.stringify(message.member));
-          msg.memberRoleNames = message.member ? message.member.roles.cache.array().map(function (item) {
+          msg.memberRoleNames = message.member ? message.member.roles.cache.each(function (item) {
             return item.name
           }) : null;
-          msg.memberRoleIDs = message.member ? message.member.roles.cache.array().map(function (item) {
+          msg.memberRoleIDs = message.member ? message.member.roles.cache.each(function (item) {
             return item.id
           }) : null;
           try {
