@@ -1,5 +1,6 @@
 # Changelog
-
+## 3.0.1
+Fixed an issue where flattening the User Object would error out due to the banner not being cached.
 ## 3.0.0
 **Breaking changes!!**
 This update brings Discord v13 to to this node. This also means node version 16.6 or higher is now required.

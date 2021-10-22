@@ -29,6 +29,8 @@ module.exports = function (RED) {
           }
           msg.payload = message.content;
           msg.channel = Flatted.parse(Flatted.stringify(message.channel));
+          delete message.author.banner;
+          delete message.member.banner;
           msg.author = Flatted.parse(Flatted.stringify(message.author));
           msg.member = Flatted.parse(Flatted.stringify(message.member));
           msg.memberRoleNames = message.member ? message.member.roles.cache.each(function (item) {
