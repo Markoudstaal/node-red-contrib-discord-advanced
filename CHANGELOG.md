@@ -1,4 +1,6 @@
 # Changelog
+## 3.0.2
+Actually fix the banner issue.
 ## 3.0.1
 Fixed an issue where flattening the User Object would error out due to the banner not being cached.
 ## 3.0.0
