@@ -29,22 +29,22 @@ module.exports = function (RED) {
           }
           msg.payload = message.content;
           msg.channel = Flatted.parse(Flatted.stringify(message.channel));
-          delete message.author.banner;
-          delete message.member.banner;
-          msg.author = Flatted.parse(Flatted.stringify(message.author));
-          msg.member = Flatted.parse(Flatted.stringify(message.member));
-          msg.memberRoleNames = message.member ? message.member.roles.cache.each(function (item) {
-            return item.name
-          }) : null;
-          msg.memberRoleIDs = message.member ? message.member.roles.cache.each(function (item) {
-            return item.id
-          }) : null;
-          try {
-            msg.data = Flatted.parse(Flatted.stringify(message));
-          } catch (e) {
-            node.warn("Could not set `msg.data`: JSON serialization failed");
-          }
-          node.send(msg);
+          message.author.fetch(true).then(author => {
+            msg.author = Flatted.parse(Flatted.stringify(author));
+            msg.member = Flatted.parse(Flatted.stringify(message.member));
+            msg.memberRoleNames = message.member ? message.member.roles.cache.each(function (item) {
+              return item.name
+            }) : null;
+            msg.memberRoleIDs = message.member ? message.member.roles.cache.each(function (item) {
+              return item.id
+            }) : null;
+            try {
+              msg.data = Flatted.parse(Flatted.stringify(message));
+            } catch (e) {
+              node.warn("Could not set `msg.data`: JSON serialization failed");
+            }
+            node.send(msg);
+          });
         }
       });
       registerCallback('error', error => {
