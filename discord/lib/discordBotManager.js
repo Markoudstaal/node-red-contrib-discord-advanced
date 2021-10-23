@@ -1,6 +1,6 @@
 const {
   Client,
-  Intents
+  Intents,
 } = require('discord.js');
 var bots = new Map();
 var getBot = function (configNode) {
@@ -12,6 +12,11 @@ var getBot = function (configNode) {
           Intents.FLAGS.GUILDS,
           Intents.FLAGS.GUILD_MESSAGES,
           Intents.FLAGS.DIRECT_MESSAGES
+        ],
+        partials: [
+          "CHANNEL",
+          "USER",
+          "MESSAGE"
         ]
       });
       bots.set(configNode, bot);
