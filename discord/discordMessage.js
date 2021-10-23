@@ -23,28 +23,37 @@ module.exports = function (RED) {
       }
       registerCallback('messageCreate', message => {
         if (message.author !== bot.user) {
-          var msgid = RED.util.generateId();
-          var msg = {
-            _msgid: msgid
-          }
-          msg.payload = message.content;
-          msg.channel = Flatted.parse(Flatted.stringify(message.channel));
-          message.author.fetch(true).then(author => {
-            msg.author = Flatted.parse(Flatted.stringify(author));
-            msg.member = Flatted.parse(Flatted.stringify(message.member));
-            msg.memberRoleNames = message.member ? message.member.roles.cache.each(function (item) {
-              return item.name
-            }) : null;
-            msg.memberRoleIDs = message.member ? message.member.roles.cache.each(function (item) {
-              return item.id
-            }) : null;
-            try {
-              msg.data = Flatted.parse(Flatted.stringify(message));
-            } catch (e) {
-              node.warn("Could not set `msg.data`: JSON serialization failed");
+          try {
+            var msgid = RED.util.generateId();
+            var msg = {
+              _msgid: msgid
             }
-            node.send(msg);
-          });
+            msg.payload = message.content;
+            msg.channel = Flatted.parse(Flatted.stringify(message.channel));
+            message.author.fetch(true).then(author => {
+              msg.author = Flatted.parse(Flatted.stringify(author));
+              msg.member = Flatted.parse(Flatted.stringify(message.member));
+              msg.memberRoleNames = message.member ? message.member.roles.cache.each(function (item) {
+                return item.name
+              }) : null;
+              msg.memberRoleIDs = message.member ? message.member.roles.cache.each(function (item) {
+                return item.id
+              }) : null;
+              try {
+                msg.data = Flatted.parse(Flatted.stringify(message));
+              } catch (e) {
+                node.warn("Could not set `msg.data`: JSON serialization failed");
+              }
+              node.send(msg);
+            });
+          } catch (error) {
+            node.error(error);
+            node.status({
+              fill: "red",
+              shape: "dot",
+              text: error
+            });
+          }
         }
       });
       registerCallback('error', error => {
@@ -52,7 +61,7 @@ module.exports = function (RED) {
         node.status({
           fill: "red",
           shape: "dot",
-          text: "error"
+          text: error
         });
       });
       node.on('close', function () {

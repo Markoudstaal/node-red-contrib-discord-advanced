@@ -1,4 +1,6 @@
 # Changelog
+## 3.0.3
+Better error handling in discordMessage
 ## 3.0.2
 Actually fix the banner issue.
 ## 3.0.1
