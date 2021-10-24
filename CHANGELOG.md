@@ -1,4 +1,6 @@
 # Changelog
+## 3.0.5
+Fix for when the user who sent a message is a bot.
 ## 3.0.4
 Better error handling in discordMessage
 ## 3.0.3
