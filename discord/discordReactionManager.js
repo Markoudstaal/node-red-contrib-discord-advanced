@@ -77,6 +77,8 @@ module.exports = function (RED) {
               user.fetch(true).then(reactor => {
                 const newMsg = {
                   payload: reaction._emoji.name,
+                  count: reaction.count,
+                  message: reaction.message,
                   user: Flatted.parse(Flatted.stringify(reactor))
                 }
                 send(newMsg);
