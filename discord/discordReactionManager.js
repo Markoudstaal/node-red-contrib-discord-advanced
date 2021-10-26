@@ -65,6 +65,12 @@ module.exports = function (RED) {
               time: collectionTime,
             });
 
+            node.status({
+              fill: "green",
+              shape: "dot",
+              text: "Collector created"
+            });
+
             reactionCollectors.push(collector);
 
             collector.on('collect', (reaction, user) => {
@@ -74,7 +80,11 @@ module.exports = function (RED) {
                   user: Flatted.parse(Flatted.stringify(reactor))
                 }
                 send(newMsg);
-                done();
+                node.status({
+                  fill: "green",
+                  shape: "dot",
+                  text: "Reaction sent"
+                });
               }).catch(error => {
                 setError(error, done);
               });
