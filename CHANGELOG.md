@@ -1,4 +1,6 @@
 # Changelog
+## 3.1.0
+Adds the discordReactionManager node with initial capabilites. See documentation in node-red for more information.
 ## 3.0.5
 Fix for when the user who sent a message is a bot.
 ## 3.0.4
