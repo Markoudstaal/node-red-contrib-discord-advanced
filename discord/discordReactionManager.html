@@ -1,0 +1,80 @@
+<script type="text/javascript">
+  RED.nodes.registerType('discordReactionManager', {
+    category: 'discord',
+    color: '#7289da',
+    defaults: {
+      name: {
+        value: "",
+        required: false
+      },
+      token: {
+        value: "",
+        required: true,
+        type: "discord-token"
+      }
+    },
+    inputs: 1,
+    outputs: 1,
+    icon: "discord.png",
+    label: function () {
+      return this.name || "discordReactionManager";
+    }
+  });
+</script>
+<script type="text/x-red" data-template-name="discordReactionManager">
+  <div class="form-row">
+        <label for="node-input-token"><i class="icon-tag"></i> token</label>
+        <input type="text" id="node-input-token" placeholder="token">
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+</script>
+<script type="text/x-red" data-help-name="discordReactionManager">
+  <p>Node that collects reactions (emoji's) on a specific message.</p>
+  <p>More support can be found <a href="https://github.com/Markoudstaal/node-red-contrib-discord-advanced/wiki#support">here</a>.</p>
+
+  <h3>Inputs</h3>
+  <dl class="message-properties">
+    <dt>message 
+      <span class="property-type">Object or string</span>
+    </dt>
+    <dd>The message Object or id of the message that you want to collect reactions on.</dd>
+    <dt>channel
+      <span class="property-type">Object or string</span>
+    </dt>
+    <dd>The channel Object or channel id the message is in.</dd>
+    <dt class="optional">time
+      <span class="property-type">number</span>
+    </dt>
+    <dd>The time in milliseconds to listen for reactions. Default is 10 minutes.</dd>
+  </dl>
+
+  <h3>Outputs</h3>
+  <dl class="message-properties">
+    <dt>payload
+      <span class="property-type">string</span>
+    </dt>
+    <dd>The payload contains the emoji that was reacted with.</dd>
+    <dt>count
+      <span class="property-type">number</span>
+    </dt>
+    <dd>The count how many times that emoji was reacted.</dd>
+    <dt>message
+      <span class="property-type">object</span>
+    </dt>
+    <dd>The message the reaction was created on.</dd>
+    <dt>user
+      <span class="property-type">object</span>
+    </dt>
+    <dd>The user that reacted.</dd>
+  </dl>
+
+  <h3>Details</h3>
+  <p>This node will listen for reactions to a specified message.<p>
+  <p>To start the process you will have to supply the <code>msg.message</code> and <code>msg.channel</code> for the message you want to listen on.
+  Optionally you can set <code>msg.time</code> with the time in milliseconds to keep on listening for reactions.
+  The node will output data for every individual reaction made on the message that was supplied. Keep in mind that after a node-red restart
+  you will have to resend the message data.</p>
+</script>
