@@ -10,6 +10,7 @@ Currently the following actions are supported:
 * Add attachments to messages.
 * Edit messages in a channel.
 * Delete messages in a channel.
+* Listen for reactions on a message.
 * Get permissions of a specific user.
 * Allow full control over the BOT by access to the DiscordJS client.
 
@@ -25,6 +26,7 @@ node-red-contrib-discord-advanced gives you access to four nodes:
 
 * discordMessage is a node with no inputs and one output allowing you to receive notifications of incoming messages.
 * discordMessageManager allows (embed) messages to be sent to either channels or privatly to user. It also allows for editing and deleting of (embed) messages.
+* discordReactionManager that allows you to listen to reactions on a message.
 * discordPermissions allows you to check the permissions of a specifc user. This is useful when you get the user from another source than the discordMessage node.
 * discordClient is an advanced deprecated node with one input and one output allowing you to inject a references to a [Discord.js Client](https://discord.js.org/#/docs/main/stable/class/Client) into a message. This node can cause node-red to crash if you use it improperly, so take caution. Messages containing a Discord.js Client reference can *not* be forked (e.g. sent to two nodes), so you'll have to manually remove the reference to the Client via a function node using `delete msg.discord`.
 

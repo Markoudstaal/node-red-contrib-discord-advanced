@@ -1,4 +1,6 @@
-# Changelog
+# Changelog\
+## 3.1.1
+Added msg.data.reference to discordMessage. This allows you to check what a message is replying to.
 ## 3.1.0
 Adds the discordReactionManager node with initial capabilites. See documentation in node-red for more information.
 ## 3.0.5
