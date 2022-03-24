@@ -29,7 +29,8 @@
       "discordMessageManager": "discord/discordMessageManager.js",
       "discordPermissions": "discord/discordPermissions.js",
       "discordReactionManager": "discord/discordReactionManager.js",
-      "discordClient": "discord/discordClient.js"
+      "discordClient": "discord/discordClient.js",
+      "discordInteraction": "discord/discordInteraction.js"
     }
   }
 }
