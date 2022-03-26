@@ -7,8 +7,6 @@ module.exports = function (RED) {
     var configNode = RED.nodes.getNode(config.token);
     var node = this;
     let interactionType = config.interactionType || "all";
-    node.log(JSON.stringify(config));
-
     discordBotManager.getBot(configNode).then(function (bot) {
       var callbacks = [];
       node.status({
@@ -20,7 +18,11 @@ module.exports = function (RED) {
       const matchInteractionType = (interaction) => {
         switch (interactionType) {
           case "button": 
-            return interaction.isButton();            
+            return interaction.isButton(); 
+          case "selectMenu":
+            return interaction.isSelectMenu(); 
+          case "all":
+            return true;               
           default:
             return false;
         }

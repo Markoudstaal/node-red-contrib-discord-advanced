@@ -6,6 +6,7 @@ module.exports = function (RED) {
     MessageEmbed,
     MessageActionRow,
     MessageButton,
+    MessageSelectMenu,
     MessageComponent
   } = require('discord.js');
 
@@ -211,8 +212,15 @@ module.exports = function (RED) {
             if(component.type == 1)
             {
               var actionRow = new MessageActionRow();
-              component.components.forEach(subComponent => {
-                actionRow.addComponents(new MessageButton(subComponent));
+              component.components.forEach(subComponentData => {
+                switch (subComponentData.type) {
+                  case 2:
+                    actionRow.addComponents(new MessageButton(subComponentData));
+                    break;
+                  case 3:
+                    actionRow.addComponents(new MessageSelectMenu(subComponentData));                    
+                    break;
+                }
               });
               components.push(actionRow);
             }                       
