@@ -2,11 +2,17 @@ const Flatted = require('flatted');
 module.exports = function (RED) {
   var discordBotManager = require('./lib/discordBotManager.js');
 
+  const delay = ms => new Promise(res => setTimeout(res, ms));
+
   function discordInteraction(config) {
     RED.nodes.createNode(this, config);
     var configNode = RED.nodes.getNode(config.token);
     var node = this;
     let interactionType = config.interactionType || "all";
+    let custom_id = config.custom_id;
+    let commandResponse = config.commandResponse || "OK!";
+    let injectInteractionObject = config.interactionObject || false;
+
     discordBotManager.getBot(configNode).then(function (bot) {
       var callbacks = [];
       node.status({
@@ -21,6 +27,8 @@ module.exports = function (RED) {
             return interaction.isButton(); 
           case "selectMenu":
             return interaction.isSelectMenu(); 
+          case "command":
+            return interaction.isCommand(); 
           case "all":
             return true;               
           default:
@@ -39,14 +47,35 @@ module.exports = function (RED) {
       registerCallback("interactionCreate", async interaction => {                
         if (!matchInteractionType(interaction)) return;
 
-        await interaction.deferUpdate();
+        if (interaction.isCommand())
+        {
+          if (custom_id && custom_id.split(",").indexOf(interaction.commandName) < 0) return;
+          await interaction.reply(commandResponse);
+        }
+        else {          
+          if (custom_id && custom_id.split(",").indexOf(interaction.customId) < 0) return;
+          await interaction.deferUpdate();
+        }        
+
         let message = {};
-        message.payload = Flatted.parse(Flatted.stringify(interaction));        
-        message.payload.message = Flatted.parse(Flatted.stringify(interaction.message));        
-        message.payload.message.author = Flatted.parse(Flatted.stringify(interaction.message.author));        
+        message.payload = Flatted.parse(Flatted.stringify(interaction));              
         message.payload.user = Flatted.parse(Flatted.stringify(interaction.user));        
         message.payload.member = Flatted.parse(Flatted.stringify(interaction.member));        
-        message.payload.member.guild = Flatted.parse(Flatted.stringify(interaction.member.guild));        
+        message.payload.member.guild = Flatted.parse(Flatted.stringify(interaction.member.guild)); 
+
+        if(injectInteractionObject)
+          message.interactionObject = interaction;
+
+        if(interaction.isCommand())
+        {
+          message.payload.options = Flatted.parse(Flatted.stringify(interaction.options)); 
+        }
+        else
+        {          
+          message.payload.message = Flatted.parse(Flatted.stringify(interaction.message));
+          message.payload.message.author = Flatted.parse(Flatted.stringify(interaction.message.author));
+        }
+
         node.send(message);
       })    
 
