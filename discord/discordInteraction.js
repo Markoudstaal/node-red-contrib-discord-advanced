@@ -68,7 +68,8 @@ module.exports = function (RED) {
 
         if(interaction.isCommand())
         {
-          message.payload.options = Flatted.parse(Flatted.stringify(interaction.options)); 
+          message.payload.options = Flatted.parse(Flatted.stringify(interaction.options));
+          message.payload.replyMessage = Flatted.parse(Flatted.stringify(await interaction.fetchReply()));          
         }
         else
         {          
