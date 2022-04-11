@@ -41,7 +41,8 @@
               { value: "all", label: "All" },              
               { value: "button", label: "Button" },
               { value: "command", label: "Command" },
-              { value: "selectMenu", label: "Select Menu" }
+              { value: "selectMenu", label: "Select Menu" },
+              { value: "messageContextMenu", label: "Message Context Menu" }
             ]
           }
         ]
@@ -49,7 +50,7 @@
       debugger;
       $("#node-input-interactionType").change(function () {
         debugger;
-        if ($("#node-input-interactionType").val() == "command") {
+        if ($("#node-input-interactionType").val() == "command" || $("#node-input-interactionType").val() == "messageContextMenu") {
            $("#node-input-custom_id-lbl").text("Command names");
            $("#node-row-commandResponse").prop("style", "");
           }

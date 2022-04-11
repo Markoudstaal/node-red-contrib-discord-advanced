@@ -29,6 +29,8 @@ module.exports = function (RED) {
             return interaction.isSelectMenu(); 
           case "command":
             return interaction.isCommand(); 
+          case "messageContextMenu":
+            return interaction.isMessageContextMenu(); 
           case "all":
             return true;               
           default:
@@ -45,9 +47,10 @@ module.exports = function (RED) {
       }
 
       registerCallback("interactionCreate", async interaction => {                
+        console.log(interaction);
         if (!matchInteractionType(interaction)) return;
-
-        if (interaction.isCommand())
+        
+        if (interaction.isCommand() || interaction.isMessageContextMenu())
         {
           if (custom_id && custom_id.split(",").indexOf(interaction.commandName) < 0) return;
           await interaction.reply(commandResponse);
@@ -66,7 +69,7 @@ module.exports = function (RED) {
         if(injectInteractionObject)
           message.interactionObject = interaction;
 
-        if(interaction.isCommand())
+        if (interaction.isCommand() || interaction.isMessageContextMenu())
         {
           message.payload.options = Flatted.parse(Flatted.stringify(interaction.options));
           message.payload.replyMessage = Flatted.parse(Flatted.stringify(await interaction.fetchReply()));          
