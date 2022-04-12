@@ -24,7 +24,7 @@ module.exports = function (RED) {
         const inputEmbeds = msg.embeds || msg.embed;
         const timeDelay = msg.timedelay || 0;
         const inputAttachments = msg.attachments || msg.attachment;        
-        const inputComponents = msg.components || msg.component;        
+        const inputComponents = msg.components;        
 
         const setError = (error) => {
           node.status({
