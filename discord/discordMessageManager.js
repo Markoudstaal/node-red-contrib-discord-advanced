@@ -3,7 +3,11 @@ module.exports = function (RED) {
   const Flatted = require('flatted');
   const {
     MessageAttachment,
-    MessageEmbed
+    MessageEmbed,
+    MessageActionRow,
+    MessageButton,
+    MessageSelectMenu,
+    MessageComponent
   } = require('discord.js');
 
   function discordMessageManager(config) {
@@ -19,7 +23,8 @@ module.exports = function (RED) {
         const message = msg.message || null;
         const inputEmbeds = msg.embeds || msg.embed;
         const timeDelay = msg.timedelay || 0;
-        const inputAttachments = msg.attachments || msg.attachment;
+        const inputAttachments = msg.attachments || msg.attachment;        
+        const inputComponents = msg.components;        
 
         const setError = (error) => {
           node.status({
@@ -102,6 +107,7 @@ module.exports = function (RED) {
               messageObject.embeds = embeds;
               messageObject.content = payload;
               messageObject.files = attachments;
+              messageObject.components = components;
               return user.send(messageObject);
             }).then(message => {
               setSucces(`message sent to ${message.channel.recipient.username}`, message)
@@ -120,7 +126,8 @@ module.exports = function (RED) {
               let messageObject = {};
               messageObject.embeds = embeds;
               messageObject.content = payload;
-              messageObject.files = attachments;
+              messageObject.files = attachments;              
+              messageObject.components = components;
               return channelInstance.send(messageObject);
             }).then((message) => {
               setSucces(`message sent, id = ${message.id}`, message);
@@ -147,6 +154,7 @@ module.exports = function (RED) {
               messageObject.embeds = embeds;
               messageObject.content = payload;
               messageObject.files = attachments;
+              messageObject.components = components;
               return message.edit(messageObject);
             })
             .then(message => {
@@ -196,6 +204,27 @@ module.exports = function (RED) {
           } else {
             setError("msg.embeds isn't a string or array")
           }
+        }
+
+        var components = [];
+        if (inputComponents) {
+          inputComponents.forEach(component => {
+            if(component.type == 1)
+            {
+              var actionRow = new MessageActionRow();
+              component.components.forEach(subComponentData => {
+                switch (subComponentData.type) {
+                  case 2:
+                    actionRow.addComponents(new MessageButton(subComponentData));
+                    break;
+                  case 3:
+                    actionRow.addComponents(new MessageSelectMenu(subComponentData));                    
+                    break;
+                }
+              });
+              components.push(actionRow);
+            }                       
+          });        
         }
 
         switch (action.toLowerCase()) {

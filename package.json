@@ -12,8 +12,8 @@
     "node": ">=16.6.0"
   },
   "dependencies": {
-    "discord.js": "^13.3.1",
-    "flatted": "^3.1.1"
+    "discord.js": "^13.6.0",
+    "flatted": "^3.2.5"
   },
   "bugs": {
     "url": "https://github.com/Markoudstaal/node-red-contrib-discord-advanced/issues"
@@ -29,7 +29,8 @@
       "discordMessageManager": "discord/discordMessageManager.js",
       "discordPermissions": "discord/discordPermissions.js",
       "discordReactionManager": "discord/discordReactionManager.js",
-      "discordClient": "discord/discordClient.js"
+      "discordClient": "discord/discordClient.js",
+      "discordInteraction": "discord/discordInteraction.js"
     }
   }
 }

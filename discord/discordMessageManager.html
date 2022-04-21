@@ -69,7 +69,11 @@ a<script type="text/javascript">
     <dt>embeds
       <span class="property-type">Object or Array</span>
     </dt>
-    <dd>Either an array of, or an Embed Object.</dd>
+    <dd>Either an array of, or an Embed Object.</dd>    
+    <dt>components
+      <span class="property-type">Object or Array</span>
+    </dt>
+    <dd>Either an array of, or an Component Object.</dd>
     <dt class="optional">timedelay 
       <span class="property-type">number</span>
     </dt>
@@ -117,4 +121,8 @@ a<script type="text/javascript">
     
   <h4>Attachments</h4>
   <p>It's possible to add an attachment by url but this node does not check if that url is valid. Discord might bounce invalid urls. This doesn't work for editing messages.</p>
+
+  <h4>Sending components<h4>
+  <p>To send an component you'll have to set <code>msg.components</code> as an Array of Component Objects. 
+    How the component object can be created and what options it has can be found <a href="https://discord.com/developers/docs/interactions/message-components">here</a>.</p>
 </script>

@@ -1,0 +1,124 @@
+<script type="text/javascript">
+  RED.nodes.registerType('discordInteraction', {
+    category: 'discord',
+    color: '#7289da',
+    defaults: {
+      name: {
+        value: "",
+        required: false
+      },
+      token: {
+        value: "",
+        required: true,
+        type: "discord-token"
+      },
+      interactionType: {
+        value: "all",
+        required: false
+      },
+      custom_id: {
+        value: "",
+        required: false
+      },
+      commandResponse: {
+        value: "",
+        required: false
+      },
+      interactionObject: {
+        value: false,
+        required: false
+      }
+    },
+    inputs: 0,
+    outputs: 1,
+    icon: "discord.png",
+    oneditprepare: () => {
+      $("#node-input-interactionType").typedInput({
+        types: [
+          {
+            value: "all",
+            options: [
+              { value: "all", label: "All" },              
+              { value: "button", label: "Button" },
+              { value: "command", label: "Command" },
+              { value: "selectMenu", label: "Select Menu" },
+              { value: "messageContextMenu", label: "Message Context Menu" }
+            ]
+          }
+        ]
+      });
+      debugger;
+      $("#node-input-interactionType").change(function () {
+        debugger;
+        if ($("#node-input-interactionType").val() == "command" || $("#node-input-interactionType").val() == "messageContextMenu") {
+           $("#node-input-custom_id-lbl").text("Command names");
+           $("#node-row-commandResponse").prop("style", "");
+          }
+          else{
+            $("#node-input-custom_id-lbl").text("Custom Ids");
+            $("#node-row-commandResponse").prop("style", "display:none;");
+        }        
+      });
+    },
+    label: function () {
+      return this.name || "discordInteraction";
+    }
+  });
+
+  
+</script>
+<script type="text/x-red" data-template-name="discordInteraction">
+  <div class="form-row">
+        <label for="node-input-token"><i class="icon-tag"></i> token</label>
+        <input type="text" id="node-input-token" placeholder="token">
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-interactionType"><i class="icon-tag"></i> Interaction type</label>
+        <input type="text" id="node-input-interactionType">
+    </div>
+    <div class="form-row">
+        <label for="node-input-custom_id" id="node-input-custom_id-lbl"><i class="icon-tag"></i> Custom Id</label>
+        <input type="text" id="node-input-custom_id" placeholder="customid1,customid2,etc">
+        <p>(leave blank to not filter by custom_id/commandName, or separated by ',' for more than one custom_id/commandName)</p>
+    </div>
+    <div class="form-row" id="node-row-commandResponse" style="display:none;">
+        <label for="node-input-commandResponse"><i class="icon-tag"></i> Command Response text</label>
+        <input type="text" id="node-input-commandResponse" placeholder="Text for reply the command (OK by default)">
+    </div>
+    <div class="form-row">
+        <input type="checkbox" id="node-input-interactionObject" style="display: inline-block; width: auto; vertical-align: top;">  
+        <label for="node-input-interactionObject" style="width: 70%;"> Inject interaction object</label>    
+    </div>     
+</script>
+<script type="text/x-red" data-help-name="discordInteraction">
+  <p>Node to recieve discord interactions</p>
+
+  <h3>Outputs</h3>
+  <dl class="message-properties">      
+      <dt>payload <span class="property-type">Object</span></dt>
+      <dd>an Object containing general info of the interaction</dd>
+      <dt>payload.user <span class="property-type">Object</span></dt>
+      <dd>an Object containing info of discord interaction user</dd>
+      <dt>payload.member <span class="property-type">Object</span></dt>
+      <dd>an Object containing info of the guild member, user related</dd>
+      <dt>payload.message <span class="property-type">Object</span></dt>      
+      <dd>an Object containing info of the original message</dd>      
+      <dt>payload.options <span class="property-type">Array</span></dt>      
+      <dd>an Object containing info about the selected options in the command</dd>
+      <dt>interactionObject<span class="property-type">Object</span></dt>      
+      <dd>an Original Interaction Object</dd>         
+  </dl>
+  
+  <h3>Details</h3>
+  <p>Triggers whenever a interaction was created on Discord.</p>
+  <p><code>msg.payload</code> will be set to the interaction info</p>
+  <p><code>msg.payload.user</code> will be set to an Object containing info on the <a href="https://discord.js.org/#/docs/main/stable/class/User" target="_blank">user</a> that sent the interaction (does not contain any discord.js functions)</p>
+  <p><code>msg.payload.member</code> will be set to an Object containing info on the <a href="https://discord.js.org/#/docs/discord.js/stable/class/GuildMember" target="_blank">guildmember</a> that sent the interaction, guild related data (does not contain any discord.js functions)</p>
+  <p><code>msg.payload.message</code> will be set to the original message when type of interaction is Button or MenuSelected</p>
+  <p><code>msg.payload.options</code> will be set to an Array containing the options selected on a Slash Command</p>
+  <p><code>msg.interactionObject</code> will be set to the original interaction object, only when option in the editor is checked.</p>
+</script>
