@@ -1,4 +1,7 @@
 # Changelog\
+## 3.2.0
+* Adds the discordInteraction node with initial capabilites. See wiki for more information.
+* msg.components added when sending messages through DiscordMessageManager.
 ## 3.1.1
 Added msg.data.reference to discordMessage. This allows you to check what a message is replying to.
 ## 3.1.0

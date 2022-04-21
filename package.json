@@ -1,12 +1,18 @@
 {
   "name": "node-red-contrib-discord-advanced",
-  "version": "3.1.1",
+  "version": "3.2.0",
   "description": "Recieve, send (to channel or private), edit and delete Discord (embed) messages in Node-RED.",
   "main": "discord/discord.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Mark Koudstaal",
+  "contributors": [
+    {
+      "name": "Javier Colombera",
+      "email": "jcolombera@gmail.com"
+    }
+  ],
   "license": "MIT",
   "engines": {
     "node": ">=16.6.0"

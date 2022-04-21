@@ -1,5 +1,7 @@
 # node-red-contrib-discord-advanced
 
+[![npm version](https://badge.fury.io/js/node-red-contrib-discord-advanced.svg)](https://badge.fury.io/js/node-red-contrib-discord-advanced)
+
 Node-red nodes that allow you to interact with Discord, via [Discord.js](https://discord.js.org).
 
 Currently the following actions are supported:
