@@ -1,4 +1,7 @@
 # Changelog\
+## 3.2.1
+* Enhancement - attachments array added to msg.data on discordMessage node output.
+* Hotfix - Finding message and channel catchs error when message or channel does not exist.
 ## 3.2.0
 * Adds the discordInteraction node with initial capabilites. See wiki for more information.
 * msg.components added when sending messages through DiscordMessageManager.
