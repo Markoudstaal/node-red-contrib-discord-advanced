@@ -91,6 +91,13 @@ module.exports = function (RED) {
                 setError(error, done);
               });
             });
+          }).catch(function (err) {
+            node.error(err);
+            node.status({
+              fill: "red",
+              shape: "dot",
+              text: "channel or message missing?"
+            });
           });
         } else if (message) {
           setError("msg.channel isn't a string or object", done);
@@ -98,7 +105,6 @@ module.exports = function (RED) {
           setError("msg.message isn't a string or object", done);
         }
       });
-
 
       node.on('close', function () {
         reactionCollectors.forEach(function (collector) {
