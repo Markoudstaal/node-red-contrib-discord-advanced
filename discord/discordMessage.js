@@ -38,7 +38,7 @@ module.exports = function (RED) {
             return item.id
           }) : null;
 
-          try {
+          try {            
             msg.data = Flatted.parse(Flatted.stringify(message));
             msg.data.attachments = Flatted.parse(Flatted.stringify(message.attachments));
             msg.data.reference = message.reference;
