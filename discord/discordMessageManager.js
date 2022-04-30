@@ -6,25 +6,28 @@ module.exports = function (RED) {
     MessageEmbed,
     MessageActionRow,
     MessageButton,
-    MessageSelectMenu,
-    MessageComponent
+    MessageSelectMenu
   } = require('discord.js');
+
+  const checkString = (field) => typeof field === 'string' ? field : false; 
 
   function discordMessageManager(config) {
     RED.nodes.createNode(this, config);
     var node = this;
-    var configNode = RED.nodes.getNode(config.token);
+    var configNode = RED.nodes.getNode(config.token);    
+
     discordBotManager.getBot(configNode).then(function (bot) {
       node.on('input', function (msg, send, done) {
-        const action = msg.action || 'create';
-        const payload = msg.payload || ' ';
         const channel = config.channel || msg.channel || null;
+        const action = msg.action || 'create';
         const user = msg.user || null;
+        const content = msg.payload.content || checkString(msg.payload) || ' ';
         const message = msg.message || null;
-        const inputEmbeds = msg.embeds || msg.embed;
-        const timeDelay = msg.timedelay || 0;
-        const inputAttachments = msg.attachments || msg.attachment;        
-        const inputComponents = msg.components;        
+        const inputEmbeds = msg.payload.embeds || msg.payload.embed || msg.embeds || msg.embed;
+        const timeDelay = msg.payload.timedelay || msg.timedelay || 0;
+        const inputAttachments = msg.payload.attachments || msg.payload.attachment || msg.attachments || msg.attachment;        
+        const inputComponents = msg.payload.components || msg.components;
+       
 
         const setError = (error) => {
           node.status({
@@ -35,17 +38,15 @@ module.exports = function (RED) {
           done(error);
         }
 
-        const setSucces = (succesMessage, data) => {
+        const setSuccess = (succesMessage, data) => {
           node.status({
             fill: "green",
             shape: "dot",
             text: succesMessage
-          });
-          const newMsg = {
-            payload: Flatted.parse(Flatted.stringify(data)),
-            request: msg,
-          };
-          send(newMsg);
+          });          
+          
+          msg.payload = Flatted.parse(Flatted.stringify(data));
+          send(msg);
           done();
         }
 
@@ -103,14 +104,15 @@ module.exports = function (RED) {
             setError(`msg.user wasn't set correctly`);
           } else {
             bot.users.fetch(userID).then(user => {
-              let messageObject = {};
-              messageObject.embeds = embeds;
-              messageObject.content = payload;
-              messageObject.files = attachments;
-              messageObject.components = components;
+              let messageObject = {
+                embeds: embeds,
+                content: content,
+                files: attachments,
+                components: components
+              };
               return user.send(messageObject);
             }).then(message => {
-              setSucces(`message sent to ${message.channel.recipient.username}`, message)
+              setSuccess(`message sent to ${message.channel.recipient.username}`, message)
             }).catch(err => {
               setError(err);
             })
@@ -123,14 +125,15 @@ module.exports = function (RED) {
             setError(`msg.channel wasn't set correctly`);
           } else {
             getChannel(channelID).then(channelInstance => {
-              let messageObject = {};
-              messageObject.embeds = embeds;
-              messageObject.content = payload;
-              messageObject.files = attachments;              
-              messageObject.components = components;
+              let messageObject = {
+                embeds: embeds,
+                content: content,
+                files: attachments,
+                components: components
+              };
               return channelInstance.send(messageObject);
             }).then((message) => {
-              setSucces(`message sent, id = ${message.id}`, message);
+              setSuccess(`message sent, id = ${message.id}`, message);
             }).catch(err => {
               setError(err);
             });
@@ -150,15 +153,16 @@ module.exports = function (RED) {
         const editMessage = () => {
           getMessage(channel, message)
             .then(message => {
-              let messageObject = {};
-              messageObject.embeds = embeds;
-              messageObject.content = payload;
-              messageObject.files = attachments;
-              messageObject.components = components;
+              let messageObject = {
+                embeds: embeds,
+                content: content,
+                files: attachments,
+                components: components
+              };
               return message.edit(messageObject);
             })
             .then(message => {
-              setSucces(`message ${message.id} edited`, message);
+              setSuccess(`message ${message.id} edited`, message);
             })
             .catch(err => {
               setError(err);
@@ -173,7 +177,7 @@ module.exports = function (RED) {
               });
             })
             .then(message => {
-              setSucces(`message ${message.id} deleted`, message);
+              setSuccess(`message ${message.id} deleted`, message);
             })
             .catch(err => {
               setError(err);
@@ -247,6 +251,7 @@ module.exports = function (RED) {
       });
     }).catch(err => {
       console.log(err);
+      setError(err);
     });
   }
   RED.nodes.registerType("discordMessageManager", discordMessageManager);
