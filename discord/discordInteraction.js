@@ -2,8 +2,6 @@ const Flatted = require('flatted');
 module.exports = function (RED) {
   var discordBotManager = require('./lib/discordBotManager.js');
 
-  const delay = ms => new Promise(res => setTimeout(res, ms));
-
   function discordInteraction(config) {
     RED.nodes.createNode(this, config);
     var configNode = RED.nodes.getNode(config.token);
@@ -23,16 +21,16 @@ module.exports = function (RED) {
 
       const matchInteractionType = (interaction) => {
         switch (interactionType) {
-          case "button": 
-            return interaction.isButton(); 
+          case "button":
+            return interaction.isButton();
           case "selectMenu":
-            return interaction.isSelectMenu(); 
+            return interaction.isSelectMenu();
           case "command":
-            return interaction.isCommand(); 
+            return interaction.isCommand();
           case "messageContextMenu":
-            return interaction.isMessageContextMenu(); 
+            return interaction.isMessageContextMenu();
           case "all":
-            return true;               
+            return true;
           default:
             return false;
         }
@@ -46,42 +44,47 @@ module.exports = function (RED) {
         bot.on(eventName, listener);
       }
 
-      registerCallback("interactionCreate", async interaction => {                
-        console.log(interaction);
-        if (!matchInteractionType(interaction)) return;
-        
-        if (interaction.isCommand() || interaction.isMessageContextMenu())
-        {
-          if (custom_id && custom_id.split(",").indexOf(interaction.commandName) < 0) return;
-          await interaction.reply(commandResponse);
+      registerCallback("interactionCreate", async interaction => {
+        try {
+          if (!matchInteractionType(interaction)) return;
+
+          if (interaction.isCommand() || interaction.isMessageContextMenu()) {
+            if (custom_id && custom_id.split(",").indexOf(interaction.commandName) < 0) return;
+            await interaction.reply(commandResponse);
+          }
+          else {
+            if (custom_id && custom_id.split(",").indexOf(interaction.customId) < 0) return;
+            await interaction.deferUpdate();
+          }
+
+          let message = {};
+          message.payload = Flatted.parse(Flatted.stringify(interaction));
+          message.payload.user = Flatted.parse(Flatted.stringify(interaction.user));
+          message.payload.member = Flatted.parse(Flatted.stringify(interaction.member));
+          message.payload.member.guild = Flatted.parse(Flatted.stringify(interaction.member.guild));
+
+          if (injectInteractionObject)
+            message.interactionObject = interaction;
+
+          if (interaction.isCommand() || interaction.isMessageContextMenu()) {
+            message.payload.options = Flatted.parse(Flatted.stringify(interaction.options));
+            message.payload.replyMessage = Flatted.parse(Flatted.stringify(await interaction.fetchReply()));
+          }
+          else {
+            message.payload.message = Flatted.parse(Flatted.stringify(interaction.message));
+            message.payload.message.author = Flatted.parse(Flatted.stringify(interaction.message.author));
+          }
+
+          node.send(message);
+        } catch (error) {
+          node.error(error);
+          node.status({
+            fill: "red",
+            shape: "dot",
+            text: error
+          });
         }
-        else {          
-          if (custom_id && custom_id.split(",").indexOf(interaction.customId) < 0) return;
-          await interaction.deferUpdate();
-        }        
-
-        let message = {};
-        message.payload = Flatted.parse(Flatted.stringify(interaction));              
-        message.payload.user = Flatted.parse(Flatted.stringify(interaction.user));        
-        message.payload.member = Flatted.parse(Flatted.stringify(interaction.member));        
-        message.payload.member.guild = Flatted.parse(Flatted.stringify(interaction.member.guild)); 
-
-        if(injectInteractionObject)
-          message.interactionObject = interaction;
-
-        if (interaction.isCommand() || interaction.isMessageContextMenu())
-        {
-          message.payload.options = Flatted.parse(Flatted.stringify(interaction.options));
-          message.payload.replyMessage = Flatted.parse(Flatted.stringify(await interaction.fetchReply()));          
-        }
-        else
-        {          
-          message.payload.message = Flatted.parse(Flatted.stringify(interaction.message));
-          message.payload.message.author = Flatted.parse(Flatted.stringify(interaction.message.author));
-        }
-
-        node.send(message);
-      })    
+      })
 
       registerCallback('error', error => {
         node.error(error);
