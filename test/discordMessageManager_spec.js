@@ -107,7 +107,7 @@ describe('Discord Message Manager Node', function () {
         const expectedContent = "expected content message";
         const inputNodeRedMsg = { _msgid: 'dd3be2d56799887c', payload: { content: expectedContent}, channel: "1111111111", topic: "10" };        
         stubDiscord.channels.fetch.resolves({
-            send: (obj) => new Promise((resolve) => {                
+            send: (obj) => new Promise((resolve, reject) => {                
                 if (obj.content !== expectedContent)
                     reject(expectedContent);
 
@@ -138,7 +138,7 @@ describe('Discord Message Manager Node', function () {
         const expectedContent = "expected content message";
         const inputNodeRedMsg = { _msgid: 'dd3be2d56799887c', payload: expectedContent, channel: "1111111111", topic: "10" };
         stubDiscord.channels.fetch.resolves({
-            send: (obj) => new Promise((resolve) => {
+            send: (obj) => new Promise((resolve, reject) => {
                 if (obj.content !== expectedContent)
                     reject(expectedContent);
 
@@ -169,7 +169,7 @@ describe('Discord Message Manager Node', function () {
         const embed = [{ color: 0x0099ff, title: 'Some title', url: 'https://discord.js.org' }];
         const inputNodeRedMsg = { _msgid: 'dd3be2d56799887c', payload: { content: "hi", embed: embed} , channel: "1111111111", topic: "10" };
         stubDiscord.channels.fetch.resolves({
-            send: (obj) => new Promise((resolve) => {
+            send: (obj) => new Promise((resolve, reject) => {
                 if (obj.embeds === undefined)
                     reject("Error Embed expected");
 
@@ -200,7 +200,7 @@ describe('Discord Message Manager Node', function () {
         const embed = [{ color: 0x0099ff, title: 'Some title', url: 'https://discord.js.org' }];
         const inputNodeRedMsg = { _msgid: 'dd3be2d56799887c', payload: "Hi", embed: embed, channel: "1111111111", topic: "10" };
         stubDiscord.channels.fetch.resolves({
-            send: (obj) => new Promise((resolve) => {
+            send: (obj) => new Promise((resolve, reject) => {
                 if (obj.embeds === undefined)
                     reject("Error Embed expected");
 
@@ -227,6 +227,79 @@ describe('Discord Message Manager Node', function () {
                     msg.should.have.property('_msgid', 'dd3be2d56799887c');
                     msg.should.have.property('channel', '1111111111');
                     msg.should.have.property('embed', embed);
+                    done();
+                } catch (err) {
+                    done(err);
+                }
+            });
+        });
+    });
+
+    it('Take attachment content from msg.payload.attachment', function (done) {
+        stubDiscord.channels = sinon.createStubInstance(discord.ChannelManager);
+        const outputPayload = { message: "Hello there", channel: "1111111111" };
+        const attachments = [{ title: 'Some title', url: 'https://discord.js.org' }];
+        const inputNodeRedMsg = { _msgid: 'dd3be2d56799887c', payload: { content: "hi", attachments: attachments }, channel: "1111111111", topic: "10" };
+        stubDiscord.channels.fetch.resolves({
+            send: (obj) => new Promise((resolve, reject) => {
+                if (obj.files === undefined)
+                    reject("Error attachment expected");
+
+                resolve(outputPayload);
+            })
+        });
+        let flow = [
+            { id: "n1", type: "discordMessageManager", name: "test name", token: "24205d54014eb63f", wires: [["n2"]] },
+            { id: "24205d54014eb63f", type: "discord-token", name: "node boy" },
+            { id: "n2", type: "helper" }
+        ];
+
+        helper.load([discordToken, discordMessageManager], flow, () => {
+            let n1 = helper.getNode("n1");
+            let n2 = helper.getNode("n2");
+
+            n1.receive(inputNodeRedMsg);
+            n1.on('call:error', call => {
+                done(call);
+            });
+            n2.on("input", () => done());
+        });
+    });
+
+    it('Take attachment content from msg.embed and keep msg.attachment on ouput', function (done) {
+        stubDiscord.channels = sinon.createStubInstance(discord.ChannelManager);
+        const outputPayload = { message: "Hello there", channel: "1111111111" };
+        const attachments = [{ color: 0x0099ff, title: 'Some title', url: 'https://discord.js.org' }];
+        const inputNodeRedMsg = { _msgid: 'dd3be2d56799887c', payload: "Hi", attachments: attachments, channel: "1111111111", topic: "10" };
+        stubDiscord.channels.fetch.resolves({
+            send: (obj) => new Promise((resolve, reject) => {
+                if (obj.files === undefined)
+                    reject("Error attachment expected");
+
+                resolve(outputPayload);
+            })
+        });
+        let flow = [
+            { id: "n1", type: "discordMessageManager", name: "test name", token: "24205d54014eb63f", wires: [["n2"]] },
+            { id: "24205d54014eb63f", type: "discord-token", name: "node boy" },
+            { id: "n2", type: "helper" }
+        ];
+
+        helper.load([discordToken, discordMessageManager], flow, () => {
+            let n1 = helper.getNode("n1");
+            let n2 = helper.getNode("n2");
+
+            n1.receive(inputNodeRedMsg);
+            n1.on('call:error', call => {
+                call.should.be.calledWithExactly("");
+                done();
+            });
+            n2.on("input", (msg) => {
+                try {
+                    msg.should.have.property('payload', outputPayload);
+                    msg.should.have.property('_msgid', 'dd3be2d56799887c');
+                    msg.should.have.property('channel', '1111111111');
+                    msg.should.have.property('attachments', attachments);
                     done();
                 } catch (err) {
                     done(err);
