@@ -7,6 +7,7 @@ const discordBotManager = require('../discord/lib/discordBotManager');
 
 helper.init(require.resolve('node-red'));
 const stubDiscord = sinon.createStubInstance(discord.Client);
+const noError = "";
 
 describe('Discord Message Manager Node', function () {
     //let stubDiscord = sinon.createStubInstance(discord.Client);
@@ -170,7 +171,7 @@ describe('Discord Message Manager Node', function () {
         const inputNodeRedMsg = { _msgid: 'dd3be2d56799887c', payload: { content: "hi", embed: embed} , channel: "1111111111", topic: "10" };
         stubDiscord.channels.fetch.resolves({
             send: (obj) => new Promise((resolve, reject) => {
-                if (obj.embeds === undefined)
+                if (obj.embeds.length == 0)
                     reject("Error Embed expected");
 
                 resolve(outputPayload);
@@ -201,7 +202,7 @@ describe('Discord Message Manager Node', function () {
         const inputNodeRedMsg = { _msgid: 'dd3be2d56799887c', payload: "Hi", embed: embed, channel: "1111111111", topic: "10" };
         stubDiscord.channels.fetch.resolves({
             send: (obj) => new Promise((resolve, reject) => {
-                if (obj.embeds === undefined)
+                if (obj.embeds.length == 0)
                     reject("Error Embed expected");
 
                 resolve(outputPayload);
@@ -242,7 +243,7 @@ describe('Discord Message Manager Node', function () {
         const inputNodeRedMsg = { _msgid: 'dd3be2d56799887c', payload: { content: "hi", attachments: attachments }, channel: "1111111111", topic: "10" };
         stubDiscord.channels.fetch.resolves({
             send: (obj) => new Promise((resolve, reject) => {
-                if (obj.files === undefined)
+                if (obj.files.length == 0)
                     reject("Error attachment expected");
 
                 resolve(outputPayload);
@@ -266,14 +267,14 @@ describe('Discord Message Manager Node', function () {
         });
     });
 
-    it('Take attachment content from msg.embed and keep msg.attachment on ouput', function (done) {
+    it('Take attachment content from msg.attachment and keep msg.attachment on ouput', function (done) {
         stubDiscord.channels = sinon.createStubInstance(discord.ChannelManager);
         const outputPayload = { message: "Hello there", channel: "1111111111" };
         const attachments = [{ color: 0x0099ff, title: 'Some title', url: 'https://discord.js.org' }];
         const inputNodeRedMsg = { _msgid: 'dd3be2d56799887c', payload: "Hi", attachments: attachments, channel: "1111111111", topic: "10" };
         stubDiscord.channels.fetch.resolves({
             send: (obj) => new Promise((resolve, reject) => {
-                if (obj.files === undefined)
+                if (obj.files.length == 0)
                     reject("Error attachment expected");
 
                 resolve(outputPayload);
@@ -291,7 +292,7 @@ describe('Discord Message Manager Node', function () {
 
             n1.receive(inputNodeRedMsg);
             n1.on('call:error', call => {
-                call.should.be.calledWithExactly("");
+                call.should.be.calledWithExactly(noError);
                 done();
             });
             n2.on("input", (msg) => {
@@ -300,6 +301,96 @@ describe('Discord Message Manager Node', function () {
                     msg.should.have.property('_msgid', 'dd3be2d56799887c');
                     msg.should.have.property('channel', '1111111111');
                     msg.should.have.property('attachments', attachments);
+                    done();
+                } catch (err) {
+                    done(err);
+                }
+            });
+        });
+    });
+    
+    it('Take components content from msg.payload.components', function (done) {
+        stubDiscord.channels = sinon.createStubInstance(discord.ChannelManager);
+        const outputPayload = { message: "Hello there", channel: "1111111111" };
+        const components = [
+            {
+                "type": 1,
+                "components": [
+                    { "type": 2, "label": "Option 1", "style": 3, "custom_id": "click_opt1" },
+                    { "type": 2, "label": "Option 2", "style": 4, "custom_id": "click_opt2" }
+                ]
+            }
+        ];
+        const inputNodeRedMsg = { _msgid: 'dd3be2d56799887c', payload: { content: "hi", components: components }, channel: "1111111111", topic: "10" };
+        stubDiscord.channels.fetch.resolves({
+            send: (obj) => new Promise((resolve, reject) => {
+                if (obj.components.length == 0)
+                    reject("Error components expected");
+
+                resolve(outputPayload);
+            })
+        });
+        let flow = [
+            { id: "n1", type: "discordMessageManager", name: "test name", token: "24205d54014eb63f", wires: [["n2"]] },
+            { id: "24205d54014eb63f", type: "discord-token", name: "node boy" },
+            { id: "n2", type: "helper" }
+        ];
+
+        helper.load([discordToken, discordMessageManager], flow, () => {
+            let n1 = helper.getNode("n1");
+            let n2 = helper.getNode("n2");
+
+            n1.receive(inputNodeRedMsg);
+            n1.on('call:error', call => {
+                call.should.be.calledWithExactly(noError);
+                done();
+            });
+            n2.on("input", () => done());
+        });
+    });
+
+    it('Take component content from msg.components and keep msg.components on ouput', function (done) {
+        stubDiscord.channels = sinon.createStubInstance(discord.ChannelManager);
+        const outputPayload = { message: "Hello there", channel: "1111111111" };
+        const components = [
+            {
+                "type": 1,
+                "components": [
+                    { "type": 2, "label": "Option 1", "style": 3, "custom_id": "click_opt1" },
+                    { "type": 2, "label": "Option 2", "style": 4, "custom_id": "click_opt2" }
+                ]
+            }
+        ];
+        const inputNodeRedMsg = { _msgid: 'dd3be2d56799887c', payload: "Hi", components: components, channel: "1111111111", topic: "10" };
+        stubDiscord.channels.fetch.resolves({
+            send: (obj) => new Promise((resolve, reject) => {
+                if (obj.components.length == 0)
+                    reject("Error components expected");
+
+                resolve(outputPayload);
+            })
+        });
+        let flow = [
+            { id: "n1", type: "discordMessageManager", name: "test name", token: "24205d54014eb63f", wires: [["n2"]] },
+            { id: "24205d54014eb63f", type: "discord-token", name: "node boy" },
+            { id: "n2", type: "helper" }
+        ];
+
+        helper.load([discordToken, discordMessageManager], flow, () => {
+            let n1 = helper.getNode("n1");
+            let n2 = helper.getNode("n2");
+
+            n1.receive(inputNodeRedMsg);
+            n1.on('call:error', call => {                
+                call.should.be.calledWithExactly(noError);
+                done();
+            });
+            n2.on("input", (msg) => {
+                try {
+                    msg.should.have.property('payload', outputPayload);
+                    msg.should.have.property('_msgid', 'dd3be2d56799887c');
+                    msg.should.have.property('channel', '1111111111');
+                    msg.should.have.property('components', components);
                     done();
                 } catch (err) {
                     done(err);
