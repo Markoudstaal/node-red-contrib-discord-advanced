@@ -1,4 +1,7 @@
 # Changelog\
+## 3.2.2
+* Enhancement - Discord Nodes are Changing msg Objects Unexpectedly. Now full input message is passing from input to output in discordMessageManager and discordPermissions
+* Hotfix - TypeError: Do not know how to serialize a BigInt
 ## 3.2.1
 * Enhancement - attachments array added to msg.data on discordMessage node output.
 * Hotfix - Finding message and channel catchs error when message or channel does not exist.
