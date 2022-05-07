@@ -20,7 +20,7 @@ module.exports = function (RED) {
           done(error);
         }
 
-        const setSucces = (succesMessage) => {
+        const setSuccess = (succesMessage) => {
           node.status({
             fill: "green",
             shape: "dot",
@@ -57,10 +57,6 @@ module.exports = function (RED) {
             bot.guilds.fetch(guildID).then(guild => {
               return guild.members.fetch(userID);
             }).then(user => {
-              var msgid = RED.util.generateId();
-              var msg = {
-                _msgid: msgid
-              }
               try {
                 let roles = [];
                 user.roles.cache.each(role => {
@@ -72,7 +68,7 @@ module.exports = function (RED) {
               }
               msg.user = user;
               send(msg);
-              setSucces(`roles sent`);
+              setSuccess(`roles sent`);
             }).catch(error => {
               setError(error);
             });
