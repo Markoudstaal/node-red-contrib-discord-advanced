@@ -96,7 +96,7 @@ module.exports = function (RED) {
       node.status({
         fill: "red",
         shape: "dot",
-        text: "wrong token?"
+        text: err
       });
     });
   }

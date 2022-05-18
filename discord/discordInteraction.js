@@ -86,12 +86,12 @@ module.exports = function (RED) {
         }
       })
 
-      registerCallback('error', error => {
-        node.error(error);
+      registerCallback('error', err => {
+        node.error(err);
         node.status({
           fill: "red",
           shape: "dot",
-          text: error
+          text: err
         });
       });
 
