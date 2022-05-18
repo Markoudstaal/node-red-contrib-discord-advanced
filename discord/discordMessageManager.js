@@ -250,7 +250,11 @@ module.exports = function (RED) {
       });
     }).catch(err => {
       console.log(err);
-      setError(err);
+      node.status({
+        fill: "red",
+        shape: "dot",
+        text: err
+      });
     });
   }
   RED.nodes.registerType("discordMessageManager", discordMessageManager);
