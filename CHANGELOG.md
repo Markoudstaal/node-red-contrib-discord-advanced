@@ -1,4 +1,6 @@
 # Changelog\
+## 3.2.3
+* Hotfix - discordMessageManager: ReferenceError: setError is not defined -> invalid token causes nodered to get stuck in crash loop.
 ## 3.2.2
 * Enhancement - Discord Nodes are Changing msg Objects Unexpectedly. Now full input message is passing from input to output in discordMessageManager and discordPermissions
 * Hotfix - TypeError: Do not know how to serialize a BigInt
