@@ -13,6 +13,13 @@ module.exports = function(RED) {
             node.on('close', function() {
                 discordBotManager.closeBot(bot);
             });            
+        }).catch(err => {
+            console.log(err);
+            node.status({
+                fill: "red",
+                shape: "dot",
+                text: err
+            });
         });
     }
     RED.nodes.registerType("discordClient", discordClient);

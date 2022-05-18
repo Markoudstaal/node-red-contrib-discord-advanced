@@ -6,13 +6,14 @@ const discord = require('discord.js');
 const discordBotManager = require('../discord/lib/discordBotManager');
 
 helper.init(require.resolve('node-red'));
-const stubDiscord = sinon.createStubInstance(discord.Client);
 const noError = "";
 
 describe('Discord Message Manager Node', function () {
     let getBotStub;
+    let stubDiscord;
 
     before(() => {
+        stubDiscord = sinon.createStubInstance(discord.Client);
         stubDiscord.login.resolves();
         getBotStub = sinon.stub(discordBotManager, 'getBot').resolves(stubDiscord);
     });
@@ -400,6 +401,27 @@ describe('Discord Message Manager Node', function () {
                     done(err);
                 }
             });
+        });
+    });
+
+    it('Wrong token calls node.status', function (done) {       
+        const err = "Error [TOKEN_INVALID]: An invalid token was provided.";
+        getBotStub.restore();        
+        getBotStub = sinon.stub(discordBotManager, 'getBot').rejects(err);       
+
+        let flow = [{ id: "n1", type: "discordMessageManager", name: "test name", token: "24205d54014eb63f", wires: [["n2"]] },
+        { id: "24205d54014eb63f", type: "discord-token", name: "node boy" },
+        { id: "n2", type: "helper" }];
+
+        helper.load([discordToken, discordMessageManager], flow, () => {
+            let n1 = helper.getNode("n1");
+
+            n1.status.should.be.calledWithExactly({
+                fill: "red",
+                shape: "dot",
+                text: err
+            });
+            done();
         });
     });
 });
