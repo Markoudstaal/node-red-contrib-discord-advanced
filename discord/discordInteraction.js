@@ -60,8 +60,14 @@ module.exports = function (RED) {
           let message = {};
           message.payload = Flatted.parse(Flatted.stringify(interaction));
           message.payload.user = Flatted.parse(Flatted.stringify(interaction.user));
-          message.payload.member = Flatted.parse(Flatted.stringify(interaction.member));
-          message.payload.member.guild = Flatted.parse(Flatted.stringify(interaction.member.guild));
+
+          if(interaction.member !== null) {
+            message.payload.member = Flatted.parse(Flatted.stringify(interaction.member));
+            message.payload.member.guild = Flatted.parse(Flatted.stringify(interaction.member.guild));
+          }
+          else {
+            message.payload.member = null;
+          }
 
           if (injectInteractionObject)
             message.interactionObject = interaction;
