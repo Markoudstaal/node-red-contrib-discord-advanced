@@ -1,4 +1,6 @@
 # Changelog\
+## 3.2.4
+* Hotfix - fixed interactions on direct messages
 ## 3.2.3
 * Hotfix - discordMessageManager: ReferenceError: setError is not defined -> invalid token causes nodered to get stuck in crash loop.
 ## 3.2.2
