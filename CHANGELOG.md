@@ -1,4 +1,8 @@
 # Changelog\
+
+## [Unreleased]
+* Hotfix - Null validation when trying to access to msg.payload properties
+
 ## 3.2.4
 * Hotfix - fixed interactions on direct messages
 ## 3.2.3

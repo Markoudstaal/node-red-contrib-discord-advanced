@@ -169,6 +169,37 @@ describe('Discord Message Manager Node', function () {
         });
     });
 
+    it('Message content should be an empty string when msg.payload is undefined', function (done) {
+        stubDiscord.channels = sinon.createStubInstance(discord.ChannelManager);
+        const outputPayload = { message: "Hello there", channel: "1111111111" };
+        const expectedContent = "";
+        const inputNodeRedMsg = { _msgid: 'dd3be2d56799887c', channel: "1111111111", topic: "10" };
+        stubDiscord.channels.fetch.resolves({
+            send: (obj) => new Promise((resolve, reject) => {
+                if (obj.content !== expectedContent)
+                    reject(expectedContent);
+
+                resolve(outputPayload);
+            })
+        });
+        let flow = [
+            { id: "n1", type: "discordMessageManager", name: "test name", token: "24205d54014eb63f", wires: [["n2"]] },
+            { id: "24205d54014eb63f", type: "discord-token", name: "node boy" },
+            { id: "n2", type: "helper" }
+        ];
+
+        helper.load([discordToken, discordMessageManager], flow, () => {
+            let n1 = helper.getNode("n1");
+            let n2 = helper.getNode("n2");
+
+            n1.receive(inputNodeRedMsg);
+            n1.on('call:error', call => {
+                done(call);
+            });
+            n2.on("input", () => done());
+        });
+    });
+
     it('Take embed content from msg.payload.embed', function (done) {
         stubDiscord.channels = sinon.createStubInstance(discord.ChannelManager);
         const outputPayload = { message: "Hello there", channel: "1111111111" };
