@@ -2,6 +2,7 @@
 
 ## [Unreleased]
 * Hotfix - Null validation when trying to access to msg.payload properties
+* Hotfix - debugger instruction removed from discordInteraction node
 
 ## 3.2.4
 * Hotfix - fixed interactions on direct messages
