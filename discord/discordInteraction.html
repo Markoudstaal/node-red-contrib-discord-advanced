@@ -27,6 +27,10 @@
       interactionObject: {
         value: false,
         required: false
+      },
+      ephemeral: {
+        value: false,
+        required: false
       }
     },
     inputs: 0,
@@ -49,12 +53,17 @@
       });
       $("#node-input-interactionType").change(function () {
         if ($("#node-input-interactionType").val() == "command" || $("#node-input-interactionType").val() == "messageContextMenu") {
-           $("#node-input-custom_id-lbl").text("Command names");
-           $("#node-row-commandResponse").prop("style", "");
-          }
-          else{
-            $("#node-input-custom_id-lbl").text("Custom Ids");
-            $("#node-row-commandResponse").prop("style", "display:none;");
+          $("#node-input-custom_id-lbl").text("Command names");
+          $("#node-row-commandResponse").prop("style", "");
+          if ($("#node-input-interactionType").val() == "command")
+            $("#node-row-ephemeral").prop("style", "");
+          else
+            $("#node-row-ephemeral").prop("style", "display:none;");
+        }
+        else{
+          $("#node-input-custom_id-lbl").text("Custom Ids");
+          $("#node-row-commandResponse").prop("style", "display:none;");
+          $("#node-row-ephemeral").prop("style", "display:none;");
         }        
       });
     },
@@ -86,6 +95,10 @@
     <div class="form-row" id="node-row-commandResponse" style="display:none;">
         <label for="node-input-commandResponse"><i class="icon-tag"></i> Command Response text</label>
         <input type="text" id="node-input-commandResponse" placeholder="Text for reply the command (OK by default)">
+    </div>
+    <div class="form-row" id="node-row-ephemeral" style="display:none;">
+        <input type="checkbox" id="node-input-ephemeral" style="display: inline-block; width: auto; vertical-align: top;">  
+        <label for="node-input-ephemeral" style="width: 70%;"> Ephemeral</label>  
     </div>
     <div class="form-row">
         <input type="checkbox" id="node-input-interactionObject" style="display: inline-block; width: auto; vertical-align: top;">  

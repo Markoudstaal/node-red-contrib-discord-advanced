@@ -10,6 +10,7 @@ module.exports = function (RED) {
     let custom_id = config.custom_id;
     let commandResponse = config.commandResponse || "OK!";
     let injectInteractionObject = config.interactionObject || false;
+    let ephemeral = config.ephemeral || false;
 
     discordBotManager.getBot(configNode).then(function (bot) {
       var callbacks = [];
@@ -50,7 +51,7 @@ module.exports = function (RED) {
 
           if (interaction.isCommand() || interaction.isMessageContextMenu()) {
             if (custom_id && custom_id.split(",").indexOf(interaction.commandName) < 0) return;
-            await interaction.reply(commandResponse);
+            await interaction.reply({ content: commandResponse, ephemeral: ephemeral });
           }
           else {
             if (custom_id && custom_id.split(",").indexOf(interaction.customId) < 0) return;

@@ -1,6 +1,7 @@
 # Changelog\
 
 ## [Unreleased]
+* Feature - Ephemeral check for commands (Auto reply)
 * Hotfix - Null validation when trying to access to msg.payload properties
 * Hotfix - debugger instruction removed from discordInteraction node
 
