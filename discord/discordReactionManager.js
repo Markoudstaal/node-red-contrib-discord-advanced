@@ -54,50 +54,58 @@ module.exports = function (RED) {
         return promise;
       }
 
-      node.on('input', function (msg, send, done) {
+      node.on('input', async function (msg, send, done) {
         const message = checkIdOrObject(msg.message);
         const channel = checkIdOrObject(msg.channel);
         const collectionTime = msg.time || 600000;
 
         if (message && channel) {
-          getMessage(message, channel).then(messageObject => {
-            const collector = messageObject.createReactionCollector({
-              time: collectionTime,
-            });
-
-            node.status({
-              fill: "green",
-              shape: "dot",
-              text: "Collector created"
-            });
-
-            reactionCollectors.push(collector);
-
-            collector.on('collect', (reaction, user) => {
-              user.fetch(true).then(reactor => {
-                const newMsg = {
-                  payload: reaction._emoji.name,
-                  count: reaction.count,
-                  message: reaction.message,
-                  user: Flatted.parse(Flatted.stringify(reactor))
-                }
-                send(newMsg);
-                node.status({
-                  fill: "green",
-                  shape: "dot",
-                  text: "Reaction sent"
-                });
-              }).catch(error => {
-                setError(error, done);
-              });
-            });
-          }).catch(function (err) {
+          let messageObject;
+          try {
+            messageObject = await getMessage(message, channel);            
+          } catch (error) {
             node.error(err);
             node.status({
               fill: "red",
               shape: "dot",
               text: "channel or message missing?"
             });
+            return;
+          }
+          
+          const collector = messageObject.createReactionCollector({
+            time: collectionTime,
+          });
+          reactionCollectors.push(collector);
+
+          node.status({
+            fill: "green",
+            shape: "dot",
+            text: "Collector created"
+          });            
+
+          collector.on('collect', async (reaction, user) => {
+            try {
+              let messageUser = await bot.users.fetch(reaction.message.author.id);
+              let reactor = await user.fetch(true);
+
+              const newMsg = {
+                payload: reaction._emoji.name,
+                count: reaction.count,
+                message: Flatted.parse(Flatted.stringify(reaction.message)),
+                user: Flatted.parse(Flatted.stringify(reactor))
+              }
+              newMsg.message.user = Flatted.parse(Flatted.stringify(messageUser));
+
+              send(newMsg);
+              node.status({
+                fill: "green",
+                shape: "dot",
+                text: "Reaction sent"
+              });
+            } catch (error) {
+              setError(error, done);
+            }
           });
         } else if (message) {
           setError("msg.channel isn't a string or object", done);
