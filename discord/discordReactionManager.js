@@ -40,20 +40,7 @@ module.exports = function (RED) {
         })
         done(error);
       }
-
-      // const getMessage = async (message, channel) => {
-      //   var promise = new Promise((resolve, reject) => {
-      //     bot.channels.fetch(channel).then(channelInstance => {
-      //       return channelInstance.messages.fetch(message);
-      //     }).then(message => {
-      //       resolve(message);
-      //     }).catch(error => {
-      //       reject(error);
-      //     })
-      //   })
-      //   return promise;
-      // }
-      
+            
       const getMessage = async (message, channel) => {
         let channelInstance = await bot.channels.fetch(channel);
         return await channelInstance.messages.fetch(message);
@@ -105,7 +92,8 @@ module.exports = function (RED) {
               payload: reaction._emoji.name,
               count: reaction.count,
               message: Flatted.parse(Flatted.stringify(reaction.message)),
-              user: Flatted.parse(Flatted.stringify(reactor))
+              user: Flatted.parse(Flatted.stringify(reactor)),
+              _originalFlowMessage: msg
             }
             newMsg.message.user = Flatted.parse(Flatted.stringify(messageUser));
 
