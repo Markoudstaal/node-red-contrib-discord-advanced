@@ -1,11 +1,11 @@
 # Changelog\
 
-## [Unreleased]
+## 3.3.0
 * Hotfix - Remove ID word on label for the channel input text to prevent autocomplete from browsers.
-* Feature - discordReactionManager: user from the message in the output, complete flow message is being copied to the output
-* Feature - Ephemeral check for commands (Auto reply)
-* Hotfix - Null validation when trying to access to msg.payload properties
-* Hotfix - debugger instruction removed from discordInteraction node
+* Feature - discordReactionManager: user from the message in the output, complete flow message is being copied to the output.
+* Feature - Ephemeral check for commands (Auto reply).
+* Hotfix - Null validation when trying to access to msg.payload properties.
+* Hotfix - debugger instruction removed from discordInteraction node.
 
 ## 3.2.4
 * Hotfix - fixed interactions on direct messages
