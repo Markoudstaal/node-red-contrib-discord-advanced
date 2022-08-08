@@ -1,5 +1,8 @@
 # Changelog\
 
+## 3.3.1
+* Hotfix - Not sending messages when payload is undefined and there is embed.
+
 ## 3.3.0
 * Hotfix - Remove ID word on label for the channel input text to prevent autocomplete from browsers.
 * Feature - discordReactionManager: user from the message in the output, complete flow message is being copied to the output.
