@@ -169,10 +169,10 @@ describe('Discord Message Manager Node', function () {
         });
     });
 
-    it('Message content should be an empty string when msg.payload is undefined', function (done) {
+    it('Message content should be an empty string with space when msg.payload is undefined', function (done) {
         stubDiscord.channels = sinon.createStubInstance(discord.ChannelManager);
         const outputPayload = { message: "Hello there", channel: "1111111111" };
-        const expectedContent = "";
+        const expectedContent = " ";
         const inputNodeRedMsg = { _msgid: 'dd3be2d56799887c', channel: "1111111111", topic: "10" };
         stubDiscord.channels.fetch.resolves({
             send: (obj) => new Promise((resolve, reject) => {
