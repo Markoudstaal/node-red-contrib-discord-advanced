@@ -17,12 +17,12 @@ module.exports = function (RED) {
     var configNode = RED.nodes.getNode(config.token);    
 
     discordBotManager.getBot(configNode).then(function (bot) {
-      node.on('input', function (msg, send, done) {
+      node.on('input', async function (msg, send, done) {
         const channel = config.channel || msg.channel || null;
         const action = msg.action || 'create';
         const user = msg.user || null;
         const content = msg.payload?.content || checkString(msg.payload) || ' ';
-        const message = msg.message || null;
+        const messageId = msg.message || null;
         const inputEmbeds = msg.payload?.embeds || msg.payload?.embed || msg.embeds || msg.embed;
         const timeDelay = msg.payload?.timedelay || msg.timedelay || 0;
         const inputAttachments = msg.payload?.attachments || msg.payload?.attachment || msg.attachments || msg.attachment;        
@@ -149,38 +149,48 @@ module.exports = function (RED) {
           }
         }
 
-        const editMessage = () => {
-          getMessage(channel, message)
-            .then(message => {
-              let messageObject = {
-                embeds: embeds,
-                content: content,
-                files: attachments,
-                components: components
-              };
-              return message.edit(messageObject);
-            })
-            .then(message => {
-              setSuccess(`message ${message.id} edited`, message);
-            })
-            .catch(err => {
-              setError(err);
-            })
+        const editMessage = async () => {
+          try {
+            let message = await getMessage(channel, messageId)
+            let messageObject = {
+              embeds: embeds,
+              content: content,
+              files: attachments,
+              components: components
+            };
+            message = await message.edit(messageObject);
+            setSuccess(`message ${message.id} edited`, message);
+          } catch (err) {
+            setError(err);
+          }
         }
 
-        const deleteMessage = () => {
-          getMessage(channel, message)
-            .then(message => {
-              return message.delete({
-                timeout: timeDelay
-              });
-            })
-            .then(message => {
-              setSuccess(`message ${message.id} deleted`, message);
-            })
-            .catch(err => {
-              setError(err);
-            })
+        const deleteMessage = async () => {
+          try {
+            let message = await getMessage(channel, messageId);
+            let resultMessage = await message.delete({
+              timeout: timeDelay
+            });
+            setSuccess(`message ${resultMessage.id} deleted`, resultMessage);
+          } catch (err) {
+            setError(err);
+          }        
+        }
+
+        const replyMessage = async () => {
+          try {
+            let message = await getMessage(channel, messageId)
+            let messageObject = {
+              embeds: embeds,
+              content: content,
+              files: attachments,
+              components: components
+            };
+            message = await message.reply(messageObject);
+            setSuccess(`message ${message.id} replied`, message);
+          } catch (err) {
+            setError(err);
+          }          
         }
 
         var attachments = [];
@@ -239,6 +249,9 @@ module.exports = function (RED) {
             break;
           case 'delete':
             deleteMessage();
+            break;
+          case 'reply':
+            await replyMessage();
             break;
           default:
             setError(`msg.action has an incorrect value`)

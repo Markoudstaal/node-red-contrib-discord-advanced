@@ -1,5 +1,8 @@
 # Changelog\
 
+## [Unreleased]
+* Feature - Reply 'action' for messages on discordMessageManager (action='reply')
+
 ## 3.3.1
 * Hotfix - Not sending messages when payload is undefined and there is embed.
 
