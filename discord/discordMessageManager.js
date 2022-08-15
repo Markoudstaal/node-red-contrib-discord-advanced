@@ -208,12 +208,12 @@ module.exports = function (RED) {
 
         var embeds = [];
         if (inputEmbeds) {
-          if (typeof inputEmbeds === 'object') {
-            embeds.push(new MessageEmbed(inputEmbeds));
-          } else if (Array.isArray(inputEmbeds)) {
+          if (Array.isArray(inputEmbeds)) {
             inputEmbeds.forEach(embed => {
               embeds.push(new MessageEmbed(embed));
             });
+          } else if  (typeof inputEmbeds === 'object') {
+            embeds.push(new MessageEmbed(inputEmbeds));
           } else {
             setError("msg.embeds isn't a string or array")
           }
