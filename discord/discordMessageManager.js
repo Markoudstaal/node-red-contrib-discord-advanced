@@ -65,85 +65,70 @@ module.exports = function (RED) {
           }
         }
 
-        const getChannel = (id) => {
-          var promise = new Promise((resolve, reject) => {
-            bot.channels.fetch(id).then((channelInstance) => {
-              resolve(channelInstance);
-            }).catch(err => {
-              reject(err);
-            });
-          });
-          return promise;
+        const getChannel = async (id) => 
+        {
+          const channelID = checkIdOrObject(id);
+          if (!channelID) {
+            throw(`msg.channel wasn't set correctly`);
+          }
+          return await bot.channels.fetch(channelID);
         }
 
-        const getMessage = (channel, message) => {
-          var promise = new Promise((resolve, reject) => {
-            const channelID = checkIdOrObject(channel);
-            const messageID = checkIdOrObject(message);
-            if (!channelID) {
-              reject(`msg.channel wasn't set correctly`);
-            } else if (!messageID) {
-              reject(`msg.message wasn't set correctly`)
-            } else {
-              getChannel(channelID).then(channelInstance => {
-                return channelInstance.messages.fetch(messageID);
-              }).then(message => {
-                resolve(message);
-              }).catch(err => {
-                reject(err);
-              })
-            }
-          });
-          return promise;
+        const getMessage = async (channel, message) => {
+          const channelID = checkIdOrObject(channel);
+          const messageID = checkIdOrObject(message);
+          if (!channelID) {
+            throws(`msg.channel wasn't set correctly`);
+          } else if (!messageID) {
+            throws(`msg.message wasn't set correctly`)
+          }
+
+          let channelInstance = await bot.channels.fetch(channelID);
+          return await channelInstance.messages.fetch(messageID);
         }
 
-        const createPrivateMessage = () => {
+        const createPrivateMessage = async () => {
           const userID = checkIdOrObject(user);
           if (!userID) {
             setError(`msg.user wasn't set correctly`);
-          } else {
-            bot.users.fetch(userID).then(user => {
-              let messageObject = {
-                embeds: embeds,
-                content: content,
-                files: attachments,
-                components: components
-              };
-              return user.send(messageObject);
-            }).then(message => {
-              setSuccess(`message sent to ${message.channel.recipient.username}`, message)
-            }).catch(err => {
-              setError(err);
-            })
-          }
+            return;
+          }          
+          try {
+            let user = await bot.users.fetch(userID);
+            let messageObject = {
+              embeds: embeds,
+              content: content,
+              files: attachments,
+              components: components
+            };
+            let resultMessage = await user.send(messageObject);
+            setSuccess(`message sent to ${resultMessage.channel.recipient.username}`, resultMessage);
+          } catch (err) {
+            setError(err);
+          }      
         }
 
-        const createChannelMessage = () => {
-          const channelID = checkIdOrObject(channel);
-          if (!channelID) {
-            setError(`msg.channel wasn't set correctly`);
-          } else {
-            getChannel(channelID).then(channelInstance => {
-              let messageObject = {
-                embeds: embeds,
-                content: content,
-                files: attachments,
-                components: components
-              };
-              return channelInstance.send(messageObject);
-            }).then((message) => {
-              setSuccess(`message sent, id = ${message.id}`, message);
-            }).catch(err => {
-              setError(err);
-            });
-          }
+        const createChannelMessage = async () => {
+          try {
+            let channelInstance = await getChannel(channel);
+            let messageObject = {
+              embeds: embeds,
+              content: content,
+              files: attachments,
+              components: components
+            };
+            let resultMessage = await channelInstance.send(messageObject);
+            setSuccess(`message sent, id = ${resultMessage.id}`, resultMessage);
+          } catch (err) {
+            setError(err);
+          }      
         }
 
-        const createMessage = () => {
+        const createMessage = async () => {
           if (user) {
-            createPrivateMessage();
+            await createPrivateMessage();
           } else if (channel) {
-            createChannelMessage();
+            await createChannelMessage();
           } else {
             setError('to send messages either msg.channel or msg.user needs to be set');
           }
@@ -242,13 +227,13 @@ module.exports = function (RED) {
 
         switch (action.toLowerCase()) {
           case 'create':
-            createMessage();
+            await createMessage();
             break;
           case 'edit':
-            editMessage();
+            await editMessage();
             break;
           case 'delete':
-            deleteMessage();
+            await deleteMessage();
             break;
           case 'reply':
             await replyMessage();
