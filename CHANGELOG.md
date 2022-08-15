@@ -2,6 +2,7 @@
 
 ## [Unreleased]
 * Feature - Reply 'action' for messages on discordMessageManager (action='reply')
+* Hotfix - discordMessageManager not sending messages when embeds is an array.
 
 ## 3.3.1
 * Hotfix - Not sending messages when payload is undefined and there is embed.
