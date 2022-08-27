@@ -1,7 +1,8 @@
 # Changelog\
 
 ## [Unreleased]
-* Feature - Reply 'action' for messages on discordMessageManager (action='reply')
+* Feature - React 'action' to messages on discordMessageManager by Unicode or name of custom guild emoji (action='react').
+* Feature - Reply 'action' for messages on discordMessageManager (action='reply').
 * Hotfix - discordMessageManager not sending messages when embeds is an array.
 
 ## 3.3.1
