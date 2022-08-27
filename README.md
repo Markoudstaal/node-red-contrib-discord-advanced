@@ -10,8 +10,8 @@ Currently the following actions are supported:
 * Send private messages to users.
 * Send and edit embed messages.
 * Add attachments to messages.
-* Edit messages in a channel.
-* Delete messages in a channel.
+* Edit, reply, delete messages in a channel.
+* React to messages with emojis.
 * Listen for reactions on a message.
 * Listen for interactions on a message button or select menu.
 * Listen for interactions on commands.
