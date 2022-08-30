@@ -77,9 +77,9 @@ module.exports = function (RED) {
           const channelID = checkIdOrObject(channel);
           const messageID = checkIdOrObject(message);
           if (!channelID) {
-            throws(`msg.channel wasn't set correctly`);
+            throw (`msg.channel wasn't set correctly`);
           } else if (!messageID) {
-            throws(`msg.message wasn't set correctly`)
+            throw (`msg.message wasn't set correctly`)
           }
 
           let channelInstance = await bot.channels.fetch(channelID);
