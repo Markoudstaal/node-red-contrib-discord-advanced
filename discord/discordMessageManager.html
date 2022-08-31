@@ -74,10 +74,6 @@ a<script type="text/javascript">
       <span class="property-type">Object or Array</span>
     </dt>
     <dd>Either an array of, or an Component Object.</dd>
-    <dt class="optional">timedelay 
-      <span class="property-type">number</span>
-    </dt>
-    <dd>The time in milliseconds to wait before deleting a message.</dd>
     <dt class="optional">attachments 
       <span class="property-type">string or Array</span>
     </dt>
@@ -117,7 +113,7 @@ a<script type="text/javascript">
     However, <code>msg.embed</code> needs to be either an Embed Object or an Array of Embed Objects. </p>
 
   <h4>Deleting messages</h4>
-  <p>To delete messages set <code>msg.action</code> to 'delete'. Also <code>msg.channel</code> and <code>msg.message</code> are required. <code>msg.timedelay</code> is optional to add a delay in milliseconds before deleting the message.</p>
+  <p>To delete messages set <code>msg.action</code> to 'delete'. Also <code>msg.channel</code> and <code>msg.message</code> are required.</p>
     
   <h4>Attachments</h4>
   <p>It's possible to add an attachment by url but this node does not check if that url is valid. Discord might bounce invalid urls. This doesn't work for editing messages.</p>
