@@ -5,6 +5,7 @@ module.exports = function (RED) {
   function discordMessage(config) {
     RED.nodes.createNode(this, config);
     var configNode = RED.nodes.getNode(config.token);
+    var channelFilterList = cleanChannelFilterList(config.channelIdFilter);
     var node = this;
     discordBotManager.getBot(configNode).then(function (bot) {
       var callbacks = [];
@@ -46,7 +47,9 @@ module.exports = function (RED) {
             node.warn("Could not set `msg.data`: JSON serialization failed");
           }
 
-          if (message.author.bot) {
+          if (channelFilterList != null && !channelFilterList.includes(msg.channel.id)){
+            return;
+          } else if (message.author.bot) {
             msg.author = {
               id: message.author.id,
               bot: message.author.bot,
@@ -102,3 +105,24 @@ module.exports = function (RED) {
   }
   RED.nodes.registerType("discordMessage", discordMessage);
 };
+
+function cleanChannelFilterList(channelFilterList)
+{
+  if (channelFilterList == "")
+  {
+    return null;
+  }
+
+  var cleanedChannelFilterList = null;
+  if (channelFilterList.startsWith(',') && channelFilterList.endsWith(','))
+  {
+    cleanedChannelFilterList = channelFilterList.slice(1, -1);
+  } else if (channelFilterList.startsWith(',')) {
+    cleanedChannelFilterList = channelFilterList.slice(1);
+  } else if (channelFilterList.endsWith(',')) {
+    cleanedChannelFilterList = channelFilterList.slice(0, -1);
+  } else {
+    cleanedChannelFilterList = channelFilterList;
+  }
+  return cleanedChannelFilterList.split(',');
+}
