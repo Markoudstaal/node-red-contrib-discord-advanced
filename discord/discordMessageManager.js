@@ -24,7 +24,6 @@ module.exports = function (RED) {
         const content = msg.payload?.content || checkString(msg.payload) || ' ';
         const messageId = msg.message || null;
         const inputEmbeds = msg.payload?.embeds || msg.payload?.embed || msg.embeds || msg.embed;
-        const timeDelay = msg.payload?.timedelay || msg.timedelay || 0;
         const inputAttachments = msg.payload?.attachments || msg.payload?.attachment || msg.attachments || msg.attachment;
         const inputComponents = msg.payload?.components || msg.components;
 
@@ -152,9 +151,7 @@ module.exports = function (RED) {
         const deleteMessage = async () => {
           try {
             let message = await getMessage(channel, messageId);
-            let resultMessage = await message.delete({
-              timeout: timeDelay
-            });
+            let resultMessage = await message.delete();
             setSuccess(`message ${resultMessage.id} deleted`, resultMessage);
           } catch (err) {
             setError(err);
