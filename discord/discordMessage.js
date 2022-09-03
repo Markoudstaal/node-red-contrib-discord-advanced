@@ -46,8 +46,8 @@ module.exports = function (RED) {
           } catch (e) {
             node.warn("Could not set `msg.data`: JSON serialization failed");
           }
-
-          if (channelFilterList != null && !channelFilterList.includes(msg.channel.id)){
+          
+          if (channelFilterList && !channelFilterList.includes(msg.channel.id)){
             return;
           } else if (message.author.bot) {
             msg.author = {
@@ -108,10 +108,8 @@ module.exports = function (RED) {
 
 function cleanChannelFilterList(channelFilterList)
 {
-  if (channelFilterList == "")
-  {
-    return null;
-  }
+  if (!channelFilterList)  
+    return;  
 
   var cleanedChannelFilterList = null;
   if (channelFilterList.startsWith(',') && channelFilterList.endsWith(','))

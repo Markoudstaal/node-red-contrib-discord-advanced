@@ -1,5 +1,9 @@
 # Changelog\
 
+## 3.3.3
+* Hotfix - Remove timedelay references for discordMessageManager when "action=delete"- Removed it in Discord.js v13.
+* Feature - Filter messages by channel on discordMessage.
+
 ## 3.3.2
 * Feature - React 'action' to messages on discordMessageManager by Unicode or name of custom guild emoji (action='react').
 * Feature - Reply 'action' for messages on discordMessageManager (action='reply').
