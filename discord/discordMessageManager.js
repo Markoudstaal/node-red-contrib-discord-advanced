@@ -178,12 +178,12 @@ module.exports = function (RED) {
           try {
             let message = await getMessage(channel, messageId);
             const emoji = message.guild.emojis.cache.find(emoji => emoji.name === content);
-            let reaction = await message.react(emoji || content);            
+            let reaction = await message.react(emoji || content);
             const newMsg = {
               emoji: reaction._emoji.name,
               animated: reaction.emoji.animated,
               count: reaction.count,
-              message: Flatted.parse(Flatted.stringify(message))              
+              message: Flatted.parse(Flatted.stringify(message))
             };
 
             setSuccess(`message ${message.id} reacted`, newMsg);
@@ -192,50 +192,70 @@ module.exports = function (RED) {
           }
         }
 
-        var attachments = [];
-        if (inputAttachments) {
-          if (typeof inputAttachments === 'string') {
-            attachments.push(new MessageAttachment(inputAttachments));
-          } else if (Array.isArray(inputAttachments)) {
-            inputAttachments.forEach(attachment => {
-              attachments.push(new MessageAttachment(attachment));
-            });
-          } else {
-            setError("msg.attachments isn't a string or array")
-          }
-        }
-
-        var embeds = [];
-        if (inputEmbeds) {
-          if (Array.isArray(inputEmbeds)) {
-            inputEmbeds.forEach(embed => {
-              embeds.push(new MessageEmbed(embed));
-            });
-          } else if (typeof inputEmbeds === 'object') {
-            embeds.push(new MessageEmbed(inputEmbeds));
-          } else {
-            setError("msg.embeds isn't a string or array")
-          }
-        }
-
-        var components = [];
-        if (inputComponents) {
-          inputComponents.forEach(component => {
-            if (component.type == 1) {
-              var actionRow = new MessageActionRow();
-              component.components.forEach(subComponentData => {
-                switch (subComponentData.type) {
-                  case 2:
-                    actionRow.addComponents(new MessageButton(subComponentData));
-                    break;
-                  case 3:
-                    actionRow.addComponents(new MessageSelectMenu(subComponentData));
-                    break;
-                }
+        const formatAttachments = () => {
+          if (inputAttachments) {
+            let attachments = [];
+            if (typeof inputAttachments === 'string') {
+              attachments.push(new MessageAttachment(inputAttachments));
+            } else if (Array.isArray(inputAttachments)) {
+              inputAttachments.forEach(attachment => {
+                attachments.push(new MessageAttachment(attachment));
               });
-              components.push(actionRow);
+            } else {
+              throw "msg.attachments isn't a string or array";
             }
-          });
+            return attachments;
+          }
+        }
+
+        const formatEmbeds = () => {
+          if (inputEmbeds) {
+            let embeds = [];
+            if (Array.isArray(inputEmbeds)) {
+              inputEmbeds.forEach(embed => {
+                embeds.push(embed);
+              });
+            } else if (typeof inputEmbeds === 'object') {
+              embeds.push(inputEmbeds);
+            } else {
+              throw "msg.embeds isn't a string or array";
+            }
+            return embeds;
+          }
+        }
+
+        const formatComponents = () => {
+          if (inputComponents) {
+            let components = [];
+            inputComponents.forEach(component => {
+              if (component.type == 1) {
+                var actionRow = new MessageActionRow();
+                component.components.forEach(subComponentData => {
+                  switch (subComponentData.type) {
+                    case 2:
+                      actionRow.addComponents(new MessageButton(subComponentData));
+                      break;
+                    case 3:
+                      actionRow.addComponents(new MessageSelectMenu(subComponentData));
+                      break;
+                  }
+                });
+                components.push(actionRow);
+              }
+            });
+            return components;
+          }
+        }
+
+        let attachments, embeds, components;
+        try {
+          attachments = formatAttachments();
+          embeds = formatEmbeds();
+          components = formatComponents();
+        } catch (error) {
+          console.log("LLego a este catch");
+          setError(error);
+          return;
         }
 
         switch (action.toLowerCase()) {
