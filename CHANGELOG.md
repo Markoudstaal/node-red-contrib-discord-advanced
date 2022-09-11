@@ -1,5 +1,8 @@
 # Changelog\
 
+## 3.3.4
+* Hotfix - Fix making async to input function not catching errors when formatting embeds, componentes, etc
+
 ## 3.3.3
 * Hotfix - Remove timedelay references for discordMessageManager when "action=delete"- Removed it in Discord.js v13.
 * Feature - Filter messages by channel on discordMessage.
