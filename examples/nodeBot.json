@@ -1,0 +1,308 @@
+[{
+    "id": "feb8391b4e5866c6",
+    "type": "tab",
+    "label": "Flow 1",
+    "disabled": false,
+    "info": ""
+  },
+  {
+    "id": "5f1848c885097b69",
+    "type": "discordMessage",
+    "z": "feb8391b4e5866c6",
+    "name": "",
+    "token": "",
+    "x": 180,
+    "y": 480,
+    "wires": [
+      [
+        "d8bf87a0b784edf2"
+      ]
+    ]
+  },
+  {
+    "id": "d8bf87a0b784edf2",
+    "type": "switch",
+    "z": "feb8391b4e5866c6",
+    "name": "Check if message has a command",
+    "property": "payload",
+    "propertyType": "msg",
+    "rules": [{
+        "t": "cont",
+        "v": "!help",
+        "vt": "str"
+      },
+      {
+        "t": "cont",
+        "v": "!docs",
+        "vt": "str"
+      },
+      {
+        "t": "cont",
+        "v": "!embed",
+        "vt": "str"
+      },
+      {
+        "t": "else"
+      }
+    ],
+    "checkall": "true",
+    "repair": false,
+    "outputs": 4,
+    "x": 480,
+    "y": 480,
+    "wires": [
+      [
+        "f2fa3f81a4889996",
+        "187d4e1dd1d60c61"
+      ],
+      [
+        "a45aa97e2145baea",
+        "187d4e1dd1d60c61"
+      ],
+      [
+        "187d4e1dd1d60c61",
+        "3919d402145f01e0"
+      ],
+      [
+        "187d4e1dd1d60c61",
+        "012f294c5861f72e"
+      ]
+    ]
+  },
+  {
+    "id": "f2fa3f81a4889996",
+    "type": "change",
+    "z": "feb8391b4e5866c6",
+    "name": "Set message for !help",
+    "rules": [{
+        "t": "set",
+        "p": "payload",
+        "pt": "msg",
+        "to": "If you need help and haven't found your question answered on the Wiki (https://github.com/Markoudstaal/node-red-contrib-discord-advanced/wiki). Go over to the <#866697606356140064> channel and ask your question there.",
+        "tot": "str"
+      },
+      {
+        "t": "set",
+        "p": "channel",
+        "pt": "msg",
+        "to": "880128397605482497",
+        "tot": "str"
+      }
+    ],
+    "action": "",
+    "property": "",
+    "from": "",
+    "to": "",
+    "reg": false,
+    "x": 840,
+    "y": 400,
+    "wires": [
+      [
+        "6c9e9bc955d9140d"
+      ]
+    ]
+  },
+  {
+    "id": "a45aa97e2145baea",
+    "type": "change",
+    "z": "feb8391b4e5866c6",
+    "name": "Set message for !docs",
+    "rules": [{
+        "t": "set",
+        "p": "payload",
+        "pt": "msg",
+        "to": "https://github.com/Markoudstaal/node-red-contrib-discord-advanced/wiki",
+        "tot": "str"
+      },
+      {
+        "t": "set",
+        "p": "channel",
+        "pt": "msg",
+        "to": "880128397605482497",
+        "tot": "str"
+      }
+    ],
+    "action": "",
+    "property": "",
+    "from": "",
+    "to": "",
+    "reg": false,
+    "x": 840,
+    "y": 480,
+    "wires": [
+      [
+        "6c9e9bc955d9140d"
+      ]
+    ]
+  },
+  {
+    "id": "a1cbe1f93008d1bf",
+    "type": "discordMessageManager",
+    "z": "feb8391b4e5866c6",
+    "name": "",
+    "channel": "",
+    "token": "",
+    "x": 1250,
+    "y": 600,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "187d4e1dd1d60c61",
+    "type": "change",
+    "z": "feb8391b4e5866c6",
+    "name": "Delete the command message",
+    "rules": [{
+        "t": "set",
+        "p": "message",
+        "pt": "msg",
+        "to": "data.id",
+        "tot": "msg"
+      },
+      {
+        "t": "set",
+        "p": "action",
+        "pt": "msg",
+        "to": "delete",
+        "tot": "str"
+      },
+      {
+        "t": "set",
+        "p": "channel",
+        "pt": "msg",
+        "to": "channel",
+        "tot": "msg"
+      }
+    ],
+    "action": "",
+    "property": "",
+    "from": "",
+    "to": "",
+    "reg": false,
+    "x": 870,
+    "y": 640,
+    "wires": [
+      [
+        "a1cbe1f93008d1bf"
+      ]
+    ]
+  },
+  {
+    "id": "3919d402145f01e0",
+    "type": "function",
+    "z": "feb8391b4e5866c6",
+    "name": "Edit the embed message",
+    "func": "const newMsg = {};\nnewMsg.payload = \"\";\nnewMsg.embed = {\n    \"title\": \"This channel gives you access to the node test bot.\",\n    \"description\": \"This flow is also published here: https://github.com/Markoudstaal/node-red-contrib-discord-advanced/wiki/nodeBot.json \\n You can try out the following commands:\",\n    \"url\": \"https://discordapp.com\",\n    \"color\": 5747094,\n    \"thumbnail\": {\n        \"url\": \"https://cdn.discordapp.com/embed/avatars/0.png\"\n    },\n    \"fields\": [\n        {\n            \"name\": \"!help\",\n            \"value\": \"This will give you the link to the Wiki and also a link to the text-support channel.\"\n        },\n        {\n            \"name\": \"!docs\",\n            \"value\": \"This will also give you a link to the Wiki\"\n        },\n        {\n            \"name\": \"!embed\",\n            \"value\": \"This will edit this message to set your username below.\"\n        },\n        {\n            \"name\": \"Last editor:\",\n            \"value\": msg.author.username\n        }\n    ]\n}\n\nnewMsg.channel = \"880128397605482497\";\nnewMsg.message = \"880133015110557767\";\nnewMsg.action = \"edit\";\n\nreturn newMsg;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 850,
+    "y": 560,
+    "wires": [
+      [
+        "a1cbe1f93008d1bf"
+      ]
+    ]
+  },
+  {
+    "id": "6c9e9bc955d9140d",
+    "type": "discordMessageManager",
+    "z": "feb8391b4e5866c6",
+    "name": "",
+    "channel": "",
+    "token": "",
+    "x": 1170,
+    "y": 400,
+    "wires": [
+      [
+        "a1aa5e7a89437ad7"
+      ]
+    ]
+  },
+  {
+    "id": "a1aa5e7a89437ad7",
+    "type": "delay",
+    "z": "feb8391b4e5866c6",
+    "name": "Delay delete",
+    "pauseType": "delay",
+    "timeout": "20",
+    "timeoutUnits": "seconds",
+    "rate": "1",
+    "nbRateUnits": "1",
+    "rateUnits": "second",
+    "randomFirst": "1",
+    "randomLast": "5",
+    "randomUnits": "seconds",
+    "drop": false,
+    "allowrate": false,
+    "x": 1410,
+    "y": 400,
+    "wires": [
+      [
+        "1afd844cf9dec332"
+      ]
+    ]
+  },
+  {
+    "id": "1afd844cf9dec332",
+    "type": "change",
+    "z": "feb8391b4e5866c6",
+    "name": "Delete sent message",
+    "rules": [{
+        "t": "set",
+        "p": "action",
+        "pt": "msg",
+        "to": "delete",
+        "tot": "str"
+      },
+      {
+        "t": "set",
+        "p": "message",
+        "pt": "msg",
+        "to": "payload.id",
+        "tot": "msg"
+      },
+      {
+        "t": "set",
+        "p": "channel",
+        "pt": "msg",
+        "to": "payload.channelID",
+        "tot": "msg"
+      }
+    ],
+    "action": "",
+    "property": "",
+    "from": "",
+    "to": "",
+    "reg": false,
+    "x": 1240,
+    "y": 520,
+    "wires": [
+      [
+        "a1cbe1f93008d1bf"
+      ]
+    ]
+  },
+  {
+    "id": "012f294c5861f72e",
+    "type": "function",
+    "z": "feb8391b4e5866c6",
+    "name": "Set message for invalid command",
+    "func": "const newMsg = {};\nnewMsg.payload = `${msg.payload} is not a valid command!`\nnewMsg.channel = \"880128397605482497\";\nreturn newMsg;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 880,
+    "y": 320,
+    "wires": [
+      [
+        "6c9e9bc955d9140d"
+      ]
+    ]
+  }
+]

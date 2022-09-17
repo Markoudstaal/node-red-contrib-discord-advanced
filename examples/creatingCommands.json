@@ -1,0 +1,70 @@
+[
+    {
+        "id": "46e331e958419bcb",
+        "type": "inject",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "props": [],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 210,
+        "y": 520,
+        "wires": [
+            [
+                "4e972a45ed68ae9a"
+            ]
+        ]
+    },
+    {
+        "id": "4e972a45ed68ae9a",
+        "type": "function",
+        "z": "f6f2187d.f17ca8",
+        "name": "create slash command",
+        "func": "let commands = [];\nconst clientId = flow.get(\"clientId\");\nconst guildId = flow.get(\"guildId\");\nconst token = flow.get(\"botToken\");\n\ncommands.push(new discordjsBuilders.SlashCommandBuilder()\n\t.setName('createaccount')\n\t.setDescription('Create a account for the input email')\n\t.addStringOption(option =>\n\t\toption.setName('email')\n\t\t\t.setDescription('Email for account generation')\n\t\t\t.setRequired(true))\n\t);\n\t\ncommands.push(new discordjsBuilders.SlashCommandBuilder()\n\t.setName('echo1')\n\t.setDescription('Echo command'));\n\n// Message command\ncommands.push({\n    \"name\": \"Bookmark\",\n    \"type\": 3 \n});\n\nconst rest = new discordjsRest.REST({ version: '9' }).setToken(token);\n\n(async () => {\n\ttry {\n\t\tconsole.log('Started refreshing application (/) commands.');\n\n\t\tawait rest.put(\n\t\t\tdiscordApiTypesV9.Routes.applicationGuildCommands(clientId, guildId),\n\t\t\t{ body: commands },\n\t\t);\n\n\t\tconsole.log('Successfully reloaded application (/) commands.');\n\t\tnode.send({\n\t\t    payload: 'Successfully reloaded application (/) commands.'\n\t\t})\n\t} catch (error) {\n\t\tconsole.error(error);\n\t}\n})();",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [
+            {
+                "var": "discordApiTypesV9",
+                "module": "discord-api-types/v9"
+            },
+            {
+                "var": "discordjsRest",
+                "module": "@discordjs/rest"
+            },
+            {
+                "var": "discordjsBuilders",
+                "module": "@discordjs/builders"
+            }
+        ],
+        "x": 480,
+        "y": 520,
+        "wires": [
+            [
+                "082755a31f38cc5d"
+            ]
+        ]
+    },
+    {
+        "id": "082755a31f38cc5d",
+        "type": "debug",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 710,
+        "y": 520,
+        "wires": []
+    }
+]

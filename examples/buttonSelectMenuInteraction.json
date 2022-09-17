@@ -1,0 +1,127 @@
+[
+    {
+        "id": "e2e8b84b4c2888d3",
+        "type": "discordMessageManager",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "channel": "",
+        "token": "",
+        "x": 750,
+        "y": 680,
+        "wires": [
+            [
+                "644d832076a1b4df"
+            ]
+        ]
+    },
+    {
+        "id": "898ae628b4296992",
+        "type": "function",
+        "z": "f6f2187d.f17ca8",
+        "name": "Edit original message",
+        "func": "let newMessage = {};\nnewMessage.payload = `Thanks for clicking option *${msg.payload.customId}*, <@!${msg.payload.user.id}>`;\nnewMessage.action = \"edit\";\nnewMessage.message = msg.payload.message.id;\nnewMessage.channel = msg.payload.message.channelId;\n\nreturn newMessage;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 480,
+        "y": 640,
+        "wires": [
+            [
+                "e2e8b84b4c2888d3"
+            ]
+        ]
+    },
+    {
+        "id": "644d832076a1b4df",
+        "type": "debug",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 990,
+        "y": 680,
+        "wires": []
+    },
+    {
+        "id": "153571b3cd04ff78",
+        "type": "discordInteraction",
+        "z": "f6f2187d.f17ca8",
+        "name": "Menu Selected Interaction",
+        "token": "",
+        "interactionType": "selectMenu",
+        "custom_id": "class_select_1",
+        "commandResponse": "",
+        "interactionObject": false,
+        "x": 210,
+        "y": 700,
+        "wires": [
+            [
+                "edd5bfac50a6e20b",
+                "0a20329bcc50d154"
+            ]
+        ]
+    },
+    {
+        "id": "edd5bfac50a6e20b",
+        "type": "function",
+        "z": "f6f2187d.f17ca8",
+        "name": "Edit original message",
+        "func": "let newMessage = {};\nnewMessage.payload = `Thanks for selecting options *${msg.payload.values.join(\", \")}*, <@!${msg.payload.user.id}>`;\nnewMessage.action = \"edit\";\nnewMessage.message = msg.payload.message.id;\nnewMessage.channel = msg.payload.message.channelId;\n\nreturn newMessage;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 480,
+        "y": 700,
+        "wires": [
+            [
+                "e2e8b84b4c2888d3"
+            ]
+        ]
+    },
+    {
+        "id": "5bc45799f6c36255",
+        "type": "discordInteraction",
+        "z": "f6f2187d.f17ca8",
+        "name": "Button Interaction",
+        "token": "",
+        "interactionType": "button",
+        "custom_id": "click_opt1,click_opt2",
+        "commandResponse": "",
+        "interactionObject": false,
+        "x": 220,
+        "y": 640,
+        "wires": [
+            [
+                "898ae628b4296992",
+                "0a20329bcc50d154"
+            ]
+        ]
+    },
+    {
+        "id": "0a20329bcc50d154",
+        "type": "debug",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 470,
+        "y": 600,
+        "wires": []
+    }
+]

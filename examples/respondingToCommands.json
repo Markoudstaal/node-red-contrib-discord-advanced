@@ -1,0 +1,165 @@
+[
+    {
+        "id": "d4ec417b2cb6073e",
+        "type": "discordInteraction",
+        "z": "f6f2187d.f17ca8",
+        "name": "Bookmark message",
+        "token": "",
+        "interactionType": "messageContextMenu",
+        "custom_id": "Bookmark",
+        "commandResponse": "Command in proccess, wait a moment...",
+        "interactionObject": false,
+        "x": 230,
+        "y": 800,
+        "wires": [
+            [
+                "12bff637aaea1c2e",
+                "109979d07e67cd74"
+            ]
+        ]
+    },
+    {
+        "id": "f3edb38d84faa715",
+        "type": "function",
+        "z": "f6f2187d.f17ca8",
+        "name": "Create new Message for the reply",
+        "func": "let newMessage = {};\nnewMessage.payload = `<@!${msg.payload.user.id}>, Thanks for using command *${msg.payload.commandName}*`;\nnewMessage.channel = msg.payload.channelId;\nreturn newMessage;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 520,
+        "y": 860,
+        "wires": [
+            [
+                "4a50b6b3066a7f6a"
+            ]
+        ]
+    },
+    {
+        "id": "4a50b6b3066a7f6a",
+        "type": "discordMessageManager",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "channel": "",
+        "token": "",
+        "x": 830,
+        "y": 840,
+        "wires": [
+            [
+                "0002dfee5ebe8603"
+            ]
+        ]
+    },
+    {
+        "id": "21ade64ae341af01",
+        "type": "discordInteraction",
+        "z": "f6f2187d.f17ca8",
+        "name": "echo1 Slash Command",
+        "token": "",
+        "interactionType": "command",
+        "custom_id": "echo1",
+        "commandResponse": "Command in proccess, wait a moment...",
+        "interactionObject": true,
+        "x": 220,
+        "y": 860,
+        "wires": [
+            [
+                "f3edb38d84faa715",
+                "109979d07e67cd74"
+            ]
+        ]
+    },
+    {
+        "id": "0002dfee5ebe8603",
+        "type": "debug",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1050,
+        "y": 840,
+        "wires": []
+    },
+    {
+        "id": "109979d07e67cd74",
+        "type": "debug",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 450,
+        "y": 1000,
+        "wires": []
+    },
+    {
+        "id": "12bff637aaea1c2e",
+        "type": "function",
+        "z": "f6f2187d.f17ca8",
+        "name": "Edit original reply",
+        "func": "let newMessage = {};\nnewMessage.payload = `<@!${msg.payload.user.id}>, message bookmarked`;\nnewMessage.action = \"edit\";\nnewMessage.message = msg.payload.replyMessage.id;\nnewMessage.channel = msg.payload.channelId;\n\nreturn newMessage;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 490,
+        "y": 800,
+        "wires": [
+            [
+                "4a50b6b3066a7f6a"
+            ]
+        ]
+    },
+    {
+        "id": "2baba829f5f3618e",
+        "type": "discordInteraction",
+        "z": "f6f2187d.f17ca8",
+        "name": "CreateAccount Slash Command",
+        "token": "",
+        "interactionType": "command",
+        "custom_id": "createaccount",
+        "commandResponse": "Creating account...",
+        "interactionObject": true,
+        "x": 190,
+        "y": 940,
+        "wires": [
+            [
+                "51ec93329438f0cd",
+                "109979d07e67cd74"
+            ]
+        ]
+    },
+    {
+        "id": "51ec93329438f0cd",
+        "type": "function",
+        "z": "f6f2187d.f17ca8",
+        "name": "Edit original reply",
+        "func": "let newMessage = {};\nconsole.log(\"hola\");\nconst optionString = msg.interactionObject.options.getString('email');\nnewMessage.payload = `<@!${msg.payload.user.id}>, Account created for email ${optionString}`;\nnewMessage.action = \"edit\";\nnewMessage.message = msg.payload.replyMessage.id;\nnewMessage.channel = msg.payload.channelId;\n\nreturn newMessage;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 510,
+        "y": 940,
+        "wires": [
+            [
+                "4a50b6b3066a7f6a"
+            ]
+        ]
+    }
+]

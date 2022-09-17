@@ -1,0 +1,122 @@
+[
+    {
+        "id": "79ed38ee433c1da7",
+        "type": "discordMessageManager",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "channel": "",
+        "token": "",
+        "x": 810,
+        "y": 400,
+        "wires": [
+            [
+                "5f78ed9d5208fc9d"
+            ]
+        ]
+    },
+    {
+        "id": "5f78ed9d5208fc9d",
+        "type": "debug",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1010,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "243f616e9c249f70",
+        "type": "function",
+        "z": "f6f2187d.f17ca8",
+        "name": "Add Button Components",
+        "func": "\nmsg.payload = \"-- Take a decision --\";\nmsg.components = \n    [\n        {\n            \"type\": 1,\n            \"components\": [\n                {\n                    \"type\": 2,\n                    \"label\": \"Option 1\",\n                    \"style\": 3,\n                    \"custom_id\": \"click_opt1\"\n                },\n                {\n                    \"type\": 2,\n                    \"label\": \"Option 2\",\n                    \"style\": 4,\n                    \"custom_id\": \"click_opt2\"\n                }\n            ]\n\n        }\n    ];\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 530,
+        "y": 380,
+        "wires": [
+            [
+                "79ed38ee433c1da7"
+            ]
+        ]
+    },
+    {
+        "id": "81b904b97a19920e",
+        "type": "inject",
+        "z": "f6f2187d.f17ca8",
+        "name": "Inject message in channel",
+        "props": [
+            {
+                "p": "channel",
+                "v": "00000000000000000",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 270,
+        "y": 380,
+        "wires": [
+            [
+                "243f616e9c249f70"
+            ]
+        ]
+    },
+    {
+        "id": "7ac2d6065bb625c0",
+        "type": "function",
+        "z": "f6f2187d.f17ca8",
+        "name": "Add Menu Interaction",
+        "func": "\nmsg.pamsgyload = \"Select an option\";\nmsg.components =  \n    [\n        {\n            \"type\": 1,\n            \"components\": [\n                {\n                    \"type\": 3,\n                    \"custom_id\": \"class_select_1\",\n                    \"options\":[\n                        {\n                            \"label\": \"Rogue\",\n                            \"value\": \"rogue\",\n                            \"description\": \"Sneak n stab\",\n                            \"emoji\": {\n                                \"name\": \"rogue\",\n                                \"id\": \"625891304148303894\"\n                            }\n                        },\n                        {\n                            \"label\": \"Mage\",\n                            \"value\": \"mage\",\n                            \"description\": \"Turn 'em into a sheep\",\n                            \"emoji\": {\n                                \"name\": \"mage\",\n                                \"id\": \"625891304081063986\"\n                            }\n                        },\n                        {\n                            \"label\": \"Priest\",\n                            \"value\": \"priest\",\n                            \"description\": \"You get heals when I'm done doing damage\",\n                            \"emoji\": {\n                                \"name\": \"priest\",\n                                \"id\": \"625891303795982337\"\n                            }\n                        }\n                    ],\n                    \"placeholder\": \"Choose a class\",\n                    \"min_values\": 1,\n                    \"max_values\": 3\n                }\n            ]\n        }\n    ];\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 520,
+        "y": 420,
+        "wires": [
+            [
+                "79ed38ee433c1da7"
+            ]
+        ]
+    },
+    {
+        "id": "1d2411688f4d1e68",
+        "type": "inject",
+        "z": "f6f2187d.f17ca8",
+        "name": "Inject message in channel",
+        "props": [
+            {
+                "p": "channel",
+                "v": "0000000000000000000",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 270,
+        "y": 420,
+        "wires": [
+            [
+                "7ac2d6065bb625c0"
+            ]
+        ]
+    }
+]

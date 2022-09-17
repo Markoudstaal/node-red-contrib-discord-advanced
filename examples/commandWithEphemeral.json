@@ -1,0 +1,77 @@
+[
+    {
+        "id": "91d88700352b89d4",
+        "type": "discordInteraction",
+        "z": "4bde5831221f6bb2",
+        "name": "echo2 command ephemeral",
+        "token": "",
+        "interactionType": "command",
+        "custom_id": "echo2",
+        "commandResponse": "Command in proccess, wait a Direct Message",
+        "interactionObject": true,
+        "ephemeral": true,
+        "x": 200,
+        "y": 1380,
+        "wires": [
+            [
+                "8616c95a54f1b988"
+            ]
+        ]
+    },
+    {
+        "id": "8616c95a54f1b988",
+        "type": "function",
+        "z": "4bde5831221f6bb2",
+        "name": "Send DM to user",
+        "func": "let newMessage = {};\nnewMessage.user = msg.payload.user.id;\nnewMessage.payload = {};\nnewMessage.payload.content = `<@!${msg.payload.user.id}>, Thanks for using command *${msg.payload.commandName}*`;\nreturn newMessage;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [
+            {
+                "var": "discordjs",
+                "module": "discord.js"
+            }
+        ],
+        "x": 470,
+        "y": 1380,
+        "wires": [
+            [
+                "59154e8ccee0f648"
+            ]
+        ]
+    },
+    {
+        "id": "59154e8ccee0f648",
+        "type": "discordMessageManager",
+        "z": "4bde5831221f6bb2",
+        "name": "",
+        "channel": "",
+        "token": "",
+        "x": 710,
+        "y": 1380,
+        "wires": [
+            [
+                "2d4f5a776ac62f0f"
+            ]
+        ]
+    },
+    {
+        "id": "2d4f5a776ac62f0f",
+        "type": "debug",
+        "z": "4bde5831221f6bb2",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 910,
+        "y": 1380,
+        "wires": []
+    }
+]
