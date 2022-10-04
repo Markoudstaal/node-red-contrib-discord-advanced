@@ -39,6 +39,14 @@ node-red-contrib-discord-advanced gives you access to four nodes:
 
 See `CHANGELOG.md` for more info, including information regarding breaking changes per version.
 
+## Common problems
+
+### Empty payload in discordMessage
+
+A common error on some applications is getting empty payload when receiving messages on discordMessage. On 1st of September, Discord changed the way an application gets messages from channel. If you are having this problem try enabling "Message Content Intent" for your bot on Discord Developer Portal.
+
+![](https://raw.githubusercontent.com/Markoudstaal/node-red-contrib-discord-advanced/main/assets/message_content_intent.png)
+
 ## Support, issues and feature requests
 
 For support in setting up and feature requests you can contact me on [this](https://discord.gg/HPva4sjezt) discord.
