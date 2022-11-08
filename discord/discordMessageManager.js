@@ -199,7 +199,7 @@ module.exports = function (RED) {
               attachments.push(new MessageAttachment(inputAttachments));
             } else if (Array.isArray(inputAttachments)) {
               inputAttachments.forEach(attachment => {
-                attachments.push(new MessageAttachment(attachment));
+                attachments.push(attachment);
               });
             } else {
               throw "msg.attachments isn't a string or array";
