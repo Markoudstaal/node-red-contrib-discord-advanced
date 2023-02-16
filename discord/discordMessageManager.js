@@ -2,11 +2,10 @@ module.exports = function (RED) {
   var discordBotManager = require('./lib/discordBotManager.js');
   const Flatted = require('flatted');
   const {
-    MessageAttachment,
-    MessageEmbed,
-    MessageActionRow,
-    MessageButton,
-    MessageSelectMenu
+    AttachmentBuilder,
+    ButtonBuilder,
+    ActionRowBuilder,
+    StringSelectMenuBuilder
   } = require('discord.js');
 
   const checkString = (field) => typeof field === 'string' ? field : false;
@@ -196,11 +195,17 @@ module.exports = function (RED) {
           if (inputAttachments) {
             let attachments = [];
             if (typeof inputAttachments === 'string') {
-              attachments.push(new MessageAttachment(inputAttachments));
+              attachments.push(new AttachmentBuilder(inputAttachments));
             } else if (Array.isArray(inputAttachments)) {
               inputAttachments.forEach(attachment => {
-                attachments.push(new MessageAttachment(attachment));
+                if (typeof attachment === 'string') {                
+                  attachments.push(new AttachmentBuilder(attachment));
+                } else if (typeof attachment === 'object') {
+                  attachments.push(new AttachmentBuilder(attachment.buffer, { name: attachment.name}));
+                } 
               });
+            } else if (typeof inputAttachments === 'object') {
+              attachments.push(new AttachmentBuilder(inputAttachments.buffer, {name: inputAttachments.name}));
             } else {
               throw "msg.attachments isn't a string or array";
             }
@@ -229,14 +234,14 @@ module.exports = function (RED) {
             let components = [];
             inputComponents.forEach(component => {
               if (component.type == 1) {
-                var actionRow = new MessageActionRow();
+                var actionRow = new ActionRowBuilder();
                 component.components.forEach(subComponentData => {
                   switch (subComponentData.type) {
                     case 2:
-                      actionRow.addComponents(new MessageButton(subComponentData));
+                      actionRow.addComponents(new ButtonBuilder(subComponentData));
                       break;
                     case 3:
-                      actionRow.addComponents(new MessageSelectMenu(subComponentData));
+                      actionRow.addComponents(new StringSelectMenuBuilder(subComponentData));
                       break;
                   }
                 });

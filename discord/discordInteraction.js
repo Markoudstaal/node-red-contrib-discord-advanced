@@ -29,7 +29,7 @@ module.exports = function (RED) {
           case "command":
             return interaction.isCommand();
           case "messageContextMenu":
-            return interaction.isMessageContextMenu();
+            return interaction.isMessageContextMenuCommand();
           case "all":
             return true;
           default:
@@ -49,7 +49,7 @@ module.exports = function (RED) {
         try {
           if (!matchInteractionType(interaction)) return;
 
-          if (interaction.isCommand() || interaction.isMessageContextMenu()) {
+          if (interaction.isCommand() || interaction.isMessageContextMenuCommand()) {
             if (custom_id && custom_id.split(",").indexOf(interaction.commandName) < 0) return;
             await interaction.reply({ content: commandResponse, ephemeral: ephemeral });
           }
@@ -73,7 +73,7 @@ module.exports = function (RED) {
           if (injectInteractionObject)
             message.interactionObject = interaction;
 
-          if (interaction.isCommand() || interaction.isMessageContextMenu()) {
+          if (interaction.isCommand() || interaction.isMessageContextMenuCommand()) {
             message.payload.options = Flatted.parse(Flatted.stringify(interaction.options));
             message.payload.replyMessage = Flatted.parse(Flatted.stringify(await interaction.fetchReply()));
           }

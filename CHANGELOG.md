@@ -1,5 +1,9 @@
 # Changelog\
 
+## 3.4.0.alpha.0
+* Enhancement - Moving to Discord.js 14.7
+* Feature - Attachments from buffer added
+
 ## 3.3.4
 * Hotfix - Fix making async to input function not catching errors when formatting embeds, componentes, etc
 
