@@ -25,7 +25,7 @@ module.exports = function (RED) {
           case "button":
             return interaction.isButton();
           case "selectMenu":
-            return interaction.isSelectMenu();
+            return interaction.isStringSelectMenu();
           case "command":
             return interaction.isCommand();
           case "messageContextMenu":
