@@ -105,12 +105,44 @@ module.exports = function (RED) {
           }
         }
 
+        const removeRole = () => {
+          const userID = checkIdOrObject(user);
+          const guildID = checkIdOrObject(guild);
+          const roleID = checkIdOrObject(role);
+
+          if (!userID) {
+            setError(`msg.user wasn't set correctly`);
+          } else if (!guildID) {
+            setError(`msg.guild wasn't set correctly`);
+          } else if (!roleID) {
+            setError(`msg.role wasn't set correctly`);
+          } else {
+            bot.guilds.fetch(guildID).then(guild => {
+              guild.members.fetch(userID).then(user => {
+                try {
+                  guild.members.cache.get(userID).roles.remove(role);
+                  msg.payload = "role removed";
+                  send(msg);
+                  setSuccess(`role removed`);
+                } catch (error) {
+                  setError(error);
+                }
+              });
+            }).catch(error => {
+              setError(error);
+            });
+          }
+        }
+
         switch (action.toLowerCase()) {
           case 'get':
             sendRoles();
             break;
           case 'set':
             setRole();
+            break;
+          case 'remove':
+            removeRole();
             break;
           default:
             setError(`msg.action has an incorrect value`)
