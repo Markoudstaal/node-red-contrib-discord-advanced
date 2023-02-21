@@ -1,5 +1,9 @@
 # Changelog\
 
+## 3.4.0.alpha.1
+* Feature - Add and remove roles to users
+* Feature - Crosspost an existing message or crosspost a new message on an announcement channel
+
 ## 3.4.0.alpha.0
 * Enhancement - Moving to Discord.js 14.7
 * Feature - Attachments from buffer added

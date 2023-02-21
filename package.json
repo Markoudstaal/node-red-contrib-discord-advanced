@@ -1,6 +1,6 @@
 {
   "name": "node-red-contrib-discord-advanced",
-  "version": "3.4.0-alpha.0",
+  "version": "3.4.0-alpha.1",
   "description": "Recieve, send, edit, reply, react to and delete Discord messages, handle interactions and much more in Node-RED.",
   "main": "discord/discord.js",
   "scripts": {

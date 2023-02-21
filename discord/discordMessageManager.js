@@ -5,7 +5,8 @@ module.exports = function (RED) {
     AttachmentBuilder,
     ButtonBuilder,
     ActionRowBuilder,
-    StringSelectMenuBuilder
+    StringSelectMenuBuilder,
+    ChannelType
   } = require('discord.js');
 
   const checkString = (field) => typeof field === 'string' ? field : false;
@@ -25,6 +26,7 @@ module.exports = function (RED) {
         const inputEmbeds = msg.payload?.embeds || msg.payload?.embed || msg.embeds || msg.embed;
         const inputAttachments = msg.payload?.attachments || msg.payload?.attachment || msg.attachments || msg.attachment;
         const inputComponents = msg.payload?.components || msg.components;
+        const crosspost = msg.crosspost || false;
 
         const setError = (error) => {
           node.status({
@@ -115,7 +117,17 @@ module.exports = function (RED) {
               components: components
             };
             let resultMessage = await channelInstance.send(messageObject);
-            setSuccess(`message sent, id = ${resultMessage.id}`, resultMessage);
+            let resultCrossPosting = "";
+
+            if(crosspost)
+            {              
+              if (resultMessage.channel.type === ChannelType.GuildAnnouncement) 
+                await resultMessage.crosspost();
+              else
+                resultCrossPosting = "Not published";
+            }
+
+            setSuccess(`message sent, id = ${resultMessage.id} ${resultCrossPosting}`, resultMessage);
           } catch (err) {
             setError(err);
           }
@@ -186,6 +198,24 @@ module.exports = function (RED) {
             };
 
             setSuccess(`message ${message.id} reacted`, newMsg);
+          } catch (err) {
+            setError(err);
+          }
+        }
+
+        const crosspostMessage = async () => {
+          try {
+            let message = await getMessage(channel, messageId);  
+            if (message.channel.type === ChannelType.GuildAnnouncement)
+              await message.crosspost();
+            else
+              throw "It's not a Announcement channel";
+              
+            const newMsg = {
+              message: Flatted.parse(Flatted.stringify(message))
+            };
+
+            setSuccess(`message ${message.id} crossposted`, newMsg);
           } catch (err) {
             setError(err);
           }
@@ -278,6 +308,9 @@ module.exports = function (RED) {
             break;
           case 'react':
             await reactToMessage();
+            break;
+          case 'crosspost':
+            await crosspostMessage();
             break;
           default:
             setError(`msg.action has an incorrect value`)
