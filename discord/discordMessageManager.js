@@ -210,7 +210,7 @@ module.exports = function (RED) {
               await message.crosspost();
             else
               throw "It's not a Announcement channel";
-              
+
             const newMsg = {
               message: Flatted.parse(Flatted.stringify(message))
             };
@@ -222,8 +222,8 @@ module.exports = function (RED) {
         }
 
         const formatAttachments = () => {
+          let attachments = [];
           if (inputAttachments) {
-            let attachments = [];
             if (typeof inputAttachments === 'string') {
               attachments.push(new AttachmentBuilder(inputAttachments));
             } else if (Array.isArray(inputAttachments)) {
@@ -239,13 +239,13 @@ module.exports = function (RED) {
             } else {
               throw "msg.attachments isn't a string or array";
             }
-            return attachments;
           }
+          return attachments;
         }
 
         const formatEmbeds = () => {
+          let embeds = [];
           if (inputEmbeds) {
-            let embeds = [];
             if (Array.isArray(inputEmbeds)) {
               inputEmbeds.forEach(embed => {
                 embeds.push(embed);
@@ -255,13 +255,13 @@ module.exports = function (RED) {
             } else {
               throw "msg.embeds isn't a string or array";
             }
-            return embeds;
           }
+          return embeds;
         }
 
         const formatComponents = () => {
+          let components = [];
           if (inputComponents) {
-            let components = [];
             inputComponents.forEach(component => {
               if (component.type == 1) {
                 var actionRow = new ActionRowBuilder();
@@ -278,8 +278,8 @@ module.exports = function (RED) {
                 components.push(actionRow);
               }
             });
-            return components;
           }
+          return components;
         }
 
         let attachments, embeds, components;
@@ -288,7 +288,6 @@ module.exports = function (RED) {
           embeds = formatEmbeds();
           components = formatComponents();
         } catch (error) {
-          console.log("LLego a este catch");
           setError(error);
           return;
         }
