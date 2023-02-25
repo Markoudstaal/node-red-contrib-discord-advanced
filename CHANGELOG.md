@@ -1,6 +1,6 @@
 # Changelog\
 
-## 3.4.0.alpha.1
+## 3.4.0.alpha.2
 * Hotfix - Mantain same functionality when editing messages (Overrides all fields: embed, components, attachments) after change discord.js version 14.7.1
 
 ## 3.4.0.alpha.1
