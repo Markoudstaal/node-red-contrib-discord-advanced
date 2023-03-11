@@ -2,11 +2,11 @@ module.exports = function (RED) {
   var discordBotManager = require('./lib/discordBotManager.js');
   const Flatted = require('flatted');
   const {
-    MessageAttachment,
-    MessageEmbed,
-    MessageActionRow,
-    MessageButton,
-    MessageSelectMenu
+    AttachmentBuilder,
+    ButtonBuilder,
+    ActionRowBuilder,
+    StringSelectMenuBuilder,
+    ChannelType
   } = require('discord.js');
 
   const checkString = (field) => typeof field === 'string' ? field : false;
@@ -26,6 +26,7 @@ module.exports = function (RED) {
         const inputEmbeds = msg.payload?.embeds || msg.payload?.embed || msg.embeds || msg.embed;
         const inputAttachments = msg.payload?.attachments || msg.payload?.attachment || msg.attachments || msg.attachment;
         const inputComponents = msg.payload?.components || msg.components;
+        const crosspost = msg.crosspost || false;
 
         const setError = (error) => {
           node.status({
@@ -116,7 +117,17 @@ module.exports = function (RED) {
               components: components
             };
             let resultMessage = await channelInstance.send(messageObject);
-            setSuccess(`message sent, id = ${resultMessage.id}`, resultMessage);
+            let resultCrossPosting = "";
+
+            if(crosspost)
+            {              
+              if (resultMessage.channel.type === ChannelType.GuildAnnouncement) 
+                await resultMessage.crosspost();
+              else
+                resultCrossPosting = "Not published";
+            }
+
+            setSuccess(`message sent, id = ${resultMessage.id} ${resultCrossPosting}`, resultMessage);
           } catch (err) {
             setError(err);
           }
@@ -192,25 +203,49 @@ module.exports = function (RED) {
           }
         }
 
-        const formatAttachments = () => {
-          if (inputAttachments) {
-            let attachments = [];
-            if (typeof inputAttachments === 'string') {
-              attachments.push(new MessageAttachment(inputAttachments));
-            } else if (Array.isArray(inputAttachments)) {
-              inputAttachments.forEach(attachment => {
-                attachments.push(new MessageAttachment(attachment));
-              });
-            } else {
-              throw "msg.attachments isn't a string or array";
-            }
-            return attachments;
+        const crosspostMessage = async () => {
+          try {
+            let message = await getMessage(channel, messageId);  
+            if (message.channel.type === ChannelType.GuildAnnouncement)
+              await message.crosspost();
+            else
+              throw "It's not a Announcement channel";
+
+            const newMsg = {
+              message: Flatted.parse(Flatted.stringify(message))
+            };
+
+            setSuccess(`message ${message.id} crossposted`, newMsg);
+          } catch (err) {
+            setError(err);
           }
         }
 
+        const formatAttachments = () => {
+          let attachments = [];
+          if (inputAttachments) {
+            if (typeof inputAttachments === 'string') {
+              attachments.push(new AttachmentBuilder(inputAttachments));
+            } else if (Array.isArray(inputAttachments)) {
+              inputAttachments.forEach(attachment => {
+                if (typeof attachment === 'string') {                
+                  attachments.push(new AttachmentBuilder(attachment));
+                } else if (typeof attachment === 'object') {
+                  attachments.push(new AttachmentBuilder(attachment.buffer, { name: attachment.name}));
+                } 
+              });
+            } else if (typeof inputAttachments === 'object') {
+              attachments.push(new AttachmentBuilder(inputAttachments.buffer, {name: inputAttachments.name}));
+            } else {
+              throw "msg.attachments isn't a string or array";
+            }
+          }
+          return attachments;
+        }
+
         const formatEmbeds = () => {
+          let embeds = [];
           if (inputEmbeds) {
-            let embeds = [];
             if (Array.isArray(inputEmbeds)) {
               inputEmbeds.forEach(embed => {
                 embeds.push(embed);
@@ -220,31 +255,31 @@ module.exports = function (RED) {
             } else {
               throw "msg.embeds isn't a string or array";
             }
-            return embeds;
           }
+          return embeds;
         }
 
         const formatComponents = () => {
+          let components = [];
           if (inputComponents) {
-            let components = [];
             inputComponents.forEach(component => {
               if (component.type == 1) {
-                var actionRow = new MessageActionRow();
+                var actionRow = new ActionRowBuilder();
                 component.components.forEach(subComponentData => {
                   switch (subComponentData.type) {
                     case 2:
-                      actionRow.addComponents(new MessageButton(subComponentData));
+                      actionRow.addComponents(new ButtonBuilder(subComponentData));
                       break;
                     case 3:
-                      actionRow.addComponents(new MessageSelectMenu(subComponentData));
+                      actionRow.addComponents(new StringSelectMenuBuilder(subComponentData));
                       break;
                   }
                 });
                 components.push(actionRow);
               }
             });
-            return components;
           }
+          return components;
         }
 
         let attachments, embeds, components;
@@ -253,7 +288,6 @@ module.exports = function (RED) {
           embeds = formatEmbeds();
           components = formatComponents();
         } catch (error) {
-          console.log("LLego a este catch");
           setError(error);
           return;
         }
@@ -273,6 +307,9 @@ module.exports = function (RED) {
             break;
           case 'react':
             await reactToMessage();
+            break;
+          case 'crosspost':
+            await crosspostMessage();
             break;
           default:
             setError(`msg.action has an incorrect value`)

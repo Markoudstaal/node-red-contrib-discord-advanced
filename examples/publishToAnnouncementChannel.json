@@ -1,0 +1,140 @@
+[
+    {
+        "id": "2397a8123781742b",
+        "type": "debug",
+        "z": "4bde5831221f6bb2",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 830,
+        "y": 1500,
+        "wires": []
+    },
+    {
+        "id": "bb4fbe38a620509b",
+        "type": "inject",
+        "z": "4bde5831221f6bb2",
+        "name": "",
+        "props": [],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 110,
+        "y": 1500,
+        "wires": [
+            [
+                "2e9020e2912de3a4"
+            ]
+        ]
+    },
+    {
+        "id": "49eef23538350f0d",
+        "type": "discordMessageManager",
+        "z": "4bde5831221f6bb2",
+        "name": "",
+        "channel": "",
+        "token": "",
+        "x": 610,
+        "y": 1500,
+        "wires": [
+            [
+                "2397a8123781742b"
+            ]
+        ]
+    },
+    {
+        "id": "2e9020e2912de3a4",
+        "type": "function",
+        "z": "4bde5831221f6bb2",
+        "name": "create and Publish message",
+        "func": "msg.payload = \"Mi new announcement\";\nmsg.channel = \"1077588567209017384\"; // Your channel ID\nmsg.crosspost = true;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 320,
+        "y": 1500,
+        "wires": [
+            [
+                "49eef23538350f0d"
+            ]
+        ]
+    },
+    {
+        "id": "03e7d31bda31a268",
+        "type": "inject",
+        "z": "4bde5831221f6bb2",
+        "name": "",
+        "props": [],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 110,
+        "y": 1560,
+        "wires": [
+            [
+                "6d317f8d4b417d6b"
+            ]
+        ]
+    },
+    {
+        "id": "6d317f8d4b417d6b",
+        "type": "function",
+        "z": "4bde5831221f6bb2",
+        "name": "Publish existing message",
+        "func": "msg.channel = \"1077588567209017384\"; // Your channel ID\nmsg.message = \"1077605124064682054\";\nmsg.action = \"crosspost\";\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 310,
+        "y": 1560,
+        "wires": [
+            [
+                "e9e4930c91809352"
+            ]
+        ]
+    },
+    {
+        "id": "e9e4930c91809352",
+        "type": "discordMessageManager",
+        "z": "4bde5831221f6bb2",
+        "name": "",
+        "channel": "",
+        "token": "",
+        "x": 610,
+        "y": 1560,
+        "wires": [
+            [
+                "1fe8e70821499a13"
+            ]
+        ]
+    },
+    {
+        "id": "1fe8e70821499a13",
+        "type": "debug",
+        "z": "4bde5831221f6bb2",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 830,
+        "y": 1560,
+        "wires": []
+    }
+]

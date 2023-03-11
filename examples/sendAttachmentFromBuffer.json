@@ -1,0 +1,127 @@
+[
+    {
+        "id": "728529627694b3f4",
+        "type": "group",
+        "z": "4bde5831221f6bb2",
+        "name": "Attach an embed from buffer",
+        "style": {
+            "label": true
+        },
+        "nodes": [
+            "a8b5cbcb94a0f141",
+            "d612a768b4c19572",
+            "1f28a89ef31414cc",
+            "fccf59b2afcf0462",
+            "cdae812f895a89c7"
+        ],
+        "x": 14,
+        "y": 1139,
+        "w": 892,
+        "h": 142
+    },
+    {
+        "id": "a8b5cbcb94a0f141",
+        "type": "inject",
+        "z": "4bde5831221f6bb2",
+        "g": "728529627694b3f4",
+        "name": "Inject message in channel",
+        "props": [
+            {
+                "p": "channel",
+                "v": "978065385825906748",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 170,
+        "y": 1180,
+        "wires": [
+            [
+                "d612a768b4c19572"
+            ]
+        ]
+    },
+    {
+        "id": "d612a768b4c19572",
+        "type": "http request",
+        "z": "4bde5831221f6bb2",
+        "g": "728529627694b3f4",
+        "name": "Dowload Image",
+        "method": "GET",
+        "ret": "bin",
+        "paytoqs": "ignore",
+        "url": "https://media.toyota.com.ar/ca2fd98c-025f-4c9f-8d12-3f07fe75483c.png",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 400,
+        "y": 1180,
+        "wires": [
+            [
+                "1f28a89ef31414cc"
+            ]
+        ]
+    },
+    {
+        "id": "1f28a89ef31414cc",
+        "type": "function",
+        "z": "4bde5831221f6bb2",
+        "g": "728529627694b3f4",
+        "name": "Embed attachment from buffer",
+        "func": "msg.embed = {\n    \"title\": `Toyota Etios`,\n      \"description\": `Compact Car`,\n      \"color\": 0x00FFFF,\n      \"fields\": [\n        {\n          \"name\": `Type`,\n          \"value\": `Hatch`\n        }\n      ],\n      \"image\": {\n        \"url\": \"attachment://etios2.jpg\"\n      }\n};\nmsg.attachments = { buffer: msg.payload, name: \"etios2.jpg\"};\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 210,
+        "y": 1240,
+        "wires": [
+            [
+                "fccf59b2afcf0462"
+            ]
+        ]
+    },
+    {
+        "id": "fccf59b2afcf0462",
+        "type": "discordMessageManager",
+        "z": "4bde5831221f6bb2",
+        "g": "728529627694b3f4",
+        "name": "",
+        "channel": "",
+        "token": "",
+        "x": 550,
+        "y": 1240,
+        "wires": [
+            [
+                "cdae812f895a89c7"
+            ]
+        ]
+    },
+    {
+        "id": "cdae812f895a89c7",
+        "type": "debug",
+        "z": "4bde5831221f6bb2",
+        "g": "728529627694b3f4",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 810,
+        "y": 1240,
+        "wires": []
+    }
+]

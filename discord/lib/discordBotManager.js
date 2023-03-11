@@ -1,7 +1,4 @@
-const {
-  Client,
-  Intents,
-} = require('discord.js');
+const { Client, GatewayIntentBits, Partials } = require('discord.js');
 require('./bigint-compat');
 
 var bots = new Map();
@@ -11,16 +8,17 @@ var getBot = function (configNode) {
     if (bots.get(configNode) === undefined) {
       bot = new Client({
         intents: [
-          Intents.FLAGS.GUILDS,
-          Intents.FLAGS.GUILD_MESSAGES,
-          Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
-          Intents.FLAGS.DIRECT_MESSAGES,
-          Intents.FLAGS.DIRECT_MESSAGE_REACTIONS
+          GatewayIntentBits.Guilds,
+          GatewayIntentBits.GuildMessages,
+          GatewayIntentBits.GuildMessageReactions,
+          GatewayIntentBits.DirectMessages,
+          GatewayIntentBits.DirectMessageReactions,
+          GatewayIntentBits.MessageContent
         ],
         partials: [
-          "CHANNEL",
-          "USER",
-          "MESSAGE"
+          Partials.Channel,
+          Partials.User,
+          Partials.Message
         ]
       });
       bots.set(configNode, bot);

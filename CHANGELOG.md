@@ -1,5 +1,12 @@
 # Changelog\
 
+## 3.4.0
+* Enhancement - Moving to Discord.js 14.7.
+* Hotfix - Mantain same functionality when editing messages (Overrides all fields: embed, components, attachments) after change discord.js version 14.7.1.
+* Feature - Attachments from buffer added.
+* Feature - Add and remove roles from users.
+* Feature - Crosspost an existing message or crosspost a new message on an announcement channel.
+
 ## 3.3.4
 * Hotfix - Fix making async to input function not catching errors when formatting embeds, componentes, etc
 

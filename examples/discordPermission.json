@@ -1,0 +1,205 @@
+[
+    {
+        "id": "efb879b82de43ec5",
+        "type": "discordPermissions",
+        "z": "ca68a7529a9fc04d",
+        "name": "Get Roles",
+        "token": "",
+        "x": 320,
+        "y": 40,
+        "wires": [
+            [
+                "560c10d50b51f1f9"
+            ]
+        ]
+    },
+    {
+        "id": "560c10d50b51f1f9",
+        "type": "debug",
+        "z": "ca68a7529a9fc04d",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 530,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "71e71bceb6718bc6",
+        "type": "inject",
+        "z": "ca68a7529a9fc04d",
+        "name": "",
+        "props": [
+            {
+                "p": "user",
+                "v": "395396700082274324",
+                "vt": "str"
+            },
+            {
+                "p": "guild",
+                "v": "830549562909130803",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 170,
+        "y": 40,
+        "wires": [
+            [
+                "efb879b82de43ec5"
+            ]
+        ]
+    },
+    {
+        "id": "e7fad3baf462b856",
+        "type": "discordPermissions",
+        "z": "ca68a7529a9fc04d",
+        "name": "Set Role",
+        "token": "",
+        "x": 320,
+        "y": 100,
+        "wires": [
+            [
+                "13b5ca756e31e52b"
+            ]
+        ]
+    },
+    {
+        "id": "13b5ca756e31e52b",
+        "type": "debug",
+        "z": "ca68a7529a9fc04d",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 530,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "d2a8abba2b86310a",
+        "type": "inject",
+        "z": "ca68a7529a9fc04d",
+        "name": "",
+        "props": [
+            {
+                "p": "user",
+                "v": "759860816857530369",
+                "vt": "str"
+            },
+            {
+                "p": "guild",
+                "v": "830549562909130803",
+                "vt": "str"
+            },
+            {
+                "p": "action",
+                "v": "set",
+                "vt": "str"
+            },
+            {
+                "p": "role",
+                "v": "905806871225565204",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 170,
+        "y": 100,
+        "wires": [
+            [
+                "e7fad3baf462b856"
+            ]
+        ]
+    },
+    {
+        "id": "d3cabe323c55cd7c",
+        "type": "discordPermissions",
+        "z": "ca68a7529a9fc04d",
+        "name": "Remove Role",
+        "token": "",
+        "x": 340,
+        "y": 160,
+        "wires": [
+            [
+                "b204b3ba5ebd0639"
+            ]
+        ]
+    },
+    {
+        "id": "b204b3ba5ebd0639",
+        "type": "debug",
+        "z": "ca68a7529a9fc04d",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 530,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "8d7fb6cfbdfbe7af",
+        "type": "inject",
+        "z": "ca68a7529a9fc04d",
+        "name": "",
+        "props": [
+            {
+                "p": "user",
+                "v": "759860816857530369",
+                "vt": "str"
+            },
+            {
+                "p": "guild",
+                "v": "830549562909130803",
+                "vt": "str"
+            },
+            {
+                "p": "action",
+                "v": "remove",
+                "vt": "str"
+            },
+            {
+                "p": "role",
+                "v": "905806871225565204",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 170,
+        "y": 160,
+        "wires": [
+            [
+                "d3cabe323c55cd7c"
+            ]
+        ]
+    }
+]
