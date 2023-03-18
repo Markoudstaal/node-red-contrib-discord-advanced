@@ -1,5 +1,8 @@
 # Changelog\
 
+## 3.4.1
+* Enhancement - AutoSharding enabled.
+
 ## 3.4.0
 * Enhancement - Moving to Discord.js 14.7.
 * Hotfix - Mantain same functionality when editing messages (Overrides all fields: embed, components, attachments) after change discord.js version 14.7.1.

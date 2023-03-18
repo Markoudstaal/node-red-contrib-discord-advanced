@@ -7,6 +7,7 @@ var getBot = function (configNode) {
     var bot = undefined;
     if (bots.get(configNode) === undefined) {
       bot = new Client({
+        shards: 'auto',
         intents: [
           GatewayIntentBits.Guilds,
           GatewayIntentBits.GuildMessages,
