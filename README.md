@@ -17,6 +17,7 @@ Currently the following actions are supported:
 * Listen for reactions on a message.
 * Listen for interactions on a message button or select menu.
 * Listen for interactions on commands.
+* Set Status text of the Bot
 * Get permissions of a specific user. Add and remove roles.
 * Allow full control over the BOT by access to the DiscordJS client.
 
