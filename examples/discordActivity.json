@@ -1,0 +1,47 @@
+[
+    {
+        "id": "0f69cba6b0d55506",
+        "type": "inject",
+        "z": "56beb3e82ae1dcae",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "text",
+                "v": "Developer",
+                "vt": "str"
+            },
+            {
+                "p": "url",
+                "v": "https://www.twitch.tv/doc_hardi",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 140,
+        "y": 280,
+        "wires": [
+            [
+                "66b9d2fb34b98e7b"
+            ]
+        ]
+    },
+    {
+        "id": "66b9d2fb34b98e7b",
+        "type": "discordActivity",
+        "z": "56beb3e82ae1dcae",
+        "name": "",
+        "token": "",
+        "x": 360,
+        "y": 280,
+        "wires": []
+    }
+]
