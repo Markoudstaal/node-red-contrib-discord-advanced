@@ -35,6 +35,7 @@
       "discordMessageManager": "discord/discordMessageManager.js",
       "discordPermissions": "discord/discordPermissions.js",
       "discordReactionManager": "discord/discordReactionManager.js",
+      "discordActivity":"discord/discordActivity.js",
       "discordClient": "discord/discordClient.js",
       "discordInteraction": "discord/discordInteraction.js"
     }
