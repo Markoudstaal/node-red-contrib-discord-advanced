@@ -1,5 +1,8 @@
 # Changelog\
 
+## 3.4.2
+* Feature - DiscordActivity lets you to set bot activity and status
+
 ## 3.4.1
 * Enhancement - AutoSharding enabled.
 
