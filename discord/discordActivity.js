@@ -8,15 +8,17 @@ module.exports = function(RED) {
 
     discordBotManager.getBot(configNode).then(function (bot) {
       node.on('input', function(msg) {
-                bot.user.setActivity(msg.text, { type: 1, url: msg.url, status: "idle"});
-        node.status({
-        fill: "green",
-        shape: "dot",
-        text: "Update status zu:"+msg.text+""
-      });
 
+        const type= msg.type;
+        const status = msg.status || 'Online';
+        const user = msg.user || null;
+        const url = msg.url || null;
+        msg.payload.status= bot.presence['status'];
+        msg.payload.bot= bot.presence.activities[0];
 
-
+        bot.user.setPresence({ activities: [{ name: msg.text,type: type,url:url}], status: status });
+        node.status({fill: "green",shape: "dot",text: "Bot Activities Change"});
+        node.send(msg.payload);
             });
 
        node.on('close', function() {

@@ -6,7 +6,9 @@
         "name": "",
         "props": [
             {
-                "p": "payload"
+                "p": "payload.time",
+                "v": "",
+                "vt": "date"
             },
             {
                 "p": "text",
@@ -17,6 +19,16 @@
                 "p": "url",
                 "v": "https://www.twitch.tv/doc_hardi",
                 "vt": "str"
+            },
+            {
+                "p": "type",
+                "v": "5",
+                "vt": "num"
+            },
+            {
+                "p": "status",
+                "v": "idle",
+                "vt": "str"
             }
         ],
         "repeat": "",
@@ -24,9 +36,7 @@
         "once": false,
         "onceDelay": 0.1,
         "topic": "",
-        "payload": "",
-        "payloadType": "date",
-        "x": 140,
+        "x": 190,
         "y": 280,
         "wires": [
             [
@@ -40,7 +50,7 @@
         "z": "56beb3e82ae1dcae",
         "name": "",
         "token": "",
-        "x": 360,
+        "x": 480,
         "y": 280,
         "wires": []
     }
