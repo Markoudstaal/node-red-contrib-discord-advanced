@@ -1,6 +1,7 @@
 const Flatted = require('flatted');
 module.exports = function (RED) {
   var discordBotManager = require('./lib/discordBotManager.js');
+  var discordInterationManager = require('./lib/interactionManager.js');
 
   function discordInteraction(config) {
     RED.nodes.createNode(this, config);
@@ -48,6 +49,7 @@ module.exports = function (RED) {
       registerCallback("interactionCreate", async interaction => {
         try {
           if (!matchInteractionType(interaction)) return;
+          discordInterationManager.registerInteraction(interaction);
 
           if (interaction.isCommand() || interaction.isMessageContextMenuCommand()) {
             if (custom_id && custom_id.split(",").indexOf(interaction.commandName) < 0) return;
