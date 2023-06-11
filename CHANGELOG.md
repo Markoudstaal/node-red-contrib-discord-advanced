@@ -1,5 +1,8 @@
 # Changelog\
 
+## [Unreleased]
+* Feature - Added DiscordInteractionManager node for handling interactions reply. An Alternative to DiscordMessageManager, but with some specific interactions capabilities.
+
 ## 3.4.5
 * Hotfix - DiscordPermission try/catch for nodered crash prevention.
 * Feature - New node to change the channel name (discordChannelName).
