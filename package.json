@@ -18,7 +18,7 @@
     "node": ">=16.9.0"
   },
   "dependencies": {
-    "discord.js": "^14.7.1",
+    "discord.js": "^14.11.0",
     "flatted": "^3.2.5"
   },
   "bugs": {
