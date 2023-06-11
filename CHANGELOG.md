@@ -1,5 +1,8 @@
 # Changelog\
 
+## 3.4.3
+* Hotfix - [#85 TypeError: channel.isTextBased is not a function](https://github.com/Markoudstaal/node-red-contrib-discord-advanced/issues/85) Move to Discord.js 14.11.0
+
 ## 3.4.2
 * Feature - DiscordActivity lets you to set bot activity and status
 
