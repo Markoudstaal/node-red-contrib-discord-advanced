@@ -14,8 +14,10 @@ module.exports = function (RED) {
 
                     bot.user.setPresence({ activities: [{ name: msg.text, type: type, url: url }], status: status });
 
-                    msg.payload.status = bot.presence['status'];
-                    msg.payload.bot = bot.presence.activities[0];
+                    msg.payload = {
+                        status: bot.presence['status'],
+                        bot: bot.presence.activities[0]
+                    }                    
 
                     node.status({ fill: "green", shape: "dot", text: "Bot Activities Changed" });
                     node.send(msg);
@@ -27,7 +29,6 @@ module.exports = function (RED) {
                         text: error
                     });
                 }
-
             });
 
             node.on('close', function () {
