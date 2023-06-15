@@ -30,8 +30,11 @@ registerCallback('guildMemberAdd', message => {
           var msg = {
             _msgid: msgid
           }
-          msg.payload = message;
-          msg.payload.event = 'guildMemberAdd';
+          msg.payload = Flatted.parse(Flatted.stringify(message));
+          msg.payload.event = "guildMemberAdd";
+
+
+
 
         node.send(msg);
       });
@@ -41,8 +44,8 @@ registerCallback('guildMemberRemove', message => {
           var msg = {
             _msgid: msgid
           }
-          msg.payload = message;
-          msg.payload.event = 'guildMemberRemove';
+          msg.payload = Flatted.parse(Flatted.stringify(message));
+          msg.payload.event = "guildMemberRemove";
 
         node.send(msg);
       });
