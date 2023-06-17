@@ -1,0 +1,50 @@
+<script type="text/javascript">
+    RED.nodes.registerType('discordChannelName',{
+        category: 'discord',
+        color: '#7289da',
+        defaults: {
+            name: {value: "", required: false},
+	     channel: {value: null,required: false},
+	     token: {value: "", required: true, type: "discord-token"}
+
+        },
+        inputs: 1,
+        outputs: 0,
+        icon: "discord.png",
+        label: function() {
+            return this.name||"discordChannelName";
+        }
+    });
+</script>
+<script type="text/x-red" data-template-name="discordChannelName">
+    <div class="form-row">
+        <label for="node-input-token"><i class="icon-tag"></i> token</label>
+        <input type="text" id="node-input-token" placeholder="token">
+    </div>
+    <div class="form-row">
+        <label for="node-input-channel"><i class="icon-tag"></i> Channel</label>
+        <input type="text" id="node-input-channel" name="ch" placeholder="Channel ID">
+        <p>(leave 'channel' blank to use <code>msg.channel</code> as channel ID to send to)</p>
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+</script>
+<script type="text/x-red" data-help-name="discordChannelName">
+
+  <h3>Inputs</h3>
+  <dl class="message-properties">
+    <dt>channel
+      <span class="property-type">string</span>
+    </dt>
+    <dd>The Channel id of the channel to change the name of</dd>
+    <dt>name
+      <span class="property-type">string</span>
+    </dt>
+    <dd>The name you Whant give The channel</dd>
+  </dl>
+
+
+
+</script>

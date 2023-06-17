@@ -1,0 +1,42 @@
+<script type="text/javascript">
+    RED.nodes.registerType('discordMember',{
+        category: 'discord',
+        color: '#7289da',
+        defaults: {
+            name: {value: "", required: false},
+	     token: {value: "", required: true, type: "discord-token"}
+
+        },
+        inputs: 0,
+        outputs: 1,
+        icon: "discord.png",
+        label: function() {
+            return this.name||"discordMember";
+        }
+    });
+</script>
+<script type="text/x-red" data-template-name="discordMember">
+    <div class="form-row">
+        <label for="node-input-token"><i class="icon-tag"></i> token</label>
+        <input type="text" id="node-input-token" placeholder="token">
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+</script>
+<script type="text/x-red" data-help-name="discordMember">
+
+<h3>Inputs</h3>
+  <dl class="message-properties">
+    non  </dl>
+
+
+  <h3>Inputs</h3>
+  <dl class="message-properties">
+    Alle Mammber Information On Join And Leave event
+  </dl>
+
+
+
+</script>

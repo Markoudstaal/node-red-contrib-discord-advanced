@@ -4,6 +4,10 @@
     color: '#7289da',
     defaults: {
       name: { value: "", required: false },
+      atext: { value: "", required: false},
+      aurl:  { value: "", required: false },
+      atype: { value: "", required: false },
+      astatus:{value: "", required: false},
       token: { value: "", required: true, type: "discord-token" }
     },
     inputs: 1,
@@ -23,6 +27,40 @@
         <label for="node-input-name"><i class="icon-tag"></i> Name</label>
         <input type="text" id="node-input-name" placeholder="Name">
     </div>
+    <div class="form-row">
+        <label for="node-input-atext"><i class="icon-tag"></i> Text</label>
+        <input type="text" id="node-input-atext" placeholder="Text to Show">
+    </div>
+    <div class="form-row">
+        <label for="node-input-aurl"><i class="icon-tag"></i> Youtube or Twitch</label>
+        <input type="text" id="node-input-aurl" placeholder="Url">
+    </div>
+       <div class="form-row">
+        <label for="node-input-atype"><i class="icon-tag"></i>type</label>
+  <select id="node-input-atype">
+    <option value="0">Playing</option>
+    <option value="1">Streaming</option>
+    <option value="2">Listening</option>
+    <option value="3">Watching</option>
+    <option value="4">Custom (Not Working on Bots)</option>
+    <option value="5">Competing</option>
+    <option value="6">Reset Activities</option>
+
+  </select>
+    </div>
+      <div class="form-row">
+        <label for="node-input-status"><i class="icon-tag"></i> Show The Bot As</label>
+  <select id="node-input-astatus">
+    <option value="online">Online</option>
+    <option value="idle">Afk</option>
+    <option value="invisible">Offline</option>
+    <option value="dnd">dnd</option>
+  </select>
+    </div>
+
+
+
+
 </script>
 <script type="text/x-red" data-help-name="discordActivity">
 

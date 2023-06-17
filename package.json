@@ -35,6 +35,8 @@
       "discordMessageManager": "discord/discordMessageManager.js",
       "discordPermissions": "discord/discordPermissions.js",
       "discordReactionManager": "discord/discordReactionManager.js",
+      "discordChannelName": "discord/discordChannelName.js",
+      "discordMember": "discord/discordMember.js",
       "discordActivity":"discord/discordActivity.js",
       "discordClient": "discord/discordClient.js",
       "discordInteraction": "discord/discordInteraction.js"

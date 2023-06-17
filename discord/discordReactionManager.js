@@ -75,6 +75,8 @@ module.exports = function (RED) {
 
         const collector = messageObject.createReactionCollector({
           time: collectionTime,
+          dispose: true,
+          remove:true,
         });
         reactionCollectors.push(collector);
         node.status({
@@ -82,6 +84,33 @@ module.exports = function (RED) {
           shape: "dot",
           text: "Collector created"
         });
+
+
+        collector.on('remove', async (reaction, user) => {
+            let messageUser = await bot.users.fetch(reaction.message.author.id);
+            let reactor =  await user.fetch(true);
+            const newMsg = {
+              payload: reaction._emoji.name,
+              count: reaction.count,
+              type: "remove",
+              message: Flatted.parse(Flatted.stringify(reaction.message)),
+              user: Flatted.parse(Flatted.stringify(reactor)),
+              _originalFlowMessage: msg
+            }
+            newMsg.message.user = Flatted.parse(Flatted.stringify(messageUser));
+
+            send(newMsg);
+            node.status({
+              fill: "green",
+              shape: "dot",
+              text: "Reaction remove"
+            });
+
+
+
+                 
+      });
+
 
         collector.on('collect', async (reaction, user) => {
           try {
@@ -91,6 +120,7 @@ module.exports = function (RED) {
             const newMsg = {
               payload: reaction._emoji.name,
               count: reaction.count,
+              type: "set",
               message: Flatted.parse(Flatted.stringify(reaction.message)),
               user: Flatted.parse(Flatted.stringify(reactor)),
               _originalFlowMessage: msg
