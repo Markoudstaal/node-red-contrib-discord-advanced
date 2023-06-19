@@ -6,7 +6,7 @@ module.exports = function (RED) {
     var node = this;
     var configNode = RED.nodes.getNode(config.token);
     discordBotManager.getBot(configNode).then(function (bot) {
-      node.on('input', function (msg, send, done) {
+      node.on('input', async function (msg, send, done) {
         const action = msg.action || 'get';
         const user = msg.user || null;
         const guild = msg.guild || null;
@@ -46,7 +46,7 @@ module.exports = function (RED) {
           }
         }
 
-        const sendRoles = () => {
+        const sendRoles = async () => {
           const userID = checkIdOrObject(user);
           const guildID = checkIdOrObject(guild);
 
@@ -55,28 +55,26 @@ module.exports = function (RED) {
           } else if (!guildID) {
             setError(`msg.guild wasn't set correctly`);
           } else {
-            bot.guilds.fetch(guildID).then(guild => {
-              return guild.members.fetch(userID);
-            }).then(user => {
-              try {
-                let roles = [];
-                user.roles.cache.each(role => {
-                  roles.push(role);
-                });
-                msg.payload = roles;
-              } catch (error) {
-                setError(error);
-              }
-              msg.user = user;
+
+            try {
+              const guildObject = await bot.guilds.fetch(guildID);
+              const userObject = await guildObject.members.fetch(userID);
+
+              let roles = [];
+              userObject.roles.cache.each(role => {
+                roles.push(role);
+              });
+              msg.payload = roles;
+              msg.user = userObject;
               send(msg);
               setSuccess(`roles sent`);
-            }).catch(error => {
+            } catch (error) {
               setError(error);
-            });
+            }
           }
         }
 
-        const setRole = () => {
+        const setRole = async () => {
           const userID = checkIdOrObject(user);
           const guildID = checkIdOrObject(guild);
           const roleID = checkIdOrObject(role);
@@ -88,24 +86,22 @@ module.exports = function (RED) {
           } else if (!roleID) {
             setError(`msg.role wasn't set correctly`);
           } else {
-            bot.guilds.fetch(guildID).then(guild => {
-              guild.members.fetch(userID).then(user => {
-                try {
-                  guild.members.cache.get(userID).roles.add(role);
-                  msg.payload = "role set";
-                  send(msg);
-                  setSuccess(`role set`);
-                } catch (error) {
-                  setError(error);
-                }
-              });
-            }).catch(error => {
+            try {
+              const guildObject = await bot.guilds.fetch(guildID);
+              const userObject = await guildObject.members.fetch(userID);
+
+              await userObject.roles.add(roleID);
+              msg.payload = "role set";
+              send(msg);
+              setSuccess(`role set`);
+            } catch (error) {
+              console.log(error);
               setError(error);
-            });
+            }
           }
         }
 
-        const removeRole = () => {
+        const removeRole = async () => {
           const userID = checkIdOrObject(user);
           const guildID = checkIdOrObject(guild);
           const roleID = checkIdOrObject(role);
@@ -117,32 +113,29 @@ module.exports = function (RED) {
           } else if (!roleID) {
             setError(`msg.role wasn't set correctly`);
           } else {
-            bot.guilds.fetch(guildID).then(guild => {
-              guild.members.fetch(userID).then(user => {
-                try {
-                  guild.members.cache.get(userID).roles.remove(role);
-                  msg.payload = "role removed";
-                  send(msg);
-                  setSuccess(`role removed`);
-                } catch (error) {
-                  setError(error);
-                }
-              });
-            }).catch(error => {
+            try {
+              const guildObject = await bot.guilds.fetch(guildID);
+              const userObject = await guildObject.members.fetch(userID);
+
+              await userObject.roles.remove(roleID);
+              msg.payload = "role removed";
+              send(msg);
+              setSuccess(`role removed`);
+            } catch (error) {
               setError(error);
-            });
+            }
           }
         }
 
         switch (action.toLowerCase()) {
           case 'get':
-            sendRoles();
+            await sendRoles();
             break;
           case 'set':
-            setRole();
+            await setRole();
             break;
           case 'remove':
-            removeRole();
+            await removeRole();
             break;
           default:
             setError(`msg.action has an incorrect value`)
