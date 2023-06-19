@@ -40,7 +40,7 @@ module.exports = function (RED) {
         })
         done(error);
       }
-            
+
       const getMessage = async (message, channel) => {
         let channelInstance = await bot.channels.fetch(channel);
         return await channelInstance.messages.fetch(message);
@@ -76,8 +76,9 @@ module.exports = function (RED) {
         const collector = messageObject.createReactionCollector({
           time: collectionTime,
           dispose: true,
-          remove:true,
+          remove: true,
         });
+        
         reactionCollectors.push(collector);
         node.status({
           fill: "green",
@@ -85,10 +86,11 @@ module.exports = function (RED) {
           text: "Collector created"
         });
 
-
         collector.on('remove', async (reaction, user) => {
+          try {
             let messageUser = await bot.users.fetch(reaction.message.author.id);
-            let reactor =  await user.fetch(true);
+            let reactor = await user.fetch(true);
+
             const newMsg = {
               payload: reaction._emoji.name,
               count: reaction.count,
@@ -105,11 +107,10 @@ module.exports = function (RED) {
               shape: "dot",
               text: "Reaction remove"
             });
-
-
-
-                 
-      });
+          } catch (error) {
+            setError(error, done);
+          }
+        });
 
 
         collector.on('collect', async (reaction, user) => {
@@ -137,7 +138,7 @@ module.exports = function (RED) {
             setError(error, done);
           }
         });
-       
+
       });
 
       node.on('close', function () {
