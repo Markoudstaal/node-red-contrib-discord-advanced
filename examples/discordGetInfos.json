@@ -1,0 +1,64 @@
+[
+    {
+        "id": "2131588fff59f017",
+        "type": "discordGetInfos",
+        "z": "2050988aab5bfcc1",
+        "name": "",
+        "channel": "",
+        "action": "rolelist",
+        "uid": "",
+        "messageId": "",
+        "guildId": "867728505185632278",
+        "roleId": "",
+        "token": "",
+        "x": 360,
+        "y": 300,
+        "wires": [
+            [
+                "486cc0aa37f4f1a7"
+            ]
+        ]
+    },
+    {
+        "id": "96eb8e67e4dd7e72",
+        "type": "inject",
+        "z": "2050988aab5bfcc1",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 140,
+        "y": 300,
+        "wires": [
+            [
+                "2131588fff59f017"
+            ]
+        ]
+    },
+    {
+        "id": "486cc0aa37f4f1a7",
+        "type": "debug",
+        "z": "2050988aab5bfcc1",
+        "name": "debug 13",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 620,
+        "y": 300,
+        "wires": []
+    }
+]
