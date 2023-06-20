@@ -1,6 +1,6 @@
 # Changelog\
 
-## Unrealesed
+## 3.4.5
 * Feature - New node to change the channel name (discordChannelName)
 * Feature - New node to guildMemberAdd & guildMemberRemove events (discordMember)
 * Feature - add are a simple way to use the activity.
