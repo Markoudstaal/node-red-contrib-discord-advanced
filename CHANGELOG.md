@@ -1,11 +1,12 @@
 # Changelog\
 
 ## 3.4.5
-* Feature - New node to change the channel name (discordChannelName)
-* Feature - New node to guildMemberAdd & guildMemberRemove events (discordMember)
-* Feature - add are a simple way to use the activity.
-* Feature - add the Intent GuildMembers
-* Feature - add reaction remove on discordReactionManager.
+* Hotfix - DiscordPermission try/catch for nodered crash prevention.
+* Feature - New node to change the channel name (discordChannelName).
+* Feature - New node to guildMemberAdd & guildMemberRemove events (discordMember).
+* Feature - Add the Intent GuildMembers.
+* Feature - Add a simple way to use the discordActivity (Node editor window parameters).
+* Feature - Add reaction remove on discordReactionManager.
 
 ## 3.4.4
 * Hotfix - #73 Can't set bot status with discordActivity
