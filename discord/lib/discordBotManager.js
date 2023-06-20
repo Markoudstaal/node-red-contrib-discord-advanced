@@ -10,17 +10,19 @@ var getBot = function (configNode) {
         shards: 'auto',
         intents: [
           GatewayIntentBits.Guilds,
-          GatewayIntentBits.GuildMembers,
           GatewayIntentBits.GuildMessages,
+          GatewayIntentBits.GuildMembers,
           GatewayIntentBits.GuildMessageReactions,
           GatewayIntentBits.DirectMessages,
           GatewayIntentBits.DirectMessageReactions,
+          GatewayIntentBits.GuildScheduledEvents,
           GatewayIntentBits.MessageContent
         ],
         partials: [
           Partials.Channel,
           Partials.User,
-          Partials.Message
+          Partials.Message,
+          Partials.Reaction
         ]
       });
       bots.set(configNode, bot);
