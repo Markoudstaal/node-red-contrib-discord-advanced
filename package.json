@@ -38,6 +38,7 @@
       "discordChannelName": "discord/discordChannelName.js",
       "discordMember": "discord/discordMember.js",
       "discordActivity":"discord/discordActivity.js",
+      "discordGetInfos":"discord/discordGetInfos.js",
       "discordClient": "discord/discordClient.js",
       "discordInteraction": "discord/discordInteraction.js"
     }
