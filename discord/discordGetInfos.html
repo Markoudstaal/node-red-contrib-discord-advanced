@@ -1,0 +1,120 @@
+<script type="text/javascript">
+    RED.nodes.registerType('discordGetInfos',{
+        category: 'discord',
+        color: '#7289da',
+        defaults: {
+            name: {value: "", required: false},
+            channel: {value: "", required: false},
+            action: {value: "", required: false},
+            uid: {value: "", required: false},
+            messageId : {value: "", required: false},
+            guildId: {value: "", required: false},
+            roleId: {value: "", required: false},
+            token: {value: "", required: true, type: "discord-token"}
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: "discord.png",
+        label: function() {
+            return this.name||"discordGetInfos";
+        }
+    });
+</script>
+<script type="text/x-red" data-template-name="discordGetInfos">
+    <div class="form-row">
+        <label for="node-input-token"><i class="icon-tag"></i> token</label>
+        <input type="text" id="node-input-token" placeholder="token">
+    </div>
+
+
+
+    <div class="form-row">
+        <label for="node-input-channel"><i class="icon-tag"></i> channel ID</label>
+        <input type="text" id="node-input-channel" placeholder="channel">
+    </div>
+    <div class="form-row">
+        <label for="node-input-action"><i class="icon-tag"></i> Action</label>
+ <select id="node-input-action">
+    <option value="channelinfos">Channel Infos</option>
+    <option value="channellist">Channel List</option>
+    <option value="rolelist">Role list</option>
+    <option value="rolebyid">Role by id</option>
+    <option value="memberlist">Member list</option>
+    <option value="memberbyid">Member by id</option>
+    <option value="memberbyrole">Member by role</option>
+    <option value="messageinfo">Message info</option>
+    <option value="guildinfo">Guild info</option>
+
+  </select>
+
+
+
+    </div>
+    <div class="form-row">
+        <label for="node-input-uid"><i class="icon-tag"></i> User ID</label>
+        <input type="text" id="node-input-uid" placeholder="userId">
+    </div>
+    <div class="form-row">
+        <label for="node-input-messageId"><i class="icon-tag"></i> Message Id</label>
+        <input type="text" id="node-input-messageId" placeholder="messageId">
+    </div>
+    <div class="form-row">
+        <label for="node-input-guildId"><i class="icon-tag"></i> Guild Id</label>
+        <input type="text" id="node-input-guildId" placeholder="guildId">
+    </div>
+    <div class="form-row">
+        <label for="node-input-roleId"><i class="icon-tag"></i> Role Id</label>
+        <input type="text" id="node-input-roleId" placeholder="roleId">
+    </div>
+
+
+
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+</script>
+
+
+
+
+<script type="text/x-red" data-help-name="discordGetInfos">
+ 
+<h3>Inputs</h3>
+  <dl class="message-properties">
+    <dt>guildId
+      <span class="property-type">string</span>
+    </dt>
+    <dd>>Guild Id for channellist,memberlist,rolelist,guildinfo</dd>
+    <dt>action
+      <span class="property-type">string</span>
+    </dt>
+    <dd>The action to do, can be: channelinfos, channellist, rolelist, rolebyid
+       ,memberlist, memberbyid, memberbyrole, messageinfo, guildinfo. If not set, node will default to guildinfo.</dd>
+    <dt>channel
+      <span class="property-type">string</span>
+    </dt>
+    <dd>channel id for channelinfos, messageinfo</dd>
+    <dt>user 
+      <span class="property-type">string</span>
+    </dt>
+    <dd>The user id if you want use memberbyid.</dd>
+    <dt>roleId
+      <span class="property-type">string</span>
+    </dt>
+    <dd>The role id if you want use rolebyid,memberbyrole</dd>
+    <dt>message
+      <span class="property-type">string</span>
+    </dt>
+    <dd>The message ID if you want use messageinfo</dd>
+
+    </dl>
+
+  <h3>Outputs</h3>
+  <dl class="message-properties">
+    <dt>payload
+      <span class="property-type">Object</span>
+    <dt>
+    <dd>The Infos You Request</dd>
+    </dl>
+</script>
