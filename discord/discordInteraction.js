@@ -31,6 +31,8 @@ module.exports = function (RED) {
             return interaction.isCommand();
           case "messageContextMenu":
             return interaction.isMessageContextMenuCommand();
+          case "autoComplete":
+            return interaction.isAutocomplete();
           case "all":
             return true;
           default:
@@ -55,9 +57,13 @@ module.exports = function (RED) {
             if (custom_id && custom_id.split(",").indexOf(interaction.commandName) < 0) return;
             await interaction.reply({ content: commandResponse, ephemeral: ephemeral });
           }
+          else if(interaction.isAutocomplete())
+          {
+            // nothing to do
+          }
           else {
             if (custom_id && custom_id.split(",").indexOf(interaction.customId) < 0) return;
-            await interaction.deferUpdate();
+            await interaction.deferReply();
           }
 
           let message = {};
@@ -79,7 +85,11 @@ module.exports = function (RED) {
             message.payload.options = Flatted.parse(Flatted.stringify(interaction.options));
             message.payload.replyMessage = Flatted.parse(Flatted.stringify(await interaction.fetchReply()));
           }
-          else {
+          else if(interaction.isAutocomplete())
+          {
+            // nothing to do
+          }
+          else {            
             message.payload.message = Flatted.parse(Flatted.stringify(interaction.message));
             message.payload.message.author = Flatted.parse(Flatted.stringify(interaction.message.author));
           }

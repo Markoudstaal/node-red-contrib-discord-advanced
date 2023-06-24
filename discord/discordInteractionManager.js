@@ -20,26 +20,27 @@ module.exports = function (RED) {
                     const inputComponents = msg.payload?.components || msg.components;
                     const interactionId = msg.interactionId;
                     const action = msg.action || 'edit';
+                    const autoCompleteChoices = msg.autoCompleteChoices || [];
 
                     const setError = (error) => {
                         node.status({
-                          fill: "red",
-                          shape: "dot",
-                          text: error
+                            fill: "red",
+                            shape: "dot",
+                            text: error
                         })
                         node.error(error);
-                      }
-              
-                      const setSuccess = (succesMessage, data) => {
+                    }
+
+                    const setSuccess = (succesMessage, data) => {
                         node.status({
-                          fill: "green",
-                          shape: "dot",
-                          text: succesMessage
+                            fill: "green",
+                            shape: "dot",
+                            text: succesMessage
                         });
-              
+
                         msg.payload = Flatted.parse(Flatted.stringify(data));
-                        node.send(msg);                        
-                      }
+                        node.send(msg);
+                    }
 
                     const editInteractionReply = async () => {
                         await interaction.editReply({
@@ -48,13 +49,33 @@ module.exports = function (RED) {
                             files: attachments,
                             components: components
                         });
-    
+
                         const newMsg = {
                             interaction: Flatted.parse(Flatted.stringify(interaction))
                         };
-    
-                        
+
+
                         setSuccess(`interaction ${interactionId} edited`, newMsg);
+                    }
+
+                    const respondAutocomplete = async () => {
+                        if (!interaction.isAutocomplete()) {
+                            setError("Error: not autocomplete Interaction");
+                            return;
+                        }
+
+                        const focusedValue = interaction.options.getFocused();
+                        console.log(`Search ${focusedValue}`);
+                        const filtered = autoCompleteChoices.filter(choice => choice.startsWith(focusedValue));
+
+                        await interaction.respond(filtered.map(choice => ({ name: choice, value: choice })));
+
+                        const newMsg = {
+                            interaction: Flatted.parse(Flatted.stringify(interaction))
+                        };
+
+
+                        setSuccess(`interaction ${interactionId} filtered`, newMsg);
                     }
 
                     let interaction = await discordInterationManager.getInteraction(interactionId);
@@ -74,15 +95,18 @@ module.exports = function (RED) {
                         return;
                     }
 
-                    switch (action.toLowerCase()) {                        
+                    switch (action.toLowerCase()) {
                         case 'edit':
-                          await editInteractionReply();
-                          break;                        
+                            await editInteractionReply();
+                            break;
+                        case 'respondautocomplete':
+                            await respondAutocomplete();
+                            break;
                         default:
-                          setError(`msg.action has an incorrect value`)
-                      }
+                            setError(`msg.action has an incorrect value`)
+                    }
 
-                    
+
                 } catch (error) {
                     node.error(error);
                     node.status({
@@ -92,8 +116,8 @@ module.exports = function (RED) {
                     });
                 }
 
-                
-                
+
+
             });
 
             node.on('close', function () {

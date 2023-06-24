@@ -6,7 +6,7 @@ const registerInteraction = (interaction) => {
 
 const getInteraction = (interactionId) => {
     let interaction = interactions[interactionId];    
-    delete interactions[interactionId];
+    //delete interactions[interactionId];
     return interaction;
 }
 
