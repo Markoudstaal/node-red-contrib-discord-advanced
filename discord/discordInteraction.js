@@ -12,6 +12,7 @@ module.exports = function (RED) {
     let commandResponse = config.commandResponse || "OK!";
     let injectInteractionObject = config.interactionObject || false;
     let ephemeral = config.ephemeral || false;
+    let responseType = config.responseType || "update";
 
     discordBotManager.getBot(configNode).then(function (bot) {
       var callbacks = [];
@@ -63,7 +64,10 @@ module.exports = function (RED) {
           }
           else {
             if (custom_id && custom_id.split(",").indexOf(interaction.customId) < 0) return;
-            await interaction.deferReply();
+              if(responseType == "update")
+                await interaction.deferUpdate();
+              else
+                await interaction.deferReply();
           }
 
           let message = {};

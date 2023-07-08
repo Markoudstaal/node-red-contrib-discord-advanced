@@ -31,7 +31,11 @@
       ephemeral: {
         value: false,
         required: false
-      }
+      },
+      responseType: {
+        value: "update",
+        required: false
+      },
     },
     inputs: 0,
     outputs: 1,
@@ -52,10 +56,22 @@
           }
         ]
       });
+      $("#node-input-responseType").typedInput({
+        types: [
+          {
+            value: "update",
+            options: [
+              { value: "update", label: "Update Interaction" },              
+              { value: "reply", label: "Reply Interaction" }              
+            ]
+          }
+        ]
+      });      
       $("#node-input-interactionType").change(function () {
         if ($("#node-input-interactionType").val() == "command" || $("#node-input-interactionType").val() == "messageContextMenu") {
           $("#node-input-custom_id-lbl").text("Command names");
           $("#node-row-commandResponse").prop("style", "");
+          $("#node-input-responseType").prop("style", "display:none;");
           if ($("#node-input-interactionType").val() == "command")
             $("#node-row-ephemeral").prop("style", "");
           else
@@ -65,6 +81,7 @@
           $("#node-input-custom_id-lbl").text("Custom Ids");
           $("#node-row-commandResponse").prop("style", "display:none;");
           $("#node-row-ephemeral").prop("style", "display:none;");
+          $("#node-input-responseType").prop("style", "");
         }        
       });
     },
@@ -100,6 +117,10 @@
     <div class="form-row" id="node-row-ephemeral" style="display:none;">
         <input type="checkbox" id="node-input-ephemeral" style="display: inline-block; width: auto; vertical-align: top;">  
         <label for="node-input-ephemeral" style="width: 70%;"> Ephemeral</label>  
+    </div>
+    <div class="form-row">
+      <label for="node-input-responseType"><i class="icon-tag"></i> Response type</label>
+      <input type="text" id="node-input-responseType">
     </div>
     <div class="form-row">
         <input type="checkbox" id="node-input-interactionObject" style="display: inline-block; width: auto; vertical-align: top;">  
