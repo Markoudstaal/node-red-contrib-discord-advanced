@@ -39,7 +39,8 @@
       "discordMember": "discord/discordMember.js",
       "discordActivity":"discord/discordActivity.js",
       "discordClient": "discord/discordClient.js",
-      "discordInteraction": "discord/discordInteraction.js"
+      "discordInteraction": "discord/discordInteraction.js",
+      "discordTyping": "discord/discordTyping.js"
     }
   },
   "devDependencies": {

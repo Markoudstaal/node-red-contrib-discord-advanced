@@ -1,0 +1,57 @@
+a<script type="text/javascript">
+  RED.nodes.registerType('discordTyping', {
+    category: 'discord',
+    color: '#7289da',
+    defaults: {
+      name: {
+        value: "",
+        required: false
+      },
+      channel: {
+        value: null,
+        required: false
+      },
+      token: {
+        value: "",
+        required: true,
+        type: "discord-token"
+      }
+    },
+    inputs: 1,
+    outputs: 0,
+    icon: "discord.png",
+    label: function () {
+      return this.name || "discordTyping";
+    }
+  });
+</script>
+<script type="text/x-red" data-template-name="discordTyping">
+  <div class="form-row">
+        <label for="node-input-token"><i class="icon-tag"></i> token</label>
+        <input type="text" id="node-input-token" placeholder="token">
+    </div>
+    <div class="form-row">
+        <label for="node-input-channel"><i class="icon-tag"></i> Channel</label>
+        <input type="text" id="node-input-channel" name="ch" placeholder="Channel ID">
+        <p>(leave 'channel' blank to use <code>msg.channel</code> as channel ID to send to)</p>
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+</script>
+<script type="text/x-red" data-help-name="discordTyping">
+  <p>Node to start bot is typing message in channel.</p>
+
+  <h3>Inputs</h3>
+  <dl class="message-properties">
+    <dt>channel
+      <span class="property-type">Object or string</span>
+    </dt>
+    <dd>The channel Object or channel id for creating, editing and deleting messages.</dd>
+  </dl>
+
+  <h3>Details</h3>
+  <p>This node allows the user to send the discordJS sendTyping function. This creates a 'bot is typing...' message in the corrosponding channel. It will continue to do so for 10 seconds or until a message is sent in said channel.<p>
+
+</script>
