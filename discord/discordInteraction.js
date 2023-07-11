@@ -8,8 +8,7 @@ module.exports = function (RED) {
     var configNode = RED.nodes.getNode(config.token);
     var node = this;
     let interactionType = config.interactionType || "all";
-    let custom_id = config.custom_id;
-    let commandResponse = config.commandResponse || "OK!";
+    let custom_id = config.custom_id;    
     let injectInteractionObject = config.interactionObject || false;
     let ephemeral = config.ephemeral || false;
     let responseType = config.responseType || "update";
@@ -55,8 +54,8 @@ module.exports = function (RED) {
           discordInterationManager.registerInteraction(interaction);
 
           if (interaction.isCommand() || interaction.isMessageContextMenuCommand()) {
-            if (custom_id && custom_id.split(",").indexOf(interaction.commandName) < 0) return;
-            await interaction.reply({ content: commandResponse, ephemeral: ephemeral });
+            if (custom_id && custom_id.split(",").indexOf(interaction.commandName) < 0) return;            
+            await interaction.deferReply({ephemeral: ephemeral});
           }
           else if(interaction.isAutocomplete())
           {
@@ -86,8 +85,7 @@ module.exports = function (RED) {
             message.interactionObject = interaction;
 
           if (interaction.isCommand() || interaction.isMessageContextMenuCommand()) {
-            message.payload.options = Flatted.parse(Flatted.stringify(interaction.options));
-            message.payload.replyMessage = Flatted.parse(Flatted.stringify(await interaction.fetchReply()));
+            message.payload.options = Flatted.parse(Flatted.stringify(interaction.options));            
           }
           else if(interaction.isAutocomplete())
           {
