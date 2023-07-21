@@ -45,6 +45,17 @@ node-red-contrib-discord-advanced gives you access to 8 nodes:
 
 See `CHANGELOG.md` for more info, including information regarding breaking changes per version.
 
+## Key Migration points from 3.4.x to 3.5.0
+### Native behavior of discord interactions
+When a command is sent by an user, discord displays messages like "Bot is thinking...". Versions < 3.4 of node-red-contrib-discord-advanced manage this interaction by replying with a default text message.
+From 3.5.0, this library always defers replies and updates, keeping in memory the reference to the interaction in order to interact moments later within the flow with the new node discordInteractionManager.
+
+### Replacing discordMessageManager for discordInteractionManager
+Now all interactions are replied with discordInteractionManager node, so there are several scenarios for having in mind. This is a breaking change. It's needed to take a look on examples.
+
+[Examples](www.link.com)
+
+
 ## Common problems
 
 ### Empty payload in discordMessage
