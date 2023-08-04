@@ -40,7 +40,7 @@ node-red-contrib-discord-advanced gives you access to 8 nodes:
 * **discordInteraction** allows you to listen to commands, buttons and select menu interactions and to decide how to respond to them.
 * **discordChannelName** allows you to change a channel's name.
 * **discordMember** listens when a user joins or leaves a guild.
-* **discordGetInfos** get all infos about the Selected guild.
+* **discordGetInfos** get all infos about the Selected guild and Members on That Guild.
 
 ## Changelog
 
