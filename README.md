@@ -22,7 +22,7 @@ Currently the following actions are supported:
 * Change channel's name.
 * Allow full control over the BOT by access to the DiscordJS client.
 
-This repository builds on [node-red-contrib-discord](https://github.com/jorisvddonk/node-red-contrib-discord) by Joris vd Donk and [node-red-contrib-discord-advanced]([https://github.com/Markoudstaal/node-red-contrib-discord-advanced) by javis86. The main intention is to add more features and keep the repository updated.
+This repository builds on [node-red-contrib-discord](https://github.com/jorisvddonk/node-red-contrib-discord) by Joris vd Donk and [node-red-contrib-discord-advanced](https://github.com/Markoudstaal/node-red-contrib-discord-advanced) by javis86. The main intention is to add more features and keep the repository updated.
 
 ## Installation and documentation
 
