@@ -22,11 +22,11 @@ Currently the following actions are supported:
 * Change channel's name.
 * Allow full control over the BOT by access to the DiscordJS client.
 
-This repository builds on [node-red-contrib-discord](https://github.com/jorisvddonk/node-red-contrib-discord) by Joris vd Donk . The main intention is to add more features and keep the repository updated.
+This repository builds on [node-red-contrib-discord](https://github.com/jorisvddonk/node-red-contrib-discord) by Joris vd Donk and [node-red-contrib-discord-advanced]([https://github.com/Markoudstaal/node-red-contrib-discord-advanced) by javis86. The main intention is to add more features and keep the repository updated.
 
 ## Installation and documentation
 
-The [Wiki](https://github.com/Markoudstaal/node-red-contrib-discord-advanced/wiki) is still being written when it comes to documentation but you can find a guide on how to install and setup the nodes [here](https://github.com/Markoudstaal/node-red-contrib-discord-advanced/wiki/Installation-and-setup).
+The [Wiki](https://github.com/dochardi/node-red-contrib-discord-bot/wiki) is still being written when it comes to documentation but you can find a guide on how to install and setup the nodes [here](https://github.com/dochardi/node-red-contrib-discord-bot/wiki/Installation-and-setup).
 
 ## Nodes
 
@@ -40,6 +40,7 @@ node-red-contrib-discord-advanced gives you access to 8 nodes:
 * **discordInteraction** allows you to listen to commands, buttons and select menu interactions and to decide how to respond to them.
 * **discordChannelName** allows you to change a channel's name.
 * **discordMember** listens when a user joins or leaves a guild.
+* **discordGetInfos** get all infos about the Selected guild.
 
 ## Changelog
 
@@ -55,7 +56,7 @@ A common error on some applications is getting empty payload when receiving mess
 
 ## Support, issues and feature requests
 
-For support in setting up and feature requests you can contact me on [this](https://discord.gg/HPva4sjezt) discord.
+For support in setting up and feature requests you can contact me on [this](https://discord.com/invite/jpzK52W8) discord.
 Issues can also be reported there but prefferably via GitHub.
 
 ## Discord.js client sharing
