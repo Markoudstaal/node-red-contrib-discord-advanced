@@ -1,4 +1,4 @@
-# node-red-contrib-discord-advanced
+# node-red-contrib-discord-bot
 
 [![npm version](https://badge.fury.io/js/node-red-contrib-discord-advanced.svg)](https://badge.fury.io/js/node-red-contrib-discord-advanced) ![](https://img.shields.io/static/v1?label=discord.js&message=14.11.0&color=brightgreen)
  ![](https://img.shields.io/static/v1?label=node&message=%3E=16.9.0&color=brightgreen) 
