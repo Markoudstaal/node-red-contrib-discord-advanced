@@ -1,6 +1,6 @@
 {
-  "name": "node-red-contrib-discord-advanced",
-  "version": "3.4.5",
+  "name": "node-red-contrib-discord-bot",
+  "version": "3.4.10",
   "description": "Recieve, send, edit, reply, react to and delete Discord messages, handle interactions and much more in Node-RED.",
   "main": "discord/discord.js",
   "scripts": {
@@ -11,7 +11,12 @@
     {
       "name": "Javier Colombera",
       "email": "jcolombera@gmail.com"
+    },
+   {
+      "name": "Doc Hardi",
+      "email": "Info@dochardi.de"
     }
+
   ],
   "license": "MIT",
   "engines": {
@@ -22,9 +27,9 @@
     "flatted": "^3.2.5"
   },
   "bugs": {
-    "url": "https://github.com/Markoudstaal/node-red-contrib-discord-advanced/issues"
+    "url": "https://github.com/dochardi/node-red-contrib-discord-bot/issues"
   },
-  "repository": "Markoudstaal/node-red-contrib-discord-advanced",
+  "repository": "dochardi/node-red-contrib-discord-bot",
   "keywords": [
     "node-red"
   ],
@@ -38,8 +43,8 @@
       "discordChannelName": "discord/discordChannelName.js",
       "discordMember": "discord/discordMember.js",
       "discordActivity":"discord/discordActivity.js",
-      "discordGetInfos":"discord/discordGetInfos.js",
       "discordClient": "discord/discordClient.js",
+      "discordGetInfos":"discord/discordGetInfos.js",
       "discordInteraction": "discord/discordInteraction.js"
     }
   },
