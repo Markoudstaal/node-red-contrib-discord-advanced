@@ -1,9 +1,9 @@
 # Changelog\
 
-## [Unreleased]
+## 3.5.0
 * Feature - Added DiscordInteractionManager node for handling interactions reply. An Alternative to DiscordMessageManager, but with some specific interactions capabilities.
-* Feature - edit interactions replies, edit ephemeral interactions, respond autocomplete interactions.
 * Deprecation/Breaking changes - Automatic response for interactions: With DiscordInteractionManager, the node DiscordInteractions always defers replies and updates. It's mandatory add a discordInteractionManager to modify interaction state (default by discord "Bot is thinking...").
+* Feature - edit interactions replies, edit ephemeral interactions, respond autocomplete interactions.
 * Options for Update or reply components interactions
 
 ## 3.4.5

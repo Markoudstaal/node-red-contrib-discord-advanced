@@ -30,7 +30,7 @@ The [Wiki](https://github.com/Markoudstaal/node-red-contrib-discord-advanced/wik
 
 ## Nodes
 
-node-red-contrib-discord-advanced gives you access to 8 nodes:
+node-red-contrib-discord-advanced gives you access to 9 nodes:
 
 * **discordMessage** is a node with no inputs and one output allowing you to receive notifications of incoming messages.
 * **discordMessageManager** allows (embed) messages to be sent to either channels or privatly to user. It also allows for editing and deleting of (embed) messages.
@@ -38,6 +38,7 @@ node-red-contrib-discord-advanced gives you access to 8 nodes:
 * **discordPermissions** allows you to check the permissions of a specifc user. This is useful when you get the user from another source than the discordMessage node. discorPermissions lets you to add role to an user and to remove role.
 * **discordClient** is an advanced deprecated node with one input and one output allowing you to inject a references to a [Discord.js Client](https://discord.js.org/#/docs/main/stable/class/Client) into a message. This node can cause node-red to crash if you use it improperly, so take caution. Messages containing a Discord.js Client reference can *not* be forked (e.g. sent to two nodes), so you'll have to manually remove the reference to the Client via a function node using `delete msg.discord`.
 * **discordInteraction** allows you to listen to commands, buttons and select menu interactions and to decide how to respond to them.
+* **discordInteractionManager** allows you to edit interactions by id.
 * **discordChannelName** allows you to change a channel's name.
 * **discordMember** listens when a user joins or leaves a guild.
 
@@ -45,13 +46,13 @@ node-red-contrib-discord-advanced gives you access to 8 nodes:
 
 See `CHANGELOG.md` for more info, including information regarding breaking changes per version.
 
-## Key Migration points from 3.4.x to 3.5.0
+## Key migration points from 3.4.x to 3.5.0
 ### Native behavior of discord interactions
 When a command is sent by an user, discord displays messages like "Bot is thinking...". Versions < 3.4 of node-red-contrib-discord-advanced manage this interaction by replying with a default text message.
 From 3.5.0, this library always defers replies and updates, keeping in memory the reference to the interaction in order to interact moments later within the flow with the new node discordInteractionManager.
 
 ### Replacing discordMessageManager for discordInteractionManager
-Now all interactions are replied with discordInteractionManager node, so there are several scenarios for having in mind. This is a breaking change. It's needed to take a look on examples.
+Now all interactions are replied with discordInteractionManager node, so there are several scenarios for having in mind. This is a breaking change. It's mandatory to take a look on examples to prevent breaking flows.
 
 [Examples](www.link.com)
 
