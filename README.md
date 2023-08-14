@@ -52,9 +52,9 @@ When a command is sent by an user, discord displays messages like "Bot is thinki
 From 3.5.0, this library always defers replies and updates, keeping in memory the reference to the interaction in order to interact moments later within the flow with the new node discordInteractionManager.
 
 ### Replacing discordMessageManager for discordInteractionManager
-Now all interactions are replied with discordInteractionManager node, so there are several scenarios for having in mind. This is a breaking change. It's mandatory to take a look on examples to prevent breaking flows.
+Now all interactions are replied with discordInteractionManager node, so there are several scenarios for having in mind. This is a breaking change. It's mandatory to take a look on examples to prevent broken flows.
 
-[Examples](www.link.com)
+[Examples](https://github.com/Markoudstaal/node-red-contrib-discord-advanced/wiki/Interaction-Examples)
 
 
 ## Common problems
