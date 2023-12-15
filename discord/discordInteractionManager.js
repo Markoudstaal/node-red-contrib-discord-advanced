@@ -99,7 +99,7 @@ module.exports = function (RED) {
                         case 'edit':
                             await editInteractionReply();
                             break;
-                        case 'respondautocomplete':
+                        case 'respond':
                             await respondAutocomplete();
                             break;
                         default:
