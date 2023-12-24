@@ -27,34 +27,27 @@
 <script type="text/x-red" data-help-name="discordInteractionManager">
 
   <h3>Inputs</h3>
-  <dl class="message-properties">
-    <dt>text
-      <span class="property-type">string</span>
-    </dt>
-    <dd>The Status Text of the Bot</dd>
-    <dt>status
-      <span class="property-type">string</span>
-    </dt>
-    <dd>The Online Status can be set to: online,idle,invisible,dnd</dd>
-
-    <dt>type
-      <span class="property-type">enum</span>
-    </dt>
-    <dd>
-Playing: 0 <br>
-Streaming: 1<br>
-Listening: 2 <br>
-Watching: 3 <br>
-Custom: 4 (ATM Not Work on Bot)<br>
-Competing: 5<br>
-Reset Activities: 6<br>
-</dd>
-    <dt>url
-      <span class="property-type">string</span>
-    </dt>
-    <dd>The url of Twitch or Youtube</dd>
+  <dl class="message-properties"> 
+	<dt>action<span class="property-type">string</span></dt>
+	<dd>The action you wish to perform. When not set edit is default.</dd>
+	
+    <dt>interactionId<span class="property-type">number</span></dt>
+    <dd>Interaction identificator number.</dd>
+	
+    <dt>payload<span class="property-type">string</span></dt>
+    <dd>The string you wish to send or the new content of a message when editing.</dd>
+	
+    <dt>embeds<span class="property-type">Object/Array</span></dt>
+    <dd>An embed object or an array of embed objects.</dd>
+	
+    <dt>attachments<span class="property-type">String/Object/Array</span></dt>
+    <dd>A location to an attachment. Can be online by URL, an object with a buffer payload or a file in the local filesystem.</dd>
+	
+    <dt>autoCompleteChoices<span class="property-type">Array</span></dt>
+    <dd>Optional. In autocomplete interactions, the filtered or non-filtered options to respond.</dd>
+	
+    <dt>components<span class="property-type">Array</span></dt>
+    <dd>An array of component objects.</dd>
   </dl>
-
-
-
+  
 </script>
