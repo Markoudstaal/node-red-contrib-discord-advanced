@@ -30,7 +30,6 @@ module.exports = function (RED) {
           });
 
           done();
-
         }
 
         const checkIdOrObject = (check) => {
@@ -49,7 +48,6 @@ module.exports = function (RED) {
           }
         }
 
-
         const getChannel = async (id) => {
           const channelID = checkIdOrObject(id);
           if (!channelID) {
@@ -58,39 +56,23 @@ module.exports = function (RED) {
           return await bot.channels.fetch(channelID);
         }
 
-        let channelInstance = null
+        let channelInstance = null;
 
-        try {
-
-          
+        try {          
           channelInstance = await getChannel(channel);
-
-   
-
         }
         catch( err2 ){
-
-          setError(err2)
-
+          setError(err2);
         }
 
         if ( channelInstance != null ){
-
-          await channelInstance.sendTyping();
-    
+          await channelInstance.sendTyping();    
           setSuccess("Typing signal sent")
 
           node.on('close', function () {
-
             discordBotManager.closeBot(bot);
-
           });
-          
-
         }
-        
-
-
 
       });
     }).catch(err => {
@@ -101,8 +83,7 @@ module.exports = function (RED) {
         text: err
       });
     });
-
   }
-  RED.nodes.registerType("discordTyping", discordTyping);
 
+  RED.nodes.registerType("discordTyping", discordTyping);
 };
