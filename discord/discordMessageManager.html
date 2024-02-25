@@ -49,11 +49,11 @@ a<script type="text/javascript">
     <dt>payload
       <span class="property-type">string</span>
     </dt>
-    <dd>The text content for the messag.e</dd>
+    <dd>The text content for the message.</dd>
     <dt>action
       <span class="property-type">string</span>
     </dt>
-    <dd>The action to do, can be: create, edit or delete. If not set, node will default to create.</dd>
+    <dd>The action to do, can be: createi, edit, delete, reply, react, corsspost, or info. If not set, node will default to create.</dd>
     <dt>channel
       <span class="property-type">Object or string</span>
     </dt>
@@ -114,6 +114,10 @@ a<script type="text/javascript">
 
   <h4>Deleting messages</h4>
   <p>To delete messages set <code>msg.action</code> to 'delete'. Also <code>msg.channel</code> and <code>msg.message</code> are required.</p>
+
+  <h4>Obtaining messages</h4>
+  <p>To obtain a message object given its message ID set <code>msg.action</code> to 'info'. Also <code>msg.channel</code> and <code>msg.message</code> are required. The node will then return the message if it exists.</p>
+    
     
   <h4>Attachments</h4>
   <p>It's possible to add an attachment by url but this node does not check if that url is valid. Discord might bounce invalid urls. This doesn't work for editing messages.</p>
