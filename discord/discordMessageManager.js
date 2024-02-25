@@ -156,6 +156,15 @@ module.exports = function (RED) {
           }
         }
 
+        const infoMessage = async () => {
+          try {
+            let message = await getMessage(channel, messageId)
+            setSuccess(`message ${message.id} info obtained`, message);
+          } catch (err) {
+            setError(err);
+          }
+        }
+
         const deleteMessage = async () => {
           try {
             let message = await getMessage(channel, messageId);
@@ -246,6 +255,9 @@ module.exports = function (RED) {
             break;
           case 'crosspost':
             await crosspostMessage();
+            break;
+          case 'info':
+            await infoMessage();
             break;
           default:
             setError(`msg.action has an incorrect value`)

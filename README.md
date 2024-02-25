@@ -30,7 +30,7 @@ The [Wiki](https://github.com/Markoudstaal/node-red-contrib-discord-advanced/wik
 
 ## Nodes
 
-node-red-contrib-discord-advanced gives you access to 9 nodes:
+node-red-contrib-discord-advanced gives you access to 10 nodes:
 
 * **discordMessage** is a node with no inputs and one output allowing you to receive notifications of incoming messages.
 * **discordMessageManager** allows (embed) messages to be sent to either channels or privatly to user. It also allows for editing and deleting of (embed) messages.
@@ -41,6 +41,7 @@ node-red-contrib-discord-advanced gives you access to 9 nodes:
 * **discordInteractionManager** allows you to edit interactions by id.
 * **discordChannelName** allows you to change a channel's name.
 * **discordMember** listens when a user joins or leaves a guild.
+* **discordTyping** creates a 'bot is typing...' message on a channel.
 
 ## Changelog
 
@@ -57,13 +58,9 @@ Now all interactions are replied with discordInteractionManager node, so there a
 [Examples](https://github.com/Markoudstaal/node-red-contrib-discord-advanced/wiki/Interaction-Examples)
 
 
-## Common problems
+## Privileged Intents for correct functioning
 
-### Empty payload in discordMessage
-
-A common error on some applications is getting empty payload when receiving messages on discordMessage. On 1st of September, Discord changed the way an application gets messages from channel. If you are having this problem try enabling "Message Content Intent" for your bot on Discord Developer Portal.
-
-![](https://raw.githubusercontent.com/Markoudstaal/node-red-contrib-discord-advanced/main/assets/message_content_intent.png)
+![](https://raw.githubusercontent.com/Markoudstaal/node-red-contrib-discord-advanced/main/assets/privileged_intents.png)
 
 ## Support, issues and feature requests
 

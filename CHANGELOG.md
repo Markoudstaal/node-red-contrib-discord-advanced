@@ -1,5 +1,8 @@
 # Changelog\
 
+## 3.5.1
+* Feature - Added DiscordTyping.
+
 ## 3.5.0
 * Feature - Added DiscordInteractionManager node for handling interactions reply. An Alternative to DiscordMessageManager, but with some specific interactions capabilities.
 * Deprecation/Breaking changes - Automatic response for interactions: With DiscordInteractionManager, the node DiscordInteractions always defers replies and updates. It's mandatory add a discordInteractionManager to modify interaction state (default by discord "Bot is thinking...").
