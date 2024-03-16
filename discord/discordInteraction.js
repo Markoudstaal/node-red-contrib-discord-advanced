@@ -12,6 +12,7 @@ module.exports = function (RED) {
     let injectInteractionObject = config.interactionObject || false;
     let ephemeral = config.ephemeral || false;
     let responseType = config.responseType || "update";
+    let commandResponseType = config.commandResponseType || "defersReply";
 
     discordBotManager.getBot(configNode).then(function (bot) {
       var callbacks = [];
@@ -33,6 +34,8 @@ module.exports = function (RED) {
             return interaction.isMessageContextMenuCommand();
           case "autoComplete":
             return interaction.isAutocomplete();
+          case "modalSubmit":
+              return interaction.isModalSubmit();
           case "all":
             return true;
           default:
@@ -53,9 +56,19 @@ module.exports = function (RED) {
           if (!matchInteractionType(interaction)) return;
           discordInterationManager.registerInteraction(interaction);
 
-          if (interaction.isCommand() || interaction.isMessageContextMenuCommand()) {
+          if (interaction.isCommand() || interaction.isMessageContextMenuCommand()) {    
             if (custom_id && custom_id.split(",").indexOf(interaction.commandName) < 0) return;            
-            await interaction.deferReply({ephemeral: ephemeral});
+
+            if(commandResponseType == "defersReply")
+            {              
+              await interaction.deferReply({ephemeral: ephemeral});
+            }    
+          }
+          else if(interaction.isModalSubmit())
+          {
+            if (custom_id && custom_id.split(",").indexOf(interaction.customId) < 0) return;        
+            
+            await interaction.deferReply();
           }
           else if(interaction.isAutocomplete())
           {
@@ -90,6 +103,10 @@ module.exports = function (RED) {
           else if(interaction.isAutocomplete())
           {
             // nothing to do
+          }
+          else if(interaction.isModalSubmit())
+          {
+            console.log(interaction);
           }
           else {            
             message.payload.message = Flatted.parse(Flatted.stringify(interaction.message));
