@@ -36,6 +36,10 @@
         value: "update",
         required: false
       },
+      commandResponseType: {
+        value: "defersReply",
+        required: false
+      },
     },
     inputs: 0,
     outputs: 1,
@@ -51,6 +55,7 @@
               { value: "command", label: "Command" },
               { value: "selectMenu", label: "Select Menu" },
               { value: "autoComplete", label: "Autocomplete" },
+              { value: "modalSubmit", label: "Modal Submit" },
               { value: "messageContextMenu", label: "Message Context Menu" }
             ]
           }
@@ -66,17 +71,35 @@
             ]
           }
         ]
+      });
+      $("#node-input-commandResponseType").typedInput({
+        types: [
+          {
+            value: "defersReply",
+            options: [
+              { value: "defersReply", label: "Defers Reply" },              
+              { value: "nothing", label: "Do nothing" }              
+            ]
+          }
+        ]
       });      
       $("#node-input-interactionType").change(function () {
         if ($("#node-input-interactionType").val() == "command" || $("#node-input-interactionType").val() == "messageContextMenu") {
           $("#node-input-custom_id-lbl").text("Command names");          
           $("#node-row-responseType").prop("style", "display:none;");
           if ($("#node-input-interactionType").val() == "command")
+          {
             $("#node-row-ephemeral").prop("style", "");
+            $("#node-row-commandResponseType").prop("style", "");
+          }            
           else
+          {
             $("#node-row-ephemeral").prop("style", "display:none;");
+            $("#node-row-commandResponseType").prop("style", "display:none;");
+          }            
         }
-        else if ($("#node-input-interactionType").val() == "autoComplete"){
+        else if ($("#node-input-interactionType").val() == "autoComplete" || 
+          $("#node-input-interactionType").val() == "modalSubmit"){
           $("#node-row-responseType").prop("style", "display:none;");
         }
         else{
@@ -118,6 +141,10 @@
     <div class="form-row" id="node-row-responseType" style="display:none;">
       <label for="node-input-responseType"><i class="icon-tag"></i> Response type</label>
       <input type="text" id="node-input-responseType">
+    </div>
+    <div class="form-row" id="node-row-commandResponseType" style="display:none;">
+      <label for="node-input-commandResponseType"><i class="icon-tag"></i> Response type</label>
+      <input type="text" id="node-input-commandResponseType">
     </div>
     <div class="form-row">
         <input type="checkbox" id="node-input-interactionObject" style="display: inline-block; width: auto; vertical-align: top;">  

@@ -1,5 +1,11 @@
 # Changelog\
 
+## 3.5.2
+* Feature - Modals!!!!!. In order to handle modal interactions, discordInteraction lets choose between defer reply or "do nothing". "Do nothing" lets you show showModals for commands interactions.
+* Feature - DiscordInteractionManager can reply "non replied interactions". This features connects with "do nothing" options in discordInteraction.
+* Notes: Important!! When a interaction is handled by discordinteraction and "do nothing" options is checked, the interactions needs to be respond in 3 seconds
+
+
 ## 3.5.1
 * Feature - Added DiscordTyping.
 

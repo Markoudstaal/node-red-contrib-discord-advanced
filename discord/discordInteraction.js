@@ -12,6 +12,7 @@ module.exports = function (RED) {
     let injectInteractionObject = config.interactionObject || false;
     let ephemeral = config.ephemeral || false;
     let responseType = config.responseType || "update";
+    let commandResponseType = config.commandResponseType || "defersReply";
 
     discordBotManager.getBot(configNode).then(function (bot) {
       var callbacks = [];
@@ -33,6 +34,8 @@ module.exports = function (RED) {
             return interaction.isMessageContextMenuCommand();
           case "autoComplete":
             return interaction.isAutocomplete();
+          case "modalSubmit":
+              return interaction.isModalSubmit();
           case "all":
             return true;
           default:
@@ -53,13 +56,25 @@ module.exports = function (RED) {
           if (!matchInteractionType(interaction)) return;
           discordInterationManager.registerInteraction(interaction);
 
-          if (interaction.isCommand() || interaction.isMessageContextMenuCommand()) {
+          // -- Processing ways to handle interactions for each type --
+
+          if (interaction.isCommand() || interaction.isMessageContextMenuCommand()) {    
             if (custom_id && custom_id.split(",").indexOf(interaction.commandName) < 0) return;            
-            await interaction.deferReply({ephemeral: ephemeral});
+
+            if(commandResponseType == "defersReply")
+            {              
+              await interaction.deferReply({ephemeral: ephemeral});
+            }    
+          }
+          else if(interaction.isModalSubmit())
+          {
+            if (custom_id && custom_id.split(",").indexOf(interaction.customId) < 0) return;        
+            
+            await interaction.deferReply();
           }
           else if(interaction.isAutocomplete())
           {
-            // nothing to do
+            // nothing to do            
           }
           else {
             if (custom_id && custom_id.split(",").indexOf(interaction.customId) < 0) return;
@@ -68,6 +83,9 @@ module.exports = function (RED) {
               else
                 await interaction.deferReply();
           }
+
+
+          // -- Building response for each type --
 
           let message = {};
           message.payload = Flatted.parse(Flatted.stringify(interaction));
@@ -88,6 +106,10 @@ module.exports = function (RED) {
             message.payload.options = Flatted.parse(Flatted.stringify(interaction.options));            
           }
           else if(interaction.isAutocomplete())
+          {
+            // nothing to do
+          }
+          else if(interaction.isModalSubmit())
           {
             // nothing to do
           }

@@ -2,6 +2,7 @@ module.exports = function (RED) {
     var discordBotManager = require('./lib/discordBotManager.js');
     var discordInterationManager = require('./lib/interactionManager.js');
     var messagesFormatter = require('./lib/messagesFormatter.js');
+    const { ModalBuilder } = require('discord.js');
     const Flatted = require('flatted');
 
     const checkString = (field) => typeof field === 'string' ? field : false;
@@ -21,6 +22,7 @@ module.exports = function (RED) {
                     const interactionId = msg.interactionId;
                     const action = msg.action || 'edit';
                     const autoCompleteChoices = msg.autoCompleteChoices || [];
+                    const customId = msg.customId;
 
                     const setError = (error) => {
                         node.status({
@@ -58,6 +60,38 @@ module.exports = function (RED) {
                         setSuccess(`interaction ${interactionId} edited`, newMsg);
                     }
 
+                    const replyInteraction = async () => {
+                        await interaction.reply({
+                            embeds: embeds,
+                            content: content,
+                            files: attachments,
+                            components: components
+                        });
+
+                        const newMsg = {
+                            interaction: Flatted.parse(Flatted.stringify(interaction))
+                        };
+
+                        setSuccess(`interaction ${interactionId} replied`, newMsg);
+                    }
+
+                    const showModal = async () => {
+                        const modal = new ModalBuilder()
+                            .setCustomId(customId || 'myModal')
+                            .setTitle(content || 'Modal');
+                        
+                        console.log(`Modal ${customId}`);
+                        
+                        modal.addComponents(components);                        
+                        interaction.showModal(modal);
+
+                        const newMsg = {
+                            interaction: Flatted.parse(Flatted.stringify(interaction))
+                        };
+
+                        setSuccess(`interaction ${interactionId} modal showed`, newMsg);
+                    }
+
                     const respondAutocomplete = async () => {
                         if (!interaction.isAutocomplete()) {
                             setError("Error: not autocomplete Interaction");
@@ -83,8 +117,8 @@ module.exports = function (RED) {
                     let attachments, embeds, components;
                     try {
                         attachments = messagesFormatter.formatAttachments(inputAttachments);
-                        embeds = messagesFormatter.formatEmbeds(inputEmbeds);
-                        components = messagesFormatter.formatComponents(inputComponents);
+                        embeds = messagesFormatter.formatEmbeds(inputEmbeds);                        
+                        components = inputComponents;
                     } catch (error) {
                         node.error(error);
                         node.status({
@@ -96,8 +130,14 @@ module.exports = function (RED) {
                     }
 
                     switch (action.toLowerCase()) {
+                        case 'reply':
+                            await replyInteraction();
+                            break;
                         case 'edit':
                             await editInteractionReply();
+                            break;
+                        case 'showmodal':
+                            await showModal();
                             break;
                         case 'respondautocomplete':
                             await respondAutocomplete();
@@ -116,8 +156,6 @@ module.exports = function (RED) {
                     });
                 }
 
-
-
             });
 
             node.on('close', function () {
@@ -132,5 +170,6 @@ module.exports = function (RED) {
             });
         });
     }
+
     RED.nodes.registerType("discordInteractionManager", discordInteractionManager);
 };
