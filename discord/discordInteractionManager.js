@@ -72,7 +72,7 @@ module.exports = function (RED) {
                             interaction: Flatted.parse(Flatted.stringify(interaction))
                         };
 
-                        setSuccess(`interaction ${interactionId} edited`, newMsg);
+                        setSuccess(`interaction ${interactionId} replied`, newMsg);
                     }
 
                     const showModal = async () => {
@@ -117,8 +117,7 @@ module.exports = function (RED) {
                     let attachments, embeds, components;
                     try {
                         attachments = messagesFormatter.formatAttachments(inputAttachments);
-                        embeds = messagesFormatter.formatEmbeds(inputEmbeds);
-                        //components = messagesFormatter.formatComponents(inputComponents);
+                        embeds = messagesFormatter.formatEmbeds(inputEmbeds);                        
                         components = inputComponents;
                     } catch (error) {
                         node.error(error);
@@ -157,8 +156,6 @@ module.exports = function (RED) {
                     });
                 }
 
-
-
             });
 
             node.on('close', function () {
@@ -173,5 +170,6 @@ module.exports = function (RED) {
             });
         });
     }
+
     RED.nodes.registerType("discordInteractionManager", discordInteractionManager);
 };

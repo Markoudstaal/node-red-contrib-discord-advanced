@@ -17,6 +17,7 @@ Currently the following actions are supported:
 * Listen for reactions on a message.
 * Listen for interactions on a message button or select menu.
 * Listen for interactions on commands.
+* Submit modals.
 * Set Status text of the Bot
 * Get permissions of a specific user. Add and remove roles. Listen when a user joins or leaves a guild.
 * Change channel's name.
