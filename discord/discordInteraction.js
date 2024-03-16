@@ -56,6 +56,8 @@ module.exports = function (RED) {
           if (!matchInteractionType(interaction)) return;
           discordInterationManager.registerInteraction(interaction);
 
+          // -- Processing ways to handle interactions for each type --
+
           if (interaction.isCommand() || interaction.isMessageContextMenuCommand()) {    
             if (custom_id && custom_id.split(",").indexOf(interaction.commandName) < 0) return;            
 
@@ -72,7 +74,7 @@ module.exports = function (RED) {
           }
           else if(interaction.isAutocomplete())
           {
-            // nothing to do
+            // nothing to do            
           }
           else {
             if (custom_id && custom_id.split(",").indexOf(interaction.customId) < 0) return;
@@ -81,6 +83,9 @@ module.exports = function (RED) {
               else
                 await interaction.deferReply();
           }
+
+
+          // -- Building response for each type --
 
           let message = {};
           message.payload = Flatted.parse(Flatted.stringify(interaction));
@@ -106,7 +111,7 @@ module.exports = function (RED) {
           }
           else if(interaction.isModalSubmit())
           {
-            console.log(interaction);
+            // nothing to do
           }
           else {            
             message.payload.message = Flatted.parse(Flatted.stringify(interaction.message));
