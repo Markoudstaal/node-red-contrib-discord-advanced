@@ -1,16 +1,17 @@
 
-const { Client, GatewayIntentBits, Partials } = require('discord.js');
+const { Client, GatewayIntentBits, Partials, GuildScheduledEventManager } = require('discord.js');
 
 const checkIdOrObject = (check) => {
     try {
         if (typeof check !== 'string') {
-        if (check.hasOwnProperty('id')) {
-            return check.id;
-        } else {
-            return false;
-        }
-        } else {
-        return check;
+            if (check.hasOwnProperty('id')) {
+                return check.id;
+            } else {
+                return false;
+            }
+        } 
+        else {
+            return check;
         }
     } catch (error) {
         return false;
@@ -25,6 +26,11 @@ const getGuild = async (bot, id) => {
     return await bot.guilds.fetch(guildId);
 }
 
+const getEventManager = async (bot, id) => {
+
+    guild = await getGuild(bot,id)
+    return new GuildScheduledEventManager(guild);
+}
 
 
 const getChannel = async (bot, id) => {
@@ -52,6 +58,7 @@ module.exports = {
     checkIdOrObject: checkIdOrObject,
     getMessage: getMessage,
     getGuild: getGuild,
-    getChannel: getChannel
+    getChannel: getChannel,
+    getEventManager: getEventManager
 
 };
