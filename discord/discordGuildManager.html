@@ -1,0 +1,75 @@
+a<script type="text/javascript">
+  RED.nodes.registerType('discordGuildManager', {
+    category: 'discord',
+    color: '#7289da',
+    defaults: {
+      name: {
+        value: "",
+        required: false
+      },
+      guild: {
+        value: null,
+        required: false
+      },
+      token: {
+        value: "",
+        required: true,
+        type: "discord-token"
+      }
+    },
+    inputs: 1,
+    outputs: 1,
+    icon: "discord.png",
+    label: function () {
+      return this.name || "discordGuildManager";
+    }
+  });
+</script>
+<script type="text/x-red" data-template-name="discordGuildManager">
+  <div class="form-row">
+        <label for="node-input-token"><i class="icon-tag"></i> token</label>
+        <input type="text" id="node-input-token" placeholder="token">
+    </div>
+    <div class="form-row">
+        <label for="node-input-guild"><i class="icon-tag"></i> Guild</label>
+        <input type="text" id="node-input-guild" name="guild" placeholder="Guild ID">
+        <p>(leave 'guild' blank to use <code>msg.guild</code> as guild ID to send to)</p>
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+</script>
+<script type="text/x-red" data-help-name="discordGuildManager">
+  <p>Node to retrieve info from a guild, as well as an action to rename the guild.</p>
+
+  <h3>Inputs</h3>
+  <dl class="message-properties">
+    <dt>action
+      <span class="property-type">string</span>
+    </dt>
+    <dd>The action to do, can be: name, info. If not set, node will default to info.</dd>
+    <dt>guild
+      <span class="property-type">Object or string</span>
+    </dt>
+    <dd>The guild object or ID.</dd>
+    <dt>name 
+      <span class="property-type">string</span>
+    </dt>
+    <dd>The new name of the guild if performing the name operation.</dd>
+  </dl>
+
+  <h3>Outputs</h3>
+  <dl class="message-properties">
+    <dt>payload
+      <span class="property-type">Object</span>
+    <dt>
+    <dd>The guild object containing all of the information listed in discord JS guild class</dd>
+  </dl>
+
+  <h3>Details</h3>
+  <p>This node provides information on a given guild, it can also rename the guild.<p>
+
+  <h4>Renaming the guild<h4>
+  <p>To rename the guild you must set <code>msg.name</code> as the name you desire to set the guild to as a string.</p>
+</script>

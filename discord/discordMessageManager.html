@@ -41,7 +41,7 @@ a<script type="text/javascript">
     </div>
 </script>
 <script type="text/x-red" data-help-name="discordMessageManager">
-  <p>Node to send, edit, reply, react, crosspost, obtain info, or delete messages in Discord</p>
+  <p>Node to send, edit, reply, react, crosspost, obtain info, search, or delete messages in Discord</p>
   <p>More support can be found <a href="https://github.com/Markoudstaal/node-red-contrib-discord-advanced/wiki/discordMessageManager">here</a>.</p>
 
   <h3>Inputs</h3>
@@ -53,7 +53,7 @@ a<script type="text/javascript">
     <dt>action
       <span class="property-type">string</span>
     </dt>
-    <dd>The action to do, can be: create, edit, delete, reply, react, crosspost, or info. If not set, node will default to create.</dd>
+    <dd>The action to do, can be: create, edit, delete, reply, react, crosspost, search, or info. If not set, node will default to create.</dd>
     <dt>channel
       <span class="property-type">Object or string</span>
     </dt>
@@ -85,7 +85,8 @@ a<script type="text/javascript">
     <dt>payload
       <span class="property-type">Object</span>
     <dt>
-    <dd>The message that was created, edited or deleted.</dd>
+    <dd>The message that was created, edited or deleted. In the case of a search, payload will be an array of messages.</dd>
+
     <dt>request
       <span class="property-type">Object</span>
     <dt>
@@ -117,6 +118,9 @@ a<script type="text/javascript">
 
   <h4>Obtaining messages</h4>
   <p>To obtain a message object given its message ID set <code>msg.action</code> to 'info'. Also <code>msg.channel</code> and <code>msg.message</code> are required. The node will then return the message if it exists.</p>
+    
+  <h4>Searching messages</h4>
+  <p>It is possible to search for messages given a channel. To search for messages set <code>msg.action</code> to 'search'. It will retrieve the last 64 messages unless overriden by <code>msg.searchLimit</code>. The search can also be filtered setting <code>msg.author</code>. Note that the search limit is applied before the filtering, e.g. in the default scenario it will not search for the last 64 messages by the user, but rather the last 64 messages and return an array containing the messages by the author.</p>
     
     
   <h4>Attachments</h4>

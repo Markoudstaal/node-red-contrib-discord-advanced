@@ -1,0 +1,104 @@
+a<script type="text/javascript">
+  RED.nodes.registerType('discordEventManager', {
+    category: 'discord',
+    color: '#7289da',
+    defaults: {
+      name: {
+        value: "",
+        required: false
+      },
+      guild: {
+        value: null,
+        required: false
+      },
+      event: {
+        value: null,
+        required: false
+      },
+      token: {
+        value: "",
+        required: true,
+        type: "discord-token"
+      }
+    },
+    inputs: 1,
+    outputs: 1,
+    icon: "discord.png",
+    label: function () {
+      return this.name || "discordEventManager";
+    }
+  });
+</script>
+<script type="text/x-red" data-template-name="discordEventManager">
+  <div class="form-row">
+        <label for="node-input-token"><i class="icon-tag"></i> token</label>
+        <input type="text" id="node-input-token" placeholder="token">
+    </div>
+    <div class="form-row">
+        <label for="node-input-guild"><i class="icon-tag"></i> Guild</label>
+        <input type="text" id="node-input-guild" name="ch" placeholder="Guild ID">
+        <p>(leave 'guild' blank to use <code>msg.guild</code> as Guild ID)</p>
+    </div>
+    <div class="form-row">
+      <label for="node-input-event"><i class="icon-tag"></i> Event</label>
+      <input type="text" id="node-input-event" name="ch" placeholder="Event ID">
+      <p>(leave 'event' blank to use <code>msg.event</code> as Event ID)</p>
+  </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+</script>
+<script type="text/x-red" data-help-name="discordEventManager">
+  <p>Node to create, delete scheduled events as well as obtain info about a specific event or all events in a guild.</p>
+
+  <h3>Inputs</h3>
+  <dl class="message-properties">
+    <dt>action
+      <span class="property-type">string</span>
+    </dt>
+    <dd>The action to do, can be: create, delete, info, all. If not set, node will default to info.</dd>
+    <dt>guild
+      <span class="property-type">Object or string</span>
+    </dt>
+    <dd>The guild Object or channel id for creating, obtaining and deleting events.</dd>
+    <dt>event
+      <span class="property-type">Object or string</span>
+    </dt>
+    <dd>The event Object or channel id for obtaining and deleting events.</dd>
+  </dl>
+
+  <h3>Outputs</h3>
+  <dl class="message-properties">
+    <dt>payload
+      <span class="property-type">Object</span>
+    <dt>
+    <dd>The event that was created, obtained, or deleted. In the case of search for all events, payload will be an array of events.</dd>
+  </dl>
+
+  <h3>Details</h3>
+  <p>Node to create, delete scheduled events as well as obtain info about a specific event or all events in a guild.</p>
+
+  <h4>Obtaining event info</h4>
+  <p>When obtaining info an event both <code>msg.event</code> and <code>msg.guild</code> are required. The output will be the raw event data provided by discord JS.<p>
+
+  <h4>Obtaining all events<h4>
+  <p>When obtaining all the events in a guild <code>msg.guild</code> is required. The output will be an array of events provided by discord JS.</p>
+
+  <h4>Deleting events</h4>
+  <p>When deleting an event both <code>msg.event</code> and <code>msg.guild</code> are required.<p>
+
+
+  <h4>Creating events</h4>
+  <p>Creating an event requires many provided fields, namely: <code>msg.event</code>, <code>msg.eventName</code>, <code>msg.eventScheduledStartTime</code>, and <code>msg.eventType</code>.
+    When <code>msg.eventType</code> is set to 'external', then <code>msg.eventLocation</code> must be provided as well as <code>msg.eventScheduledEndTime</code>.
+    When <code>msg.eventType</code> is set to 'voice', then <code>msg.eventChannel</code> must be provided, where the eventChannel is the ID of the corrosponding voice channel
+
+    Both <code>msg.eventScheduledStartTime</code> and <code>msg.eventScheduledEndTime</code> are parsed directly as javascript Date object. The Date object can take miliseconds directly as the date object. 
+    <code>msg.reason</code> and <code>msg.description</code> are optional fields.
+    
+  <p>
+
+
+
+</script>

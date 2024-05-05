@@ -1,6 +1,7 @@
 module.exports = function (RED) {
   var discordBotManager = require('./lib/discordBotManager.js');
   var messagesFormatter = require('./lib/messagesFormatter.js');
+  var discordFramework = require('./lib/discordFramework.js');
   const Flatted = require('flatted');
   const {
     ChannelType
@@ -24,6 +25,8 @@ module.exports = function (RED) {
         const inputAttachments = msg.payload?.attachments || msg.payload?.attachment || msg.attachments || msg.attachment;
         const inputComponents = msg.payload?.components || msg.components;
         const crosspost = msg.crosspost || false;
+        const _author = msg.author || false;
+        const _searchLimit = msg.searchLimit || 64;
 
         const setError = (error) => {
           node.status({
@@ -46,45 +49,10 @@ module.exports = function (RED) {
           done();
         }
 
-        const checkIdOrObject = (check) => {
-          try {
-            if (typeof check !== 'string') {
-              if (check.hasOwnProperty('id')) {
-                return check.id;
-              } else {
-                return false;
-              }
-            } else {
-              return check;
-            }
-          } catch (error) {
-            return false;
-          }
-        }
-
-        const getChannel = async (id) => {
-          const channelID = checkIdOrObject(id);
-          if (!channelID) {
-            throw (`msg.channel wasn't set correctly`);
-          }
-          return await bot.channels.fetch(channelID);
-        }
-
-        const getMessage = async (channel, message) => {
-          const channelID = checkIdOrObject(channel);
-          const messageID = checkIdOrObject(message);
-          if (!channelID) {
-            throw (`msg.channel wasn't set correctly`);
-          } else if (!messageID) {
-            throw (`msg.message wasn't set correctly`)
-          }
-
-          let channelInstance = await bot.channels.fetch(channelID);
-          return await channelInstance.messages.fetch(messageID);
-        }
+        
 
         const createPrivateMessage = async () => {
-          const userID = checkIdOrObject(user);
+          const userID = discordFramework.checkIdOrObject(user);
           if (!userID) {
             setError(`msg.user wasn't set correctly`);
             return;
@@ -106,7 +74,7 @@ module.exports = function (RED) {
 
         const createChannelMessage = async () => {
           try {
-            let channelInstance = await getChannel(channel);
+            let channelInstance = await discordFramework.getChannel(bot, channel);
             let messageObject = {
               embeds: embeds,
               content: content,
@@ -142,7 +110,7 @@ module.exports = function (RED) {
 
         const editMessage = async () => {
           try {
-            let message = await getMessage(channel, messageId)
+            let message = await discordFramework.getMessage(bot, channel, messageId)
             let messageObject = {
               embeds: embeds,
               content: content,
@@ -158,8 +126,45 @@ module.exports = function (RED) {
 
         const infoMessage = async () => {
           try {
-            let message = await getMessage(channel, messageId)
+            let message = await discordFramework.getMessage(bot, channel, messageId)
             setSuccess(`message ${message.id} info obtained`, message);
+          } catch (err) {
+            setError(err);
+          }
+        }
+
+        const searchMessages = async () => {
+          try {
+
+            //Lets see if the author ID was provided, if not get all messages in a channel
+            const author = discordFramework.checkIdOrObject(_author);
+            let channelInstance = await bot.channels.fetch(channel);
+
+            if (!author) {
+
+              channelInstance.messages.fetch({ limit: _searchLimit }).then(messages => {
+                
+                setSuccess(`messages (n=${messages.length}) obtained`, messages);
+
+              })
+               
+            } 
+            else  {
+    
+              channelInstance.messages.fetch({ limit: _searchLimit }).then(messages => {
+                
+                let array = Array.from(messages, ([name, value]) => ({ name, value }));
+                let authorMessages = array.filter(msg => msg.value.author.id === author);
+                authorMessages = authorMessages.map(function(obj) {
+                  return obj.value;
+              });
+
+                setSuccess(`Messages (n=${authorMessages.length}) obtained`, authorMessages);
+              });
+
+            }
+
+            
           } catch (err) {
             setError(err);
           }
@@ -167,7 +172,7 @@ module.exports = function (RED) {
 
         const deleteMessage = async () => {
           try {
-            let message = await getMessage(channel, messageId);
+            let message = await discordFramework.getMessage(bot, channel, messageId);
             let resultMessage = await message.delete();
             setSuccess(`message ${resultMessage.id} deleted`, resultMessage);
           } catch (err) {
@@ -177,7 +182,7 @@ module.exports = function (RED) {
 
         const replyMessage = async () => {
           try {
-            let message = await getMessage(channel, messageId)
+            let message = await discordFramework.getMessage(bot, channel, messageId)
             let messageObject = {
               embeds: embeds,
               content: content,
@@ -193,7 +198,7 @@ module.exports = function (RED) {
 
         const reactToMessage = async () => {
           try {
-            let message = await getMessage(channel, messageId);
+            let message = await discordFramework.getMessage(bot, channel, messageId);
             const emoji = message.guild.emojis.cache.find(emoji => emoji.name === content);
             let reaction = await message.react(emoji || content);
             const newMsg = {
@@ -211,7 +216,7 @@ module.exports = function (RED) {
 
         const crosspostMessage = async () => {
           try {
-            let message = await getMessage(channel, messageId);  
+            let message = await discordFramework.getMessage(bot, channel, messageId);  
             if (message.channel.type === ChannelType.GuildAnnouncement)
               await message.crosspost();
             else
@@ -258,6 +263,9 @@ module.exports = function (RED) {
             break;
           case 'info':
             await infoMessage();
+            break;
+          case 'search':
+            await searchMessages();
             break;
           default:
             setError(`msg.action has an incorrect value`)
