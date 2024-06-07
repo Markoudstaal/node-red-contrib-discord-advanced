@@ -40,14 +40,18 @@ a<script type="text/javascript">
     <dt>action
       <span class="property-type">string</span>
     </dt>
-    <dd>The action to do, can be: get. If not set, node will default to get.</dd>
+    <dd>The action to do, can be: get, set, remove. If not set, node will default to get.</dd>
     <dt>user 
-      <span class="property-type">Object or string</span>
+      <span class="property-type">string</span>
     </dt>
-    <dd>The user Object or id whose roles you want to check.</dd>
+    <dd>The user ID whose roles you want to check.</dd>
+  <dt>role 
+      <span class="property-type">string</span>
+    </dt>
+    <dd>The role ID if you set <code>msg.action</code> to set or remove.</dd>
     <dt>guild
-      <span class="property-type">Object or string</span>
-    <dd>The Guild Object or ID the user is in and where you want to check the roles.</dd>
+      <span class="property-type">string</span>
+    <dd>The Guild ID the user is in and where you want to check the roles.</dd>
   </dl>
 
   <h3>Outputs</h3>
@@ -63,6 +67,8 @@ a<script type="text/javascript">
   </dl>
 
   <h3>Details</h3>
-  <p>Right now this node is only able to output all roles a user has in a specific guild.<p>
+  <p>This node is able to output all roles a user has in a specific guild. Additionally it can add (set) and remove singular roles from a user in a specific guild.<p>
   <p>To get the roles a user has in a guild send <code>msg.user</code> and <code>msg.guild</code> and it will return the roles the user has.</p>
+  <p>To remove a role send <code>msg.user</code>, <code>msg.guild</code>, <code>msg.action = "remove"</code> and <code>msg.role</code>. It will remove the role the user has.</p>
+  <p>To add a role send <code>msg.user</code>, <code>msg.guild</code>, <code>msg.action = "set"</code> and <code>msg.role</code>. It add the role to the user.</p>
 </script>
