@@ -74,7 +74,14 @@ module.exports = function (RED) {
 
                         setSuccess(`interaction ${interactionId} replied`, newMsg);
                     }
-
+                    
+                    const deleteInteraction = async () => {
+                        await interaction.deleteReply();
+                        setSuccess(`interaction ${interactionId} deleted`, {
+                            interaction: Flatted.parse(Flatted.stringify(interaction))
+                        });
+                    }
+                    
                     const showModal = async () => {
                         const modal = new ModalBuilder()
                             .setCustomId(customId || 'myModal')
@@ -135,6 +142,9 @@ module.exports = function (RED) {
                             break;
                         case 'edit':
                             await editInteractionReply();
+                            break;
+                        case 'delete':
+                            await deleteInteraction();
                             break;
                         case 'showmodal':
                             await showModal();
