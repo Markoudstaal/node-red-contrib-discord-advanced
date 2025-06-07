@@ -81,7 +81,7 @@ module.exports = function (RED) {
               if(responseType == "update")
                 await interaction.deferUpdate();
               else
-                await interaction.deferReply();
+                await interaction.deferReply({ephemeral: ephemeral});
           }
 
 
