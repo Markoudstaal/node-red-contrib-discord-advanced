@@ -101,9 +101,10 @@
         else if ($("#node-input-interactionType").val() == "autoComplete" || 
           $("#node-input-interactionType").val() == "modalSubmit"){
           $("#node-row-responseType").prop("style", "display:none;");
-        }
-        else{
-          $("#node-input-custom_id-lbl").text("Custom Ids");          
+        }else if ($("#node-input-interactionType").val() == "button"){
+          $("#node-row-ephemeral").prop("style", "");
+        }else{
+          $("#node-input-custom_id-lbl").text("Custom Ids");
           $("#node-row-ephemeral").prop("style", "display:none;");
           $("#node-row-responseType").prop("style", "");
         }        
