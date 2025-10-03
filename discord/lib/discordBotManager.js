@@ -1,5 +1,4 @@
 const { Client, GatewayIntentBits, Partials } = require('discord.js');
-require('./bigint-compat');
 
 var bots = new Map();
 var getBot = function (configNode) {
