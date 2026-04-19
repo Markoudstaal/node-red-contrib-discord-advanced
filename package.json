@@ -1,7 +1,7 @@
 {
   "name": "node-red-contrib-discord-advanced",
   "version": "3.6.0",
-  "description": "Recieve, send, edit, reply, react to and delete Discord messages, handle interactions and much more in Node-RED.",
+  "description": "Receive, send, edit, reply, react to and delete Discord messages, handle interactions and much more in Node-RED.",
   "main": "discord/discord.js",
   "scripts": {
     "test": "mocha \"test/**/*_spec.js\""
